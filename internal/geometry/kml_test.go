@@ -250,9 +250,9 @@ func TestKMLReader_ParseFile_Polygon(t *testing.T) {
 		t.Fatalf("ParseFile returned error: %v", err)
 	}
 
-	// Should have 5 points from the polygon ring
-	if len(*poiList) != 5 {
-		t.Errorf("Expected 5 POIs from polygon, got %d", len(*poiList))
+	// Should have 4 points from the polygon ring (duplicate closing point removed)
+	if len(*poiList) != 4 {
+		t.Errorf("Expected 4 POIs from polygon (closing point removed), got %d", len(*poiList))
 	}
 
 	// Check first point color
