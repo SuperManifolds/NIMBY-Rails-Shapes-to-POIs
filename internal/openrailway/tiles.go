@@ -103,10 +103,11 @@ func CalculateOptimalZoom(bbox *BoundingBox, targetWidth, targetHeight int) int 
 		pixelHeight := tilesY * tileSize
 
 		if pixelWidth <= targetWidth && pixelHeight <= targetHeight {
-			return z
+			// Use a higher zoom level to better fill the available space
+			return z + 2
 		}
 	}
-	return minZoomLevel
+	return minZoomLevel + 2
 }
 
 // LatLonToTile converts latitude/longitude to tile coordinates
@@ -172,10 +173,14 @@ func (tc *TileClient) fetchTile(ctx context.Context, url string) (image.Image, e
 
 // GetMapImage fetches and assembles map tiles for the given bounding box and overlays POIs
 func (tc *TileClient) GetMapImage(ctx context.Context, bbox *BoundingBox, poiList *poi.List, maxWidth, maxHeight int) (image.Image, error) {
-	zoom := CalculateOptimalZoom(bbox, maxWidth, maxHeight)
+	baseZoom := CalculateOptimalZoom(bbox, maxWidth, maxHeight)
+	railwayZoom := baseZoom + 1
+	if railwayZoom > maxZoomLevel {
+		railwayZoom = maxZoomLevel
+	}
 
-	topLeft := LatLonToTile(bbox.MaxLat, bbox.MinLon, zoom)
-	bottomRight := LatLonToTile(bbox.MinLat, bbox.MaxLon, zoom)
+	topLeft := LatLonToTile(bbox.MaxLat, bbox.MinLon, baseZoom)
+	bottomRight := LatLonToTile(bbox.MinLat, bbox.MaxLon, baseZoom)
 
 	tilesX := bottomRight.X - topLeft.X + 1
 	tilesY := bottomRight.Y - topLeft.Y + 1
@@ -186,29 +191,103 @@ func (tc *TileClient) GetMapImage(ctx context.Context, bbox *BoundingBox, poiLis
 
 	mapImg := image.NewRGBA(image.Rect(0, 0, mapWidth, mapHeight))
 
-	// Fetch and place tiles - first OSM base layer, then railway overlay
+	// Fetch and place OSM tiles at base zoom level
 	for tileY := 0; tileY < tilesY; tileY++ {
 		for tileX := 0; tileX < tilesX; tileX++ {
 			tileRect := image.Rect(tileX*tileSize, tileY*tileSize, (tileX+1)*tileSize, (tileY+1)*tileSize)
 
 			// First draw OSM base tile
-			osmTile, err := tc.GetOSMTile(ctx, topLeft.X+tileX, topLeft.Y+tileY, zoom)
+			osmTile, err := tc.GetOSMTile(ctx, topLeft.X+tileX, topLeft.Y+tileY, baseZoom)
 			if err == nil {
 				draw.Draw(mapImg, tileRect, osmTile, image.Point{0, 0}, draw.Src)
 			}
-
-			// Then overlay railway tile (with transparency)
-			railwayTile, err := tc.GetRailwayTile(ctx, topLeft.X+tileX, topLeft.Y+tileY, zoom)
-			if err == nil {
-				draw.Draw(mapImg, tileRect, railwayTile, image.Point{0, 0}, draw.Over)
-			}
 		}
 	}
+
+	// Overlay railway tiles at higher zoom with proper coverage
+	tc.overlayRailwayTilesWithFullCoverage(ctx, mapImg, bbox, baseZoom, railwayZoom)
 
 	// Overlay POIs on the map
 	overlayPOIs(mapImg, poiList, topLeft)
 
 	return mapImg, nil
+}
+
+// overlayRailwayTilesWithFullCoverage overlays railway tiles at higher zoom covering the full base image
+func (tc *TileClient) overlayRailwayTilesWithFullCoverage(ctx context.Context, baseImg *image.RGBA, bbox *BoundingBox, baseZoom, railwayZoom int) {
+	// Calculate base tiles to understand the area we need to cover
+	baseTopLeft := LatLonToTile(bbox.MaxLat, bbox.MinLon, baseZoom)
+	baseBottomRight := LatLonToTile(bbox.MinLat, bbox.MaxLon, baseZoom)
+	
+	// Convert base tile bounds to railway zoom level to ensure full coverage
+	zoomDiff := railwayZoom - baseZoom
+	multiplier := int(math.Pow(2.0, float64(zoomDiff)))
+	
+	railwayTopLeft := TileCoordinate{
+		X: baseTopLeft.X * multiplier,
+		Y: baseTopLeft.Y * multiplier,
+		Z: railwayZoom,
+	}
+	railwayBottomRight := TileCoordinate{
+		X: (baseBottomRight.X+1)*multiplier - 1,
+		Y: (baseBottomRight.Y+1)*multiplier - 1,
+		Z: railwayZoom,
+	}
+	
+	// Scale factor for positioning railway tiles
+	scaleFactor := 1.0 / math.Pow(2.0, float64(railwayZoom-baseZoom))
+	scaledTileSize := int(float64(tileSize) * scaleFactor)
+	
+	// Fetch and overlay railway tiles
+	for railwayTileY := railwayTopLeft.Y; railwayTileY <= railwayBottomRight.Y; railwayTileY++ {
+		for railwayTileX := railwayTopLeft.X; railwayTileX <= railwayBottomRight.X; railwayTileX++ {
+			railwayTile, err := tc.GetRailwayTile(ctx, railwayTileX, railwayTileY, railwayZoom)
+			if err != nil {
+				continue
+			}
+			
+			// Calculate position on base image
+			// Convert railway tile coordinates to base map pixel coordinates
+			baseX := int((float64(railwayTileX-railwayTopLeft.X)) * float64(scaledTileSize))
+			baseY := int((float64(railwayTileY-railwayTopLeft.Y)) * float64(scaledTileSize))
+			
+			// Scale and draw the railway tile
+			scaledImg := tc.scaleImageDown(railwayTile, scaledTileSize, scaledTileSize)
+			if scaledImg != nil {
+				destRect := image.Rect(baseX, baseY, baseX+scaledTileSize, baseY+scaledTileSize)
+				draw.Draw(baseImg, destRect, scaledImg, image.Point{0, 0}, draw.Over)
+			}
+		}
+	}
+}
+
+// scaleImageDown scales an image down using simple nearest-neighbor sampling
+func (tc *TileClient) scaleImageDown(src image.Image, width, height int) image.Image {
+	srcBounds := src.Bounds()
+	srcWidth := srcBounds.Dx()
+	srcHeight := srcBounds.Dy()
+	
+	if srcWidth == 0 || srcHeight == 0 {
+		return nil
+	}
+	
+	scaled := image.NewRGBA(image.Rect(0, 0, width, height))
+	
+	scaleX := float64(srcWidth) / float64(width)
+	scaleY := float64(srcHeight) / float64(height)
+	
+	for y := 0; y < height; y++ {
+		for x := 0; x < width; x++ {
+			srcX := int(float64(x) * scaleX)
+			srcY := int(float64(y) * scaleY)
+			
+			if srcX < srcWidth && srcY < srcHeight {
+				scaled.Set(x, y, src.At(srcBounds.Min.X+srcX, srcBounds.Min.Y+srcY))
+			}
+		}
+	}
+	
+	return scaled
 }
 
 // overlayPOIs draws POI markers on the map image
