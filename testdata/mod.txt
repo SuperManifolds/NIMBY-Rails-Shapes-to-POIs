@@ -1,0 +1,12 @@
+[ModMeta]
+schema=1
+name=shapetopoi
+author=supermanifolds
+desc=test desc
+version=1.0.0
+
+
+[POILayer]
+id = waw_pois1
+name = test pois 1
+tsv = poi.tsv
