@@ -40,11 +40,13 @@ Thumbs.db
 
 # Application specific
 *.zip
-*.mod
 *.tsv
 /testdata/*.zip
 /testdata/*.mod
 /testdata/*.tsv
+
+# Exclude go.mod from the mod file ignore
+!go.mod
 
 # Temporary files
 *.tmp
