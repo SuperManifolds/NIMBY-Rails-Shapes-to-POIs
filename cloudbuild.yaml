@@ -26,6 +26,18 @@ steps:
       - '--concurrency=80'
       - '--cpu-throttling'
       - '--execution-environment=gen2'
+  
+  # Set IAM policy for public access
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'services'
+      - 'add-iam-policy-binding'
+      - 'nimby-shapetopoi'
+      - '--region=us-central1'
+      - '--member=allUsers'
+      - '--role=roles/run.invoker'
 
 images:
   - 'gcr.io/$PROJECT_ID/nimby-shapetopoi:$COMMIT_SHA'
