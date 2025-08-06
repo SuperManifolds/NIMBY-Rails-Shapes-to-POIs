@@ -34,9 +34,14 @@ templ Home() {
 						<label for="output-name">Mod Name (optional)</label>
 						<input type="text" id="output-name" name="output-name" placeholder="my-awesome-mod"/>
 					</div>
-					<button type="submit" class="btn">
+					<div class="form-group">
+						<label for="interpolate-distance">Point Interpolation Distance (optional)</label>
+						<input type="number" id="interpolate-distance" name="interpolate-distance" placeholder="500" min="10" max="10000" step="10"/>
+						<small>Add extra points along lines if segments are longer than this distance (meters). Leave empty to disable.</small>
+					</div>
+					<button type="submit" class="btn" id="submit-button">
 						<span id="upload-spinner" class="spinner hidden"></span>
-						Convert to NIMBY Rails Mod
+						<span id="button-text">Convert to NIMBY Rails Mod</span>
 					</button>
 				</form>
 			</div>

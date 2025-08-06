@@ -22,13 +22,23 @@ function handleDrop(e) {
 function updateFileList() {
     const fileInput = document.getElementById('file-input');
     const fileList = document.getElementById('file-list');
+    const submitButton = document.getElementById('submit-button');
+    const buttonText = document.getElementById('button-text');
     const files = Array.from(fileInput.files);
     
     if (files.length > 0) {
         fileList.innerHTML = '<strong>Selected files:</strong><br>' + 
             files.map(f => `• ${f.name} (${(f.size / 1024 / 1024).toFixed(2)} MB)`).join('<br>');
+        if (submitButton && buttonText) {
+            submitButton.disabled = false;
+            buttonText.textContent = 'Convert to NIMBY Rails Mod';
+        }
     } else {
         fileList.innerHTML = '';
+        if (submitButton && buttonText) {
+            submitButton.disabled = true;
+            buttonText.textContent = 'Please select files first';
+        }
     }
 }
 
@@ -54,10 +64,23 @@ document.addEventListener('DOMContentLoaded', function() {
         uploadArea.addEventListener('dragleave', handleDragLeave);
         uploadArea.addEventListener('drop', handleDrop);
     }
+
+    // Initialize button state
+    updateFileList();
 });
 
-// HTMX event handling for loading spinners
+// HTMX event handling for loading spinners and form validation
 document.body.addEventListener('htmx:beforeRequest', function(e) {
+    // Validate file selection before allowing request
+    if (e.target.tagName === 'FORM') {
+        const fileInput = e.target.querySelector('#file-input');
+        if (fileInput && fileInput.files.length === 0) {
+            e.preventDefault();
+            alert('Please select at least one file to upload.');
+            return false;
+        }
+    }
+    
     const indicator = e.target.getAttribute('hx-indicator');
     if (indicator) {
         const indicatorEl = document.querySelector(indicator);

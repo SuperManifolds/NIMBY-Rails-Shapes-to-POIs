@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"log/slog"
@@ -9,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"time"
 
@@ -58,8 +60,16 @@ func (h *UploadHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		outputName = "converted-mod"
 	}
 
+	// Parse interpolation distance
+	var interpolateDistance float64
+	if distanceStr := r.FormValue("interpolate-distance"); distanceStr != "" {
+		if dist, err := strconv.ParseFloat(distanceStr, 64); err == nil && dist > 0 {
+			interpolateDistance = dist
+		}
+	}
+
 	// Process uploaded files
-	result, err := h.processUploadedFiles(r.Context(), files, outputName)
+	result, err := h.processUploadedFiles(r.Context(), files, outputName, interpolateDistance)
 	if err != nil {
 		h.logger.ErrorContext(r.Context(), "Failed to process uploaded files", "error", err)
 		h.renderError(w, r, "Failed to process uploaded files: "+err.Error())
@@ -80,7 +90,7 @@ func (h *UploadHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		result.DownloadPath,
 		previewPath,
 	)
-	
+
 	if err := component.Render(r.Context(), w); err != nil {
 		h.logger.ErrorContext(r.Context(), "Failed to render result template", "error", err)
 		http.Error(w, "Failed to render response", http.StatusInternalServerError)
@@ -94,7 +104,7 @@ type ProcessResult struct {
 	OutputPath   string
 }
 
-func (h *UploadHandler) processUploadedFiles(ctx context.Context, files []*multipart.FileHeader, outputName string) (*ProcessResult, error) {
+func (h *UploadHandler) processUploadedFiles(ctx context.Context, files []*multipart.FileHeader, outputName string, interpolateDistance float64) (*ProcessResult, error) {
 	// Create temporary directory for uploaded files
 	tempDir, err := os.MkdirTemp("", "shapetopoi-upload-*")
 	if err != nil {
@@ -132,7 +142,20 @@ func (h *UploadHandler) processUploadedFiles(ctx context.Context, files []*multi
 	}
 
 	if len(combinedPOIList) == 0 {
-		return nil, fmt.Errorf("no POIs extracted from uploaded files")
+		return nil, errors.New("no POIs extracted from uploaded files")
+	}
+
+	// Apply interpolation if requested
+	if interpolateDistance > 0 {
+		h.logger.InfoContext(ctx, "Applying point interpolation",
+			"distance_meters", interpolateDistance,
+			"original_points", len(combinedPOIList))
+
+		interpolatedList := combinedPOIList.InterpolateByDistance(interpolateDistance)
+		combinedPOIList = *interpolatedList
+
+		h.logger.InfoContext(ctx, "Interpolation complete",
+			"final_points", len(combinedPOIList))
 	}
 
 	// Generate output file
@@ -190,7 +213,7 @@ func (h *UploadHandler) saveUploadedFile(fh *multipart.FileHeader, tempDir strin
 
 func (h *UploadHandler) generateMapPreview(ctx context.Context, poiList *poi.List, modName string) (string, error) {
 	if len(*poiList) == 0 {
-		return "", fmt.Errorf("no POIs to preview")
+		return "", errors.New("no POIs to preview")
 	}
 
 	// Calculate bounding box for POIs
@@ -223,5 +246,5 @@ func (h *UploadHandler) renderError(w http.ResponseWriter, r *http.Request, mess
 }
 
 func generateTimestamp() string {
-	return fmt.Sprintf("%d", time.Now().Unix())
+	return strconv.FormatInt(time.Now().Unix(), 10)
 }

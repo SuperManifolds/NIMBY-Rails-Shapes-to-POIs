@@ -59,16 +59,17 @@ func (s *Server) setupRoutes() {
 	mux.Handle("GET /static/", staticHandler)
 
 	s.server = &http.Server{
-		Addr:    ":" + s.port,
-		Handler: loggedMux,
+		Addr:              ":" + s.port,
+		Handler:           loggedMux,
+		ReadHeaderTimeout: 15 * time.Second,
 	}
 }
 
 func (s *Server) Start(ctx context.Context) error {
 	s.setupRoutes()
 
-	s.logger.InfoContext(ctx, "Starting web server", 
-		"port", s.port, 
+	s.logger.InfoContext(ctx, "Starting web server",
+		"port", s.port,
 		"url", "http://localhost:"+s.port)
 
 	// Start server in goroutine

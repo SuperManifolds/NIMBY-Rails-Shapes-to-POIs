@@ -2,6 +2,7 @@ package openrailway
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -18,7 +19,7 @@ type BoundingBox struct {
 func ParseBoundingBox(bbox string) (*BoundingBox, error) {
 	parts := strings.Split(bbox, ",")
 	if len(parts) != 4 {
-		return nil, fmt.Errorf("invalid bounding box format, expected: minlon,minlat,maxlon,maxlat")
+		return nil, errors.New("invalid bounding box format, expected: minlon,minlat,maxlon,maxlat")
 	}
 
 	coords := make([]float64, 4)
@@ -39,7 +40,7 @@ func ParseBoundingBox(bbox string) (*BoundingBox, error) {
 }
 
 // GeneratePOIs creates POIs for a bounding box area (for railway endpoint)
-func GeneratePOIs(ctx context.Context, bboxStr string) (*poi.List, error) {
+func GeneratePOIs(_ context.Context, bboxStr string) (*poi.List, error) {
 	bbox, err := ParseBoundingBox(bboxStr)
 	if err != nil {
 		return nil, fmt.Errorf("invalid bounding box: %w", err)

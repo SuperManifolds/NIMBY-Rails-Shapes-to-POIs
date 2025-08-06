@@ -26,6 +26,7 @@ func main() {
 	var modFilePath string
 	var serverMode bool
 	var serverPort string
+	var interpolateDistance float64
 
 	flag.StringVar(&outputPath, "o", "", "Output mod zip file path (default: auto-generated)")
 	flag.StringVar(&outputPath, "output", "", "Output mod zip file path (default: auto-generated)")
@@ -33,6 +34,7 @@ func main() {
 	flag.StringVar(&modFilePath, "mod", "", "Custom mod.txt file to use")
 	flag.BoolVar(&serverMode, "server", false, "Run as web server")
 	flag.StringVar(&serverPort, "port", "8080", "Web server port (default: 8080)")
+	flag.Float64Var(&interpolateDistance, "interpolate-distance", 0, "Add extra points along lines if segments are longer than this distance (meters)")
 	flag.Parse()
 
 	// If server mode, start the web server
@@ -66,6 +68,19 @@ func main() {
 		os.Exit(1)
 	}
 
+	// Apply interpolation if requested
+	if interpolateDistance > 0 {
+		logger.InfoContext(ctx, "Applying point interpolation",
+			"distance_meters", interpolateDistance,
+			"original_points", len(*poiList))
+
+		interpolatedList := poiList.InterpolateByDistance(interpolateDistance)
+		poiList = interpolatedList
+
+		logger.InfoContext(ctx, "Interpolation complete",
+			"final_points", len(*poiList))
+	}
+
 	// Prepare mod content
 	modContent, err := prepareModContent(modFilePath, outputPath, tsvFileName)
 	if err != nil {
@@ -92,14 +107,16 @@ func printUsage() {
 	fmt.Fprintf(os.Stderr, "Usage: %s [options] <input-files...>\n", os.Args[0])
 	fmt.Fprintf(os.Stderr, "       %s --server [--port <port>]\n", os.Args[0])
 	fmt.Fprintf(os.Stderr, "\nOptions:\n")
-	fmt.Fprintf(os.Stderr, "  -o, --output <path>  Output mod zip file path\n")
-	fmt.Fprintf(os.Stderr, "  -m, --mod <path>     Custom mod.txt file to use\n")
-	fmt.Fprintf(os.Stderr, "  --server             Run as web server\n")
-	fmt.Fprintf(os.Stderr, "  --port <port>        Web server port (default: 8080)\n")
+	fmt.Fprintf(os.Stderr, "  -o, --output <path>          Output mod zip file path\n")
+	fmt.Fprintf(os.Stderr, "  -m, --mod <path>             Custom mod.txt file to use\n")
+	fmt.Fprintf(os.Stderr, "  --interpolate-distance <m>   Add extra points along lines if segments exceed this distance (meters)\n")
+	fmt.Fprintf(os.Stderr, "  --server                     Run as web server\n")
+	fmt.Fprintf(os.Stderr, "  --port <port>                Web server port (default: 8080)\n")
 	fmt.Fprintf(os.Stderr, "\nSupported formats: .shp, .kml, .kmz\n")
 	fmt.Fprintf(os.Stderr, "\nExamples:\n")
 	fmt.Fprintf(os.Stderr, "  %s file.shp\n", os.Args[0])
 	fmt.Fprintf(os.Stderr, "  %s -o mymod.zip file1.kml file2.kmz\n", os.Args[0])
+	fmt.Fprintf(os.Stderr, "  %s --interpolate-distance 500 --output dense.zip railway.kml\n", os.Args[0])
 	fmt.Fprintf(os.Stderr, "  %s --mod custom_mod.txt --output combined.zip *.shp *.kml\n", os.Args[0])
 	fmt.Fprintf(os.Stderr, "  %s --server --port 3000\n", os.Args[0])
 }
@@ -162,14 +179,16 @@ func prepareModContent(modFilePath, outputPath, tsvFileName string) (string, err
 func startWebServer(ctx context.Context, logger *slog.Logger, port string) {
 	// Create context that cancels on interrupt signals
 	ctx, cancel := signal.NotifyContext(ctx, os.Interrupt, syscall.SIGTERM)
-	defer cancel()
 
 	srv := server.New(server.Config{
 		Port:   port,
 		Logger: logger,
 	})
 
-	if err := srv.Start(ctx); err != nil {
+	err := srv.Start(ctx)
+	cancel() // Cancel context before handling potential exit
+
+	if err != nil {
 		logger.ErrorContext(ctx, "Server error", "error", err)
 		os.Exit(1)
 	}

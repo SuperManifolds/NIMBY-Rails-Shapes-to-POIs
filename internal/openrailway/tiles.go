@@ -173,7 +173,7 @@ func (tc *TileClient) fetchTile(ctx context.Context, url string) (image.Image, e
 // GetMapImage fetches and assembles map tiles for the given bounding box and overlays POIs
 func (tc *TileClient) GetMapImage(ctx context.Context, bbox *BoundingBox, poiList *poi.List, maxWidth, maxHeight int) (image.Image, error) {
 	zoom := CalculateOptimalZoom(bbox, maxWidth, maxHeight)
-	
+
 	topLeft := LatLonToTile(bbox.MaxLat, bbox.MinLon, zoom)
 	bottomRight := LatLonToTile(bbox.MinLat, bbox.MaxLon, zoom)
 
@@ -183,20 +183,20 @@ func (tc *TileClient) GetMapImage(ctx context.Context, bbox *BoundingBox, poiLis
 	// Create the composite image
 	mapWidth := tilesX * tileSize
 	mapHeight := tilesY * tileSize
-	
+
 	mapImg := image.NewRGBA(image.Rect(0, 0, mapWidth, mapHeight))
 
 	// Fetch and place tiles - first OSM base layer, then railway overlay
 	for tileY := 0; tileY < tilesY; tileY++ {
 		for tileX := 0; tileX < tilesX; tileX++ {
 			tileRect := image.Rect(tileX*tileSize, tileY*tileSize, (tileX+1)*tileSize, (tileY+1)*tileSize)
-			
+
 			// First draw OSM base tile
 			osmTile, err := tc.GetOSMTile(ctx, topLeft.X+tileX, topLeft.Y+tileY, zoom)
 			if err == nil {
 				draw.Draw(mapImg, tileRect, osmTile, image.Point{0, 0}, draw.Src)
 			}
-			
+
 			// Then overlay railway tile (with transparency)
 			railwayTile, err := tc.GetRailwayTile(ctx, topLeft.X+tileX, topLeft.Y+tileY, zoom)
 			if err == nil {
@@ -215,7 +215,7 @@ func (tc *TileClient) GetMapImage(ctx context.Context, bbox *BoundingBox, poiLis
 func overlayPOIs(img *image.RGBA, poiList *poi.List, topLeftTile TileCoordinate) {
 	for _, p := range *poiList {
 		pixel := LatLonToPixel(p.Lat, p.Lon, topLeftTile)
-		
+
 		// Draw a simple circle for each POI
 		drawCircle(img, pixel.X, pixel.Y, 3, parseHexColor(p.Color))
 	}
@@ -224,13 +224,13 @@ func overlayPOIs(img *image.RGBA, poiList *poi.List, topLeftTile TileCoordinate)
 // drawCircle draws a filled circle on the image
 func drawCircle(img *image.RGBA, centerX, centerY, radius int, clr color.Color) {
 	bounds := img.Bounds()
-	
-	for y := centerY - radius; y <= centerY + radius; y++ {
-		for x := centerX - radius; x <= centerX + radius; x++ {
+
+	for y := centerY - radius; y <= centerY+radius; y++ {
+		for x := centerX - radius; x <= centerX+radius; x++ {
 			if x >= bounds.Min.X && x < bounds.Max.X && y >= bounds.Min.Y && y < bounds.Max.Y {
 				dx := x - centerX
 				dy := y - centerY
-				if dx*dx + dy*dy <= radius*radius {
+				if dx*dx+dy*dy <= radius*radius {
 					img.Set(x, y, clr)
 				}
 			}
@@ -244,7 +244,7 @@ func parseHexColor(hexColor string) color.Color {
 	if len(hexColor) == 8 {
 		hexColor = hexColor[2:] // Remove alpha channel
 	}
-	
+
 	// Default to red if parsing fails
 	if len(hexColor) != 6 {
 		return color.Black
