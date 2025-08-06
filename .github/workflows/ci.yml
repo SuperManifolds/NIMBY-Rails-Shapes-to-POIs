@@ -39,6 +39,12 @@ jobs:
     - name: Verify dependencies
       run: go mod verify
 
+    - name: Install templ
+      run: go install github.com/a-h/templ/cmd/templ@latest
+
+    - name: Generate templates
+      run: templ generate
+
     - name: Run tests
       run: go test -race -coverprofile=coverage.out -covermode=atomic ./...
 
@@ -62,10 +68,16 @@ jobs:
       with:
         go-version: '1.23'
 
+    - name: Install templ
+      run: go install github.com/a-h/templ/cmd/templ@latest
+
+    - name: Generate templates
+      run: templ generate
+
     - name: Run golangci-lint
       uses: golangci/golangci-lint-action@v6
       with:
-        version: v2.3.1
+        version: latest
         args: --timeout=3m
 
   build:
@@ -88,6 +100,12 @@ jobs:
       uses: actions/setup-go@v5
       with:
         go-version: '1.23'
+
+    - name: Install templ
+      run: go install github.com/a-h/templ/cmd/templ@latest
+
+    - name: Generate templates
+      run: templ generate
 
     - name: Build binary
       env:
