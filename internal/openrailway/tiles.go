@@ -218,26 +218,24 @@ func (tc *TileClient) overlayRailwayTilesWithFullCoverage(ctx context.Context, b
 	// Calculate base tiles to understand the area we need to cover
 	baseTopLeft := LatLonToTile(bbox.MaxLat, bbox.MinLon, baseZoom)
 	baseBottomRight := LatLonToTile(bbox.MinLat, bbox.MaxLon, baseZoom)
-	
+
 	// Convert base tile bounds to railway zoom level to ensure full coverage
 	zoomDiff := railwayZoom - baseZoom
 	multiplier := int(math.Pow(2.0, float64(zoomDiff)))
-	
+
 	railwayTopLeft := TileCoordinate{
 		X: baseTopLeft.X * multiplier,
 		Y: baseTopLeft.Y * multiplier,
-		Z: railwayZoom,
 	}
 	railwayBottomRight := TileCoordinate{
 		X: (baseBottomRight.X+1)*multiplier - 1,
 		Y: (baseBottomRight.Y+1)*multiplier - 1,
-		Z: railwayZoom,
 	}
-	
+
 	// Scale factor for positioning railway tiles
 	scaleFactor := 1.0 / math.Pow(2.0, float64(railwayZoom-baseZoom))
 	scaledTileSize := int(float64(tileSize) * scaleFactor)
-	
+
 	// Fetch and overlay railway tiles
 	for railwayTileY := railwayTopLeft.Y; railwayTileY <= railwayBottomRight.Y; railwayTileY++ {
 		for railwayTileX := railwayTopLeft.X; railwayTileX <= railwayBottomRight.X; railwayTileX++ {
@@ -245,12 +243,12 @@ func (tc *TileClient) overlayRailwayTilesWithFullCoverage(ctx context.Context, b
 			if err != nil {
 				continue
 			}
-			
+
 			// Calculate position on base image
 			// Convert railway tile coordinates to base map pixel coordinates
-			baseX := int((float64(railwayTileX-railwayTopLeft.X)) * float64(scaledTileSize))
-			baseY := int((float64(railwayTileY-railwayTopLeft.Y)) * float64(scaledTileSize))
-			
+			baseX := int((float64(railwayTileX - railwayTopLeft.X)) * float64(scaledTileSize))
+			baseY := int((float64(railwayTileY - railwayTopLeft.Y)) * float64(scaledTileSize))
+
 			// Scale and draw the railway tile
 			scaledImg := tc.scaleImageDown(railwayTile, scaledTileSize, scaledTileSize)
 			if scaledImg != nil {
@@ -266,27 +264,27 @@ func (tc *TileClient) scaleImageDown(src image.Image, width, height int) image.I
 	srcBounds := src.Bounds()
 	srcWidth := srcBounds.Dx()
 	srcHeight := srcBounds.Dy()
-	
+
 	if srcWidth == 0 || srcHeight == 0 {
 		return nil
 	}
-	
+
 	scaled := image.NewRGBA(image.Rect(0, 0, width, height))
-	
+
 	scaleX := float64(srcWidth) / float64(width)
 	scaleY := float64(srcHeight) / float64(height)
-	
+
 	for y := 0; y < height; y++ {
 		for x := 0; x < width; x++ {
 			srcX := int(float64(x) * scaleX)
 			srcY := int(float64(y) * scaleY)
-			
+
 			if srcX < srcWidth && srcY < srcHeight {
 				scaled.Set(x, y, src.At(srcBounds.Min.X+srcX, srcBounds.Min.Y+srcY))
 			}
 		}
 	}
-	
+
 	return scaled
 }
 
