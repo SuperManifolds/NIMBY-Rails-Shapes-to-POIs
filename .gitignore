@@ -71,5 +71,5 @@ tmp/
 # Generated template files
 *_templ.go
 
-# Main binary
-nimby_shapetopoi
+# Main binary (only in root)
+/nimby_shapetopoi
