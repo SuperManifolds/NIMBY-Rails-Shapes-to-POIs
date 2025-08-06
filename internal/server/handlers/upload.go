@@ -69,15 +69,21 @@ func (h *UploadHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Parse max LOD value
-	var maxLod int32 = 0 // Default to 0 (close zoom only)
+	var maxLod int32 // Default to 0 (close zoom only)
 	if maxLodStr := r.FormValue("max-lod"); maxLodStr != "" {
-		if lod, err := strconv.Atoi(maxLodStr); err == nil && lod >= 0 && lod <= 10 {
+		if lod, err := strconv.ParseInt(maxLodStr, 10, 32); err == nil && lod >= 0 && lod <= 10 {
 			maxLod = int32(lod)
 		}
 	}
 
+	// Parse color value
+	poiColor := r.FormValue("poi-color")
+	if poiColor == "" {
+		poiColor = "#0000ff" // Default to blue
+	}
+
 	// Process uploaded files
-	result, err := h.processUploadedFiles(r.Context(), files, outputName, interpolateDistance, maxLod)
+	result, err := h.processUploadedFiles(r.Context(), files, outputName, interpolateDistance, maxLod, poiColor)
 	if err != nil {
 		h.logger.ErrorContext(r.Context(), "Failed to process uploaded files", "error", err)
 		h.renderError(w, r, "Failed to process uploaded files: "+err.Error())
@@ -112,7 +118,7 @@ type ProcessResult struct {
 	OutputPath   string
 }
 
-func (h *UploadHandler) processUploadedFiles(ctx context.Context, files []*multipart.FileHeader, outputName string, interpolateDistance float64, maxLod int32) (*ProcessResult, error) {
+func (h *UploadHandler) processUploadedFiles(ctx context.Context, files []*multipart.FileHeader, outputName string, interpolateDistance float64, maxLod int32, poiColor string) (*ProcessResult, error) {
 	// Create temporary directory for uploaded files
 	tempDir, err := os.MkdirTemp("", "shapetopoi-upload-*")
 	if err != nil {
@@ -139,7 +145,9 @@ func (h *UploadHandler) processUploadedFiles(ctx context.Context, files []*multi
 			continue
 		}
 
-		poiList, err := reader.ParseFileWithConfig(inputFile, maxLod)
+		// Convert hex color to NIMBY format
+		nimbyColor := geometry.HexToNimbyColor(poiColor)
+		poiList, err := reader.ParseFileWithFullConfig(inputFile, maxLod, nimbyColor)
 		if err != nil {
 			h.logger.ErrorContext(ctx, "Error parsing file", "path", inputFile, "error", err)
 			continue

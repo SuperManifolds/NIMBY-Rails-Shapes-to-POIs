@@ -14,6 +14,10 @@ func (s *ShapefileReader) ParseFile(filePath string) (*poi.List, error) {
 }
 
 func (s *ShapefileReader) ParseFileWithConfig(filePath string, maxLod int32) (*poi.List, error) {
+	return s.ParseFileWithFullConfig(filePath, maxLod, defaultColor)
+}
+
+func (s *ShapefileReader) ParseFileWithFullConfig(filePath string, maxLod int32, color string) (*poi.List, error) {
 	shapefile, err := shp.Open(filePath)
 	if err != nil {
 		return nil, err
@@ -30,7 +34,7 @@ func (s *ShapefileReader) ParseFileWithConfig(filePath string, maxLod int32) (*p
 			p := poi.POI{
 				Lon:         s.X,
 				Lat:         s.Y,
-				Color:       defaultColor,
+				Color:       color,
 				Text:        "",
 				FontSize:    defaultFontSize,
 				MaxLod:      maxLod,
@@ -41,20 +45,17 @@ func (s *ShapefileReader) ParseFileWithConfig(filePath string, maxLod int32) (*p
 			poiList.Add(p)
 
 		case *shp.PolyLine:
-			for pointIndex, point := range s.Points {
+			for _, point := range s.Points {
 				p := poi.POI{
 					Lon:         point.X,
 					Lat:         point.Y,
-					Color:       "ff0000ff",
+					Color:       color,
 					Text:        "",
 					FontSize:    12,
 					MaxLod:      maxLod,
 					Transparent: false,
 					Demand:      "0",
 					Population:  0,
-				}
-				if pointIndex == 0 {
-					p.Color = firstPointColor
 				}
 				poiList.Add(p)
 			}

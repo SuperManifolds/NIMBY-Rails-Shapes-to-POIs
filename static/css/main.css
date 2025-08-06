@@ -204,6 +204,16 @@ footer {
     max-width: 200px;
 }
 
+/* Color picker styles */
+.form-group input[type="color"] {
+    width: 60px;
+    max-width: 60px;
+    height: 40px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
 .slider-labels {
     display: flex;
     font-size: 12px;

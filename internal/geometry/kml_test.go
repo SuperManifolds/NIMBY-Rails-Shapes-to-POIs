@@ -55,14 +55,14 @@ func TestKMLReader_ParseFile_SimpleKML(t *testing.T) {
 	if pointPOI.Text != "" {
 		t.Errorf("Expected empty text, got '%s'", pointPOI.Text)
 	}
-	if pointPOI.Color != "ff0000ff" {
-		t.Errorf("Expected point color 'ff0000ff', got '%s'", pointPOI.Color)
+	if pointPOI.Color != "0000ff" {
+		t.Errorf("Expected point color '0000ff', got '%s'", pointPOI.Color)
 	}
 
-	// Check the first line point (should have special color)
+	// Check the first line point
 	linePointPOI := (*poiList)[1]
-	if linePointPOI.Color != "ff000000ff" {
-		t.Errorf("Expected first line point color 'ff000000ff', got '%s'", linePointPOI.Color)
+	if linePointPOI.Color != "0000ff" {
+		t.Errorf("Expected line point color '0000ff', got '%s'", linePointPOI.Color)
 	}
 	if linePointPOI.Text != "" {
 		t.Errorf("Expected empty text, got '%s'", linePointPOI.Text)
@@ -255,9 +255,9 @@ func TestKMLReader_ParseFile_Polygon(t *testing.T) {
 		t.Errorf("Expected 5 POIs from polygon, got %d", len(*poiList))
 	}
 
-	// First point should have special color
-	if (*poiList)[0].Color != "ff000000ff" {
-		t.Errorf("Expected first polygon point color 'ff000000ff', got '%s'", (*poiList)[0].Color)
+	// Check first point color
+	if (*poiList)[0].Color != "0000ff" {
+		t.Errorf("Expected polygon point color '0000ff', got '%s'", (*poiList)[0].Color)
 	}
 }
 

@@ -12,6 +12,10 @@ func (k *KMLReader) ParseFile(filePath string) (*poi.List, error) {
 }
 
 func (k *KMLReader) ParseFileWithConfig(filePath string, maxLod int32) (*poi.List, error) {
+	return k.ParseFileWithFullConfig(filePath, maxLod, defaultColor)
+}
+
+func (k *KMLReader) ParseFileWithFullConfig(filePath string, maxLod int32, color string) (*poi.List, error) {
 	kmlData, err := kml.ParseFile(filePath)
 	if err != nil {
 		return nil, err
@@ -22,32 +26,32 @@ func (k *KMLReader) ParseFileWithConfig(filePath string, maxLod int32) (*poi.Lis
 	if kmlData.Document != nil {
 		placemarks := kmlData.Document.AllPlacemarks()
 		for _, placemark := range placemarks {
-			k.processPlacemark(&placemark, &poiList, maxLod)
+			k.processPlacemark(&placemark, &poiList, maxLod, color)
 		}
 	}
 
 	return &poiList, nil
 }
 
-func (k *KMLReader) processPlacemark(placemark *kml.Placemark, poiList *poi.List, maxLod int32) {
+func (k *KMLReader) processPlacemark(placemark *kml.Placemark, poiList *poi.List, maxLod int32, color string) {
 	if placemark.Point != nil {
-		k.processPoint(placemark.Point, poiList, maxLod)
+		k.processPoint(placemark.Point, poiList, maxLod, color)
 	}
 	if placemark.LineString != nil {
-		k.processLineString(placemark.LineString, poiList, maxLod)
+		k.processLineString(placemark.LineString, poiList, maxLod, color)
 	}
 	if placemark.LinearRing != nil {
-		k.processLinearRing(placemark.LinearRing, poiList, maxLod)
+		k.processLinearRing(placemark.LinearRing, poiList, maxLod, color)
 	}
 	if placemark.Polygon != nil {
-		k.processPolygon(placemark.Polygon, poiList, maxLod)
+		k.processPolygon(placemark.Polygon, poiList, maxLod, color)
 	}
 	if placemark.MultiGeometry != nil {
-		k.processMultiGeometry(placemark.MultiGeometry, poiList, maxLod)
+		k.processMultiGeometry(placemark.MultiGeometry, poiList, maxLod, color)
 	}
 }
 
-func (k *KMLReader) processPoint(point *kml.Point, poiList *poi.List, maxLod int32) {
+func (k *KMLReader) processPoint(point *kml.Point, poiList *poi.List, maxLod int32, color string) {
 	coords, err := kml.ParseCoordinates(point.Coordinates)
 	if err != nil {
 		return
@@ -57,7 +61,7 @@ func (k *KMLReader) processPoint(point *kml.Point, poiList *poi.List, maxLod int
 		p := poi.POI{
 			Lon:         coord.Lon,
 			Lat:         coord.Lat,
-			Color:       defaultColor,
+			Color:       color,
 			Text:        "",
 			FontSize:    defaultFontSize,
 			MaxLod:      maxLod,
@@ -69,17 +73,17 @@ func (k *KMLReader) processPoint(point *kml.Point, poiList *poi.List, maxLod int
 	}
 }
 
-func (k *KMLReader) processLineString(lineString *kml.LineString, poiList *poi.List, maxLod int32) {
+func (k *KMLReader) processLineString(lineString *kml.LineString, poiList *poi.List, maxLod int32, color string) {
 	coords, err := kml.ParseCoordinates(lineString.Coordinates)
 	if err != nil {
 		return
 	}
 
-	for i, coord := range coords {
+	for _, coord := range coords {
 		p := poi.POI{
 			Lon:         coord.Lon,
 			Lat:         coord.Lat,
-			Color:       defaultColor,
+			Color:       color,
 			Text:        "",
 			FontSize:    defaultFontSize,
 			MaxLod:      maxLod,
@@ -87,24 +91,21 @@ func (k *KMLReader) processLineString(lineString *kml.LineString, poiList *poi.L
 			Demand:      defaultDemand,
 			Population:  defaultPopulation,
 		}
-		if i == 0 {
-			p.Color = firstPointColor
-		}
 		poiList.Add(p)
 	}
 }
 
-func (k *KMLReader) processLinearRing(linearRing *kml.LinearRing, poiList *poi.List, maxLod int32) {
+func (k *KMLReader) processLinearRing(linearRing *kml.LinearRing, poiList *poi.List, maxLod int32, color string) {
 	coords, err := kml.ParseCoordinates(linearRing.Coordinates)
 	if err != nil {
 		return
 	}
 
-	for i, coord := range coords {
+	for _, coord := range coords {
 		p := poi.POI{
 			Lon:         coord.Lon,
 			Lat:         coord.Lat,
-			Color:       defaultColor,
+			Color:       color,
 			Text:        "",
 			FontSize:    defaultFontSize,
 			MaxLod:      maxLod,
@@ -112,34 +113,31 @@ func (k *KMLReader) processLinearRing(linearRing *kml.LinearRing, poiList *poi.L
 			Demand:      defaultDemand,
 			Population:  defaultPopulation,
 		}
-		if i == 0 {
-			p.Color = firstPointColor
-		}
 		poiList.Add(p)
 	}
 }
 
-func (k *KMLReader) processPolygon(polygon *kml.Polygon, poiList *poi.List, maxLod int32) {
+func (k *KMLReader) processPolygon(polygon *kml.Polygon, poiList *poi.List, maxLod int32, color string) {
 	if polygon.OuterBoundaryIs != nil && polygon.OuterBoundaryIs.LinearRing != nil {
-		k.processLinearRing(polygon.OuterBoundaryIs.LinearRing, poiList, maxLod)
+		k.processLinearRing(polygon.OuterBoundaryIs.LinearRing, poiList, maxLod, color)
 	}
 }
 
-func (k *KMLReader) processMultiGeometry(multiGeometry *kml.MultiGeometry, poiList *poi.List, maxLod int32) {
+func (k *KMLReader) processMultiGeometry(multiGeometry *kml.MultiGeometry, poiList *poi.List, maxLod int32, color string) {
 	for _, point := range multiGeometry.Points {
-		k.processPoint(&point, poiList, maxLod)
+		k.processPoint(&point, poiList, maxLod, color)
 	}
 	for _, lineString := range multiGeometry.LineStrings {
-		k.processLineString(&lineString, poiList, maxLod)
+		k.processLineString(&lineString, poiList, maxLod, color)
 	}
 	for _, linearRing := range multiGeometry.LinearRings {
-		k.processLinearRing(&linearRing, poiList, maxLod)
+		k.processLinearRing(&linearRing, poiList, maxLod, color)
 	}
 	for _, polygon := range multiGeometry.Polygons {
-		k.processPolygon(&polygon, poiList, maxLod)
+		k.processPolygon(&polygon, poiList, maxLod, color)
 	}
 	// Handle nested MultiGeometry
 	for _, nestedMultiGeometry := range multiGeometry.MultiGeometries {
-		k.processMultiGeometry(&nestedMultiGeometry, poiList, maxLod)
+		k.processMultiGeometry(&nestedMultiGeometry, poiList, maxLod, color)
 	}
 }
