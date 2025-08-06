@@ -67,3 +67,9 @@ coverage.out
 # Air live reload tool
 .air.toml
 tmp/
+
+# Generated template files
+*_templ.go
+
+# Main binary
+nimby_shapetopoi
