@@ -82,7 +82,7 @@ func (p *List) InterpolateByDistance(maxDistanceMeters float64) *List {
 						Lat:         lat,
 						Lon:         lon,
 						Color:       current.Color,
-						Text:        current.Text + " (interpolated)",
+						Text:        "",
 						FontSize:    current.FontSize - 2, // Make interpolated points slightly smaller
 						MaxLod:      current.MaxLod,
 						Transparent: current.Transparent,

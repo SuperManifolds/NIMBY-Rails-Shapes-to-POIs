@@ -16,23 +16,10 @@ func (s *ShapefileReader) ParseFile(filePath string) (*poi.List, error) {
 	}
 	defer shapefile.Close()
 
-	labelFieldIndex := -1
-	for i, field := range shapefile.Fields() {
-		if string(field.Name[:]) == "Label" {
-			labelFieldIndex = i
-			break
-		}
-	}
-
 	poiList := make(poi.List, 0)
 
 	for shapeIndex := 0; shapefile.Next(); shapeIndex++ {
 		_, shape := shapefile.Shape()
-
-		label := ""
-		if labelFieldIndex != -1 {
-			label = shapefile.ReadAttribute(shapeIndex, labelFieldIndex)
-		}
 
 		switch s := shape.(type) {
 		case *shp.Point:
@@ -40,7 +27,7 @@ func (s *ShapefileReader) ParseFile(filePath string) (*poi.List, error) {
 				Lon:         s.X,
 				Lat:         s.Y,
 				Color:       defaultColor,
-				Text:        label,
+				Text:        "",
 				FontSize:    defaultFontSize,
 				MaxLod:      defaultMaxLod,
 				Transparent: false,
@@ -55,7 +42,7 @@ func (s *ShapefileReader) ParseFile(filePath string) (*poi.List, error) {
 					Lon:         point.X,
 					Lat:         point.Y,
 					Color:       "ff0000ff",
-					Text:        label,
+					Text:        "",
 					FontSize:    12,
 					MaxLod:      10,
 					Transparent: false,

@@ -91,8 +91,8 @@ func TestProcessInputFiles(t *testing.T) {
 		if poi.Lon != 10.0 || poi.Lat != 53.0 {
 			t.Errorf("Expected coordinates (10.0, 53.0), got (%f, %f)", poi.Lon, poi.Lat)
 		}
-		if poi.Text != "Test Point" {
-			t.Errorf("Expected text 'Test Point', got '%s'", poi.Text)
+		if poi.Text != "" {
+			t.Errorf("Expected empty text, got '%s'", poi.Text)
 		}
 	}
 }
@@ -273,8 +273,8 @@ func TestMainWorkflow_Integration(t *testing.T) {
 
 	if len(*poiList) > 0 {
 		firstPOI := (*poiList)[0]
-		if firstPOI.Text != "Integration Test Point" {
-			t.Errorf("Expected first POI text 'Integration Test Point', got '%s'", firstPOI.Text)
+		if firstPOI.Text != "" {
+			t.Errorf("Expected empty text, got '%s'", firstPOI.Text)
 		}
 		if firstPOI.Lon != 11.123 || firstPOI.Lat != 54.456 {
 			t.Errorf("Expected first POI coordinates (11.123, 54.456), got (%f, %f)",

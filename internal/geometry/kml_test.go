@@ -52,8 +52,8 @@ func TestKMLReader_ParseFile_SimpleKML(t *testing.T) {
 	if pointPOI.Lon != 10.123 || pointPOI.Lat != 53.456 {
 		t.Errorf("Expected point coordinates (10.123, 53.456), got (%f, %f)", pointPOI.Lon, pointPOI.Lat)
 	}
-	if pointPOI.Text != "Test Point" {
-		t.Errorf("Expected point text 'Test Point', got '%s'", pointPOI.Text)
+	if pointPOI.Text != "" {
+		t.Errorf("Expected empty text, got '%s'", pointPOI.Text)
 	}
 	if pointPOI.Color != "ff0000ff" {
 		t.Errorf("Expected point color 'ff0000ff', got '%s'", pointPOI.Color)
@@ -64,8 +64,8 @@ func TestKMLReader_ParseFile_SimpleKML(t *testing.T) {
 	if linePointPOI.Color != "ff000000ff" {
 		t.Errorf("Expected first line point color 'ff000000ff', got '%s'", linePointPOI.Color)
 	}
-	if linePointPOI.Text != "Test Line" {
-		t.Errorf("Expected line point text 'Test Line', got '%s'", linePointPOI.Text)
+	if linePointPOI.Text != "" {
+		t.Errorf("Expected empty text, got '%s'", linePointPOI.Text)
 	}
 }
 
@@ -142,8 +142,8 @@ func TestKMLReader_ParseFile_MultiGeometry(t *testing.T) {
 
 	// All should have the same text from placemark
 	for i, p := range *poiList {
-		if p.Text != "Multi Test" {
-			t.Errorf("POI %d: Expected text 'Multi Test', got '%s'", i, p.Text)
+		if p.Text != "" {
+			t.Errorf("POI %d: Expected empty text, got '%s'", i, p.Text)
 		}
 	}
 }
@@ -218,8 +218,8 @@ func TestKMLReader_ParseFile_ExtendedData(t *testing.T) {
 
 	// Should use the Label from ExtendedData instead of name
 	p := (*poiList)[0]
-	if p.Text != "Custom Label" {
-		t.Errorf("Expected text 'Custom Label' from ExtendedData, got '%s'", p.Text)
+	if p.Text != "" {
+		t.Errorf("Expected empty text, got '%s'", p.Text)
 	}
 }
 
