@@ -1,0 +1,36 @@
+package templates
+
+import "fmt"
+
+templ ConversionResult(modName string, poiCount int, downloadPath string, previewPath string) {
+	<div class="card success">
+		<h2>✅ Conversion Complete!</h2>
+		<p>
+			Successfully generated <strong>{ modName }</strong> with <strong>{ fmt.Sprintf("%d", poiCount) }</strong> POIs.
+		</p>
+		if previewPath != "" {
+			<div style="margin: 24px 0">
+				<h3>Map Preview</h3>
+				<img src={ previewPath } alt="Map preview with POI locations" class="map-preview"/>
+			</div>
+		}
+		<div style="margin-top: 24px">
+			<a href={ templ.URL(downloadPath) } class="btn" download>
+				📥 Download { modName }
+			</a>
+			<button class="btn btn-secondary" onclick="location.reload()" style="margin-left: 12px">
+				🔄 Convert Another File
+			</button>
+		</div>
+	</div>
+}
+
+templ Error(message string) {
+	<div class="card error">
+		<h2>❌ Error</h2>
+		<p>{ message }</p>
+		<button class="btn btn-secondary" onclick="location.reload()" style="margin-top: 16px">
+			🔄 Try Again
+		</button>
+	</div>
+}

@@ -7,12 +7,15 @@ import (
 	"fmt"
 	"log/slog"
 	"os"
+	"os/signal"
 	"path/filepath"
 	"strings"
+	"syscall"
 
 	"github.com/supermanifolds/nimby_shapetopoi/internal/geometry"
 	"github.com/supermanifolds/nimby_shapetopoi/internal/mod"
 	"github.com/supermanifolds/nimby_shapetopoi/internal/poi"
+	"github.com/supermanifolds/nimby_shapetopoi/internal/server"
 )
 
 func main() {
@@ -21,12 +24,22 @@ func main() {
 
 	var outputPath string
 	var modFilePath string
+	var serverMode bool
+	var serverPort string
 
 	flag.StringVar(&outputPath, "o", "", "Output mod zip file path (default: auto-generated)")
 	flag.StringVar(&outputPath, "output", "", "Output mod zip file path (default: auto-generated)")
 	flag.StringVar(&modFilePath, "m", "", "Custom mod.txt file to use")
 	flag.StringVar(&modFilePath, "mod", "", "Custom mod.txt file to use")
+	flag.BoolVar(&serverMode, "server", false, "Run as web server")
+	flag.StringVar(&serverPort, "port", "8080", "Web server port (default: 8080)")
 	flag.Parse()
+
+	// If server mode, start the web server
+	if serverMode {
+		startWebServer(ctx, logger, serverPort)
+		return
+	}
 
 	inputFiles := flag.Args()
 	if len(inputFiles) == 0 {
@@ -77,14 +90,18 @@ func main() {
 
 func printUsage() {
 	fmt.Fprintf(os.Stderr, "Usage: %s [options] <input-files...>\n", os.Args[0])
+	fmt.Fprintf(os.Stderr, "       %s --server [--port <port>]\n", os.Args[0])
 	fmt.Fprintf(os.Stderr, "\nOptions:\n")
 	fmt.Fprintf(os.Stderr, "  -o, --output <path>  Output mod zip file path\n")
 	fmt.Fprintf(os.Stderr, "  -m, --mod <path>     Custom mod.txt file to use\n")
+	fmt.Fprintf(os.Stderr, "  --server             Run as web server\n")
+	fmt.Fprintf(os.Stderr, "  --port <port>        Web server port (default: 8080)\n")
 	fmt.Fprintf(os.Stderr, "\nSupported formats: .shp, .kml, .kmz\n")
 	fmt.Fprintf(os.Stderr, "\nExamples:\n")
 	fmt.Fprintf(os.Stderr, "  %s file.shp\n", os.Args[0])
 	fmt.Fprintf(os.Stderr, "  %s -o mymod.zip file1.kml file2.kmz\n", os.Args[0])
 	fmt.Fprintf(os.Stderr, "  %s --mod custom_mod.txt --output combined.zip *.shp *.kml\n", os.Args[0])
+	fmt.Fprintf(os.Stderr, "  %s --server --port 3000\n", os.Args[0])
 }
 
 func generateOutputPath(inputFiles []string) string {
@@ -140,4 +157,20 @@ func prepareModContent(modFilePath, outputPath, tsvFileName string) (string, err
 	// Generate default mod.txt content
 	modName := strings.TrimSuffix(filepath.Base(outputPath), ".zip")
 	return mod.GenerateDefaultContent(modName, tsvFileName), nil
+}
+
+func startWebServer(ctx context.Context, logger *slog.Logger, port string) {
+	// Create context that cancels on interrupt signals
+	ctx, cancel := signal.NotifyContext(ctx, os.Interrupt, syscall.SIGTERM)
+	defer cancel()
+
+	srv := server.New(server.Config{
+		Port:   port,
+		Logger: logger,
+	})
+
+	if err := srv.Start(ctx); err != nil {
+		logger.ErrorContext(ctx, "Server error", "error", err)
+		os.Exit(1)
+	}
 }
