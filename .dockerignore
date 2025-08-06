@@ -1,0 +1,60 @@
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Documentation
+README.md
+*.md
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Build artifacts
+/bin/
+/build/
+/dist/
+nimby_shapetopoi
+
+# Generated template files (they'll be regenerated during build)
+*_templ.go
+
+# Test files and data
+*_test.go
+/testdata/
+
+# Application specific
+*.zip
+*.tsv
+*.tmp
+*.temp
+*.log
+
+# Coverage files
+coverage.txt
+coverage.html
+coverage.out
+
+# Profiling files
+*.prof
+*.pprof
+
+# Air live reload tool
+.air.toml
+tmp/
