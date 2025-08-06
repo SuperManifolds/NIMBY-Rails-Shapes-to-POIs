@@ -197,3 +197,36 @@ footer {
 .btn + .btn {
     margin-left: 12px;
 }
+
+/* Slider styles */
+.form-group input[type="range"] {
+    width: 200px;
+    max-width: 200px;
+}
+
+.slider-labels {
+    display: flex;
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 4px;
+    width: 300px;
+}
+
+.slider-labels span:first-child {
+    flex: 0 0 auto;
+}
+
+.slider-labels span:nth-child(2) {
+    flex: 1;
+    text-align: center;
+}
+
+.slider-labels span:last-child {
+    flex: 0 0 auto;
+    text-align: right;
+}
+
+#max-lod-value {
+    font-weight: 600;
+    color: #374151;
+}

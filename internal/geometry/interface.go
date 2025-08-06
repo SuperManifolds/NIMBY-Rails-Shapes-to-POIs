@@ -19,6 +19,7 @@ const (
 
 type Reader interface {
 	ParseFile(filePath string) (*poi.List, error)
+	ParseFileWithConfig(filePath string, maxLod int32) (*poi.List, error)
 }
 
 func GetReader(filePath string) (Reader, error) {

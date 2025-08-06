@@ -10,6 +10,10 @@ import (
 type ShapefileReader struct{}
 
 func (s *ShapefileReader) ParseFile(filePath string) (*poi.List, error) {
+	return s.ParseFileWithConfig(filePath, defaultMaxLod)
+}
+
+func (s *ShapefileReader) ParseFileWithConfig(filePath string, maxLod int32) (*poi.List, error) {
 	shapefile, err := shp.Open(filePath)
 	if err != nil {
 		return nil, err
@@ -29,7 +33,7 @@ func (s *ShapefileReader) ParseFile(filePath string) (*poi.List, error) {
 				Color:       defaultColor,
 				Text:        "",
 				FontSize:    defaultFontSize,
-				MaxLod:      defaultMaxLod,
+				MaxLod:      maxLod,
 				Transparent: false,
 				Demand:      defaultDemand,
 				Population:  defaultPopulation,
@@ -44,7 +48,7 @@ func (s *ShapefileReader) ParseFile(filePath string) (*poi.List, error) {
 					Color:       "ff0000ff",
 					Text:        "",
 					FontSize:    12,
-					MaxLod:      10,
+					MaxLod:      maxLod,
 					Transparent: false,
 					Demand:      "0",
 					Population:  0,

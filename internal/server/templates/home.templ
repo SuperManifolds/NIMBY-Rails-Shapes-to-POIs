@@ -39,6 +39,16 @@ templ Home() {
 						<input type="number" id="interpolate-distance" name="interpolate-distance" placeholder="500" min="10" max="10000" step="10"/>
 						<small>Add extra points along lines if segments are longer than this distance (meters). Leave empty to disable.</small>
 					</div>
+					<div class="form-group">
+						<label for="max-lod">Max Zoom Level</label>
+						<input type="range" id="max-lod" name="max-lod" min="0" max="10" value="0" step="1"/>
+						<div class="slider-labels">
+							<span>0 (Close zoom only)</span>
+							<span id="max-lod-value">0</span>
+							<span>10 (Always visible)</span>
+						</div>
+						<small>Controls at what zoom level POIs disappear. 0 = only visible when zoomed in close, 10 = always visible.</small>
+					</div>
 					<button type="submit" class="btn" id="submit-button">
 						<span id="upload-spinner" class="spinner hidden"></span>
 						<span id="button-text">Convert to NIMBY Rails Mod</span>

@@ -95,3 +95,15 @@ document.body.addEventListener('htmx:afterRequest', function(e) {
         if (indicatorEl) indicatorEl.classList.add('hidden');
     }
 });
+
+// Max LOD slider interaction
+document.addEventListener('DOMContentLoaded', function() {
+    const slider = document.getElementById('max-lod');
+    const valueDisplay = document.getElementById('max-lod-value');
+    
+    if (slider && valueDisplay) {
+        slider.addEventListener('input', function() {
+            valueDisplay.textContent = this.value;
+        });
+    }
+});

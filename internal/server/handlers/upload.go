@@ -68,8 +68,16 @@ func (h *UploadHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	// Parse max LOD value
+	var maxLod int32 = 0 // Default to 0 (close zoom only)
+	if maxLodStr := r.FormValue("max-lod"); maxLodStr != "" {
+		if lod, err := strconv.Atoi(maxLodStr); err == nil && lod >= 0 && lod <= 10 {
+			maxLod = int32(lod)
+		}
+	}
+
 	// Process uploaded files
-	result, err := h.processUploadedFiles(r.Context(), files, outputName, interpolateDistance)
+	result, err := h.processUploadedFiles(r.Context(), files, outputName, interpolateDistance, maxLod)
 	if err != nil {
 		h.logger.ErrorContext(r.Context(), "Failed to process uploaded files", "error", err)
 		h.renderError(w, r, "Failed to process uploaded files: "+err.Error())
@@ -104,7 +112,7 @@ type ProcessResult struct {
 	OutputPath   string
 }
 
-func (h *UploadHandler) processUploadedFiles(ctx context.Context, files []*multipart.FileHeader, outputName string, interpolateDistance float64) (*ProcessResult, error) {
+func (h *UploadHandler) processUploadedFiles(ctx context.Context, files []*multipart.FileHeader, outputName string, interpolateDistance float64, maxLod int32) (*ProcessResult, error) {
 	// Create temporary directory for uploaded files
 	tempDir, err := os.MkdirTemp("", "shapetopoi-upload-*")
 	if err != nil {
@@ -131,7 +139,7 @@ func (h *UploadHandler) processUploadedFiles(ctx context.Context, files []*multi
 			continue
 		}
 
-		poiList, err := reader.ParseFile(inputFile)
+		poiList, err := reader.ParseFileWithConfig(inputFile, maxLod)
 		if err != nil {
 			h.logger.ErrorContext(ctx, "Error parsing file", "path", inputFile, "error", err)
 			continue
