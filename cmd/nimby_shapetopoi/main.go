@@ -69,24 +69,11 @@ func main() {
 	// Generate TSV filename based on the output zip name
 	tsvFileName := strings.TrimSuffix(filepath.Base(outputPath), ".zip") + ".tsv"
 
-	// Process all input files
-	poiList, err := processInputFiles(ctx, logger, inputFiles)
+	// Process all input files (with interpolation if requested)
+	poiList, err := processInputFiles(ctx, logger, inputFiles, interpolateDistance)
 	if err != nil {
 		logger.ErrorContext(ctx, "Fatal error", "error", err)
 		os.Exit(1)
-	}
-
-	// Apply interpolation if requested
-	if interpolateDistance > 0 {
-		logger.InfoContext(ctx, "Applying point interpolation",
-			"distance_meters", interpolateDistance,
-			"original_points", len(*poiList))
-
-		interpolatedList := poiList.InterpolateByDistance(interpolateDistance)
-		poiList = interpolatedList
-
-		logger.InfoContext(ctx, "Interpolation complete",
-			"final_points", len(*poiList))
 	}
 
 	// Prepare mod content
@@ -139,13 +126,14 @@ func generateOutputPath(inputFiles []string) string {
 	return "combined_mod.zip"
 }
 
-func processInputFiles(ctx context.Context, logger *slog.Logger, inputFiles []string) (*poi.List, error) {
+func processInputFiles(ctx context.Context, logger *slog.Logger, inputFiles []string, interpolateDistance float64) (*poi.List, error) {
 	combinedPOIList := make(poi.List, 0)
 
 	for _, inputFile := range inputFiles {
 		logger.InfoContext(ctx, "Processing file", "path", inputFile)
 
-		reader, err := geometry.GetReader(inputFile)
+		// Create reader with interpolation distance
+		reader, err := geometry.GetReaderWithInterpolation(inputFile, interpolateDistance)
 		if err != nil {
 			logger.ErrorContext(ctx, "Error getting reader for file", "path", inputFile, "error", err)
 			continue

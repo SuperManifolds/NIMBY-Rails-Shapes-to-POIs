@@ -7,17 +7,19 @@ import (
 	"github.com/supermanifolds/nimby_shapetopoi/internal/poi"
 )
 
-type ShapefileReader struct{}
-
-func (s *ShapefileReader) ParseFile(filePath string) (*poi.List, error) {
-	return s.ParseFileWithConfig(filePath, defaultMaxLod)
+type ShapefileReader struct {
+	InterpolateDistance float64
 }
 
-func (s *ShapefileReader) ParseFileWithConfig(filePath string, maxLod int32) (*poi.List, error) {
-	return s.ParseFileWithFullConfig(filePath, maxLod, defaultColor)
+func (sr *ShapefileReader) ParseFile(filePath string) (*poi.List, error) {
+	return sr.ParseFileWithConfig(filePath, defaultMaxLod)
 }
 
-func (s *ShapefileReader) ParseFileWithFullConfig(filePath string, maxLod int32, color string) (*poi.List, error) {
+func (sr *ShapefileReader) ParseFileWithConfig(filePath string, maxLod int32) (*poi.List, error) {
+	return sr.ParseFileWithFullConfig(filePath, maxLod, defaultColor)
+}
+
+func (sr *ShapefileReader) ParseFileWithFullConfig(filePath string, maxLod int32, color string) (*poi.List, error) {
 	shapefile, err := shp.Open(filePath)
 	if err != nil {
 		return nil, err
@@ -45,6 +47,8 @@ func (s *ShapefileReader) ParseFileWithFullConfig(filePath string, maxLod int32,
 			poiList.Add(p)
 
 		case *shp.PolyLine:
+			// Create temporary list for this polyline
+			tempList := make(poi.List, 0, len(s.Points))
 			for _, point := range s.Points {
 				p := poi.POI{
 					Lon:         point.X,
@@ -57,6 +61,17 @@ func (s *ShapefileReader) ParseFileWithFullConfig(filePath string, maxLod int32,
 					Demand:      "0",
 					Population:  0,
 				}
+				tempList = append(tempList, p)
+			}
+
+			// Interpolate this polyline if configured
+			if sr.InterpolateDistance > 0 {
+				interpolated := tempList.InterpolateByDistance(sr.InterpolateDistance)
+				tempList = *interpolated
+			}
+
+			// Add all points (interpolated or not) to the main list
+			for _, p := range tempList {
 				poiList.Add(p)
 			}
 

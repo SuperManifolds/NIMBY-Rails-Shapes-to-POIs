@@ -139,7 +139,8 @@ func (h *UploadHandler) processUploadedFiles(ctx context.Context, files []*multi
 	for _, inputFile := range inputFiles {
 		h.logger.InfoContext(ctx, "Processing uploaded file", "path", inputFile)
 
-		reader, err := geometry.GetReader(inputFile)
+		// Create reader with interpolation distance
+		reader, err := geometry.GetReaderWithInterpolation(inputFile, interpolateDistance)
 		if err != nil {
 			h.logger.ErrorContext(ctx, "Error getting reader for file", "path", inputFile, "error", err)
 			continue
@@ -161,18 +162,7 @@ func (h *UploadHandler) processUploadedFiles(ctx context.Context, files []*multi
 		return nil, errors.New("no POIs extracted from uploaded files")
 	}
 
-	// Apply interpolation if requested
-	if interpolateDistance > 0 {
-		h.logger.InfoContext(ctx, "Applying point interpolation",
-			"distance_meters", interpolateDistance,
-			"original_points", len(combinedPOIList))
-
-		interpolatedList := combinedPOIList.InterpolateByDistance(interpolateDistance)
-		combinedPOIList = *interpolatedList
-
-		h.logger.InfoContext(ctx, "Interpolation complete",
-			"final_points", len(combinedPOIList))
-	}
+	// Note: Interpolation is now done during parsing for each line segment
 
 	// Generate output file
 	outputPath := filepath.Join(os.TempDir(), outputName+"-"+generateTimestamp()+".zip")

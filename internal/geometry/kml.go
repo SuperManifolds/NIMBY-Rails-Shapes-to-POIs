@@ -5,7 +5,9 @@ import (
 	"github.com/supermanifolds/nimby_shapetopoi/pkg/kml"
 )
 
-type KMLReader struct{}
+type KMLReader struct {
+	InterpolateDistance float64
+}
 
 func (k *KMLReader) ParseFile(filePath string) (*poi.List, error) {
 	return k.ParseFileWithConfig(filePath, defaultMaxLod)
@@ -79,6 +81,8 @@ func (k *KMLReader) processLineString(lineString *kml.LineString, poiList *poi.L
 		return
 	}
 
+	// Create temporary list for this line string
+	tempList := make(poi.List, 0, len(coords))
 	for _, coord := range coords {
 		p := poi.POI{
 			Lon:         coord.Lon,
@@ -91,6 +95,17 @@ func (k *KMLReader) processLineString(lineString *kml.LineString, poiList *poi.L
 			Demand:      defaultDemand,
 			Population:  defaultPopulation,
 		}
+		tempList = append(tempList, p)
+	}
+
+	// Interpolate this line string if configured
+	if k.InterpolateDistance > 0 {
+		interpolated := tempList.InterpolateByDistance(k.InterpolateDistance)
+		tempList = *interpolated
+	}
+
+	// Add all points (interpolated or not) to the main list
+	for _, p := range tempList {
 		poiList.Add(p)
 	}
 }
@@ -101,6 +116,14 @@ func (k *KMLReader) processLinearRing(linearRing *kml.LinearRing, poiList *poi.L
 		return
 	}
 
+	// LinearRing is a closed geometry - remove the duplicate closing point to avoid
+	// interpolation creating unwanted lines back to the start
+	if len(coords) > 1 && coords[0].Lat == coords[len(coords)-1].Lat && coords[0].Lon == coords[len(coords)-1].Lon {
+		coords = coords[:len(coords)-1]
+	}
+
+	// Create temporary list for this linear ring
+	tempList := make(poi.List, 0, len(coords))
 	for _, coord := range coords {
 		p := poi.POI{
 			Lon:         coord.Lon,
@@ -113,6 +136,17 @@ func (k *KMLReader) processLinearRing(linearRing *kml.LinearRing, poiList *poi.L
 			Demand:      defaultDemand,
 			Population:  defaultPopulation,
 		}
+		tempList = append(tempList, p)
+	}
+
+	// Interpolate this linear ring if configured
+	if k.InterpolateDistance > 0 {
+		interpolated := tempList.InterpolateByDistance(k.InterpolateDistance)
+		tempList = *interpolated
+	}
+
+	// Add all points (interpolated or not) to the main list
+	for _, p := range tempList {
 		poiList.Add(p)
 	}
 }

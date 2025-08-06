@@ -73,7 +73,7 @@ func TestProcessInputFiles(t *testing.T) {
 	// Test processing
 	ctx := context.Background()
 	logger := slog.New(slog.NewTextHandler(os.Stderr, nil))
-	poiList, err := processInputFiles(ctx, logger, []string{kmlFile})
+	poiList, err := processInputFiles(ctx, logger, []string{kmlFile}, 0)
 	if err != nil {
 		t.Fatalf("processInputFiles returned error: %v", err)
 	}
@@ -100,7 +100,7 @@ func TestProcessInputFiles(t *testing.T) {
 func TestProcessInputFiles_NonExistentFile(t *testing.T) {
 	ctx := context.Background()
 	logger := slog.New(slog.NewTextHandler(os.Stderr, nil))
-	_, err := processInputFiles(ctx, logger, []string{"nonexistent.kml"})
+	_, err := processInputFiles(ctx, logger, []string{"nonexistent.kml"}, 0)
 
 	// Should return error when no POIs are extracted
 	if err == nil {
@@ -122,7 +122,7 @@ func TestProcessInputFiles_UnsupportedFormat(t *testing.T) {
 
 	ctx := context.Background()
 	logger := slog.New(slog.NewTextHandler(os.Stderr, nil))
-	_, err = processInputFiles(ctx, logger, []string{txtFile})
+	_, err = processInputFiles(ctx, logger, []string{txtFile}, 0)
 
 	// Should return error when no POIs are extracted
 	if err == nil {
@@ -137,7 +137,7 @@ func TestProcessInputFiles_UnsupportedFormat(t *testing.T) {
 func TestProcessInputFiles_NoFiles(t *testing.T) {
 	ctx := context.Background()
 	logger := slog.New(slog.NewTextHandler(os.Stderr, nil))
-	_, err := processInputFiles(ctx, logger, []string{})
+	_, err := processInputFiles(ctx, logger, []string{}, 0)
 
 	if err == nil {
 		t.Error("Expected error for empty file list, but got none")
@@ -251,7 +251,7 @@ func TestMainWorkflow_Integration(t *testing.T) {
 	// Process input files
 	ctx := context.Background()
 	logger := slog.New(slog.NewTextHandler(os.Stderr, nil))
-	poiList, err := processInputFiles(ctx, logger, []string{inputFile})
+	poiList, err := processInputFiles(ctx, logger, []string{inputFile}, 0)
 	if err != nil {
 		t.Fatalf("processInputFiles failed: %v", err)
 	}
