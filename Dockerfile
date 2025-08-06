@@ -29,8 +29,8 @@ RUN CGO_ENABLED=0 GOOS=linux go build \
     -trimpath \
     -o nimby_shapetopoi ./cmd/nimby_shapetopoi
 
-# Runtime stage - using distroless with shell for environment variable support
-FROM gcr.io/distroless/base-debian12:nonroot
+# Runtime stage - using distroless static for minimal size and fast cold starts
+FROM gcr.io/distroless/static-debian12:nonroot
 
 # Copy ca-certificates and timezone data from builder
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
@@ -47,5 +47,5 @@ COPY --from=builder /app/static ./static
 # Expose port (Cloud Run will set PORT environment variable)
 EXPOSE 8080
 
-# Run the application with port from environment variable
-ENTRYPOINT ["/bin/sh", "-c", "./nimby_shapetopoi --server --port ${PORT:-8080}"]
+# Run the application (will read PORT environment variable automatically)
+ENTRYPOINT ["./nimby_shapetopoi", "--server"]

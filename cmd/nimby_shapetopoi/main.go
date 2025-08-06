@@ -33,12 +33,20 @@ func main() {
 	flag.StringVar(&modFilePath, "m", "", "Custom mod.txt file to use")
 	flag.StringVar(&modFilePath, "mod", "", "Custom mod.txt file to use")
 	flag.BoolVar(&serverMode, "server", false, "Run as web server")
-	flag.StringVar(&serverPort, "port", "8080", "Web server port (default: 8080)")
+	flag.StringVar(&serverPort, "port", "", "Web server port (default: 8080, or PORT env var)")
 	flag.Float64Var(&interpolateDistance, "interpolate-distance", 0, "Add extra points along lines if segments are longer than this distance (meters)")
 	flag.Parse()
 
 	// If server mode, start the web server
 	if serverMode {
+		// Use PORT environment variable if --port flag wasn't provided
+		if serverPort == "" {
+			if envPort := os.Getenv("PORT"); envPort != "" {
+				serverPort = envPort
+			} else {
+				serverPort = "8080"
+			}
+		}
 		startWebServer(ctx, logger, serverPort)
 		return
 	}
