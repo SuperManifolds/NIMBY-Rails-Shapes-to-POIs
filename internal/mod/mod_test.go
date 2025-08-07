@@ -145,7 +145,7 @@ func TestCreateZip(t *testing.T) {
 			FontSize:    12,
 			MaxLod:      10,
 			Transparent: false,
-			Demand:      "0",
+			Demand:      "",
 			Population:  100,
 		},
 	}

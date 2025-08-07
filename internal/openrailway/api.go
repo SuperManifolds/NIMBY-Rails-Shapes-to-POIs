@@ -59,7 +59,7 @@ func GeneratePOIs(_ context.Context, bboxStr string) (*poi.List, error) {
 			FontSize:    12,
 			MaxLod:      15,
 			Transparent: false,
-			Demand:      "0",
+			Demand:      "",
 			Population:  0,
 		},
 	}

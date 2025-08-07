@@ -58,7 +58,7 @@ func (sr *ShapefileReader) ParseFileWithFullConfig(filePath string, maxLod int32
 					FontSize:    12,
 					MaxLod:      maxLod,
 					Transparent: false,
-					Demand:      "0",
+					Demand:      defaultDemand,
 					Population:  0,
 				}
 				tempList = append(tempList, p)

@@ -54,8 +54,8 @@ func TestShapefileReader_ParseFile_ActualTestFile(t *testing.T) {
 		if firstPOI.MaxLod != 10 {
 			t.Errorf("Expected max LOD 10, got %d", firstPOI.MaxLod)
 		}
-		if firstPOI.Demand != "0" {
-			t.Errorf("Expected demand '0', got '%s'", firstPOI.Demand)
+		if firstPOI.Demand != "" {
+			t.Errorf("Expected empty demand, got '%s'", firstPOI.Demand)
 		}
 		if firstPOI.Population != 0 {
 			t.Errorf("Expected population 0, got %d", firstPOI.Population)

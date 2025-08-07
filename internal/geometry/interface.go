@@ -13,7 +13,7 @@ const (
 	defaultColor      = "0000ff"
 	defaultFontSize   = 12
 	defaultMaxLod     = 10
-	defaultDemand     = "0"
+	defaultDemand     = ""
 	defaultPopulation = 0
 )
 

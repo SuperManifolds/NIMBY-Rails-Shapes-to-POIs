@@ -15,7 +15,7 @@ func TestPOI_Creation(t *testing.T) {
 		FontSize:    12,
 		MaxLod:      10,
 		Transparent: false,
-		Demand:      "0",
+		Demand:      "",
 		Population:  100,
 	}
 
@@ -40,8 +40,8 @@ func TestPOI_Creation(t *testing.T) {
 	if poi.Transparent != false {
 		t.Errorf("Expected Transparent to be false, got %t", poi.Transparent)
 	}
-	if poi.Demand != "0" {
-		t.Errorf("Expected Demand to be '0', got '%s'", poi.Demand)
+	if poi.Demand != "" {
+		t.Errorf("Expected Demand to be empty, got '%s'", poi.Demand)
 	}
 	if poi.Population != 100 {
 		t.Errorf("Expected Population to be 100, got %d", poi.Population)
@@ -80,7 +80,7 @@ func TestList_ToTSV(t *testing.T) {
 		FontSize:    12,
 		MaxLod:      10,
 		Transparent: false,
-		Demand:      "0",
+		Demand:      "",
 		Population:  100,
 	}
 	poi2 := POI{
@@ -129,7 +129,7 @@ func TestList_ToTSV(t *testing.T) {
 		t.Errorf("Expected 3 lines (header + 2 data), got %d", len(lines))
 	}
 
-	firstDataRow := "10.123\t53.456\tff0000ff\tTest POI\t12\t10\tfalse\t0\t100"
+	firstDataRow := "10.123\t53.456\tff0000ff\tTest POI\t12\t10\tfalse\t\t100"
 	if lines[1] != firstDataRow {
 		t.Errorf("Expected first data row:\n%s\nGot:\n%s", firstDataRow, lines[1])
 	}
@@ -175,7 +175,7 @@ func TestList_ToTSV_SpecialCharacters(t *testing.T) {
 		FontSize:    12,
 		MaxLod:      10,
 		Transparent: false,
-		Demand:      "0",
+		Demand:      "",
 		Population:  0,
 	}
 
