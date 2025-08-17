@@ -103,3 +103,32 @@ func (p *List) InterpolateByDistance(maxDistanceMeters float64) *List {
 
 	return &interpolated
 }
+
+// AddLabelsAtInterval modifies existing POIs to add labels at approximately regular intervals
+func (p *List) AddLabelsAtInterval(intervalMeters float64, labelText string) {
+	if len(*p) < 2 || intervalMeters <= 0 || labelText == "" {
+		return
+	}
+
+	var totalDistance float64
+	var nextLabelDistance = intervalMeters
+	var labelApplied = false
+
+	for i := 0; i < len(*p)-1; i++ {
+		current := (*p)[i]
+		next := (*p)[i+1]
+		segmentDistance := gis.HaversineDistance(current.Lat, current.Lon, next.Lat, next.Lon)
+
+		// Check if we've passed the next label distance in this segment
+		if totalDistance+segmentDistance >= nextLabelDistance && !labelApplied {
+			// Apply label to the next POI (the end of this segment)
+			(*p)[i+1].Text = labelText
+			nextLabelDistance += intervalMeters
+			labelApplied = true
+		} else if totalDistance+segmentDistance < nextLabelDistance {
+			labelApplied = false
+		}
+
+		totalDistance += segmentDistance
+	}
+}

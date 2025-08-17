@@ -10,6 +10,7 @@ import (
 
 type ShapefileReader struct {
 	InterpolateDistance float64
+	LabelInterval       float64
 }
 
 func (sr *ShapefileReader) ParseFile(filePath string) (*poi.List, error) {
@@ -49,6 +50,26 @@ func (sr *ShapefileReader) GetTitle(filePath string) (string, error) {
 	}
 
 	return "", nil
+}
+
+// getShapeLabel tries to extract a meaningful label from shapefile attributes
+func (sr *ShapefileReader) getShapeLabel(shapefile *shp.Reader, shapeIndex int) string {
+	// Get field information
+	fields := shapefile.Fields()
+
+	// Look for common name fields
+	for i, field := range fields {
+		fieldName := strings.ToUpper(field.String())
+		if strings.Contains(fieldName, "NAME") || strings.Contains(fieldName, "TITLE") || strings.Contains(fieldName, "LABEL") {
+			value := shapefile.ReadAttribute(shapeIndex, i)
+			if value != "" {
+				return value
+			}
+		}
+	}
+
+	// No meaningful name found, use generic label
+	return "Line"
 }
 
 func (sr *ShapefileReader) ParseFileWithFullConfig(filePath string, maxLod int32, color string) (*poi.List, error) {
@@ -100,6 +121,15 @@ func (sr *ShapefileReader) ParseFileWithFullConfig(filePath string, maxLod int32
 			if sr.InterpolateDistance > 0 {
 				interpolated := tempList.InterpolateByDistance(sr.InterpolateDistance)
 				tempList = *interpolated
+			}
+
+			// Add labels at intervals if configured
+			if sr.LabelInterval > 0 {
+				// Try to get a name from shapefile attributes or use generic label
+				labelText := sr.getShapeLabel(shapefile, shapeIndex)
+				if labelText != "" {
+					tempList.AddLabelsAtInterval(sr.LabelInterval, labelText)
+				}
 			}
 
 			// Add all points (interpolated or not) to the main list

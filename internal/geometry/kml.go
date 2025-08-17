@@ -7,6 +7,7 @@ import (
 
 type KMLReader struct {
 	InterpolateDistance float64
+	LabelInterval       float64
 }
 
 func (k *KMLReader) ParseFile(filePath string) (*poi.List, error) {
@@ -72,7 +73,7 @@ func (k *KMLReader) processPlacemark(placemark *kml.Placemark, document *kml.Doc
 		if actualColor == "" {
 			actualColor = k.getColorForGeometry(placemark, document, "LineString")
 		}
-		k.processLineString(placemark.LineString, poiList, maxLod, actualColor)
+		k.processLineString(placemark.LineString, placemark.Name, poiList, maxLod, actualColor)
 	}
 	if placemark.LinearRing != nil {
 		actualColor := color
@@ -119,7 +120,7 @@ func (k *KMLReader) processPoint(point *kml.Point, poiList *poi.List, maxLod int
 	}
 }
 
-func (k *KMLReader) processLineString(lineString *kml.LineString, poiList *poi.List, maxLod int32, color string) {
+func (k *KMLReader) processLineString(lineString *kml.LineString, placemarkName string, poiList *poi.List, maxLod int32, color string) {
 	coords, err := kml.ParseCoordinates(lineString.Coordinates)
 	if err != nil {
 		return
@@ -150,6 +151,11 @@ func (k *KMLReader) processLineString(lineString *kml.LineString, poiList *poi.L
 	if k.InterpolateDistance > 0 {
 		interpolated := tempList.InterpolateByDistance(k.InterpolateDistance)
 		tempList = *interpolated
+	}
+
+	// Add labels at intervals if configured
+	if k.LabelInterval > 0 && placemarkName != "" {
+		tempList.AddLabelsAtInterval(k.LabelInterval, placemarkName)
 	}
 
 	// Add all points (interpolated or not) to the main list
@@ -222,7 +228,7 @@ func (k *KMLReader) processMultiGeometry(multiGeometry *kml.MultiGeometry, docum
 		if actualColor == "" {
 			actualColor = k.getColorForGeometry(placemark, document, "LineString")
 		}
-		k.processLineString(&lineString, poiList, maxLod, actualColor)
+		k.processLineString(&lineString, placemark.Name, poiList, maxLod, actualColor)
 	}
 	for _, linearRing := range multiGeometry.LinearRings {
 		actualColor := color

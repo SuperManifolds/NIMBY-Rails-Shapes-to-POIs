@@ -13,6 +13,9 @@ import (
 	"time"
 
 	"github.com/supermanifolds/nimby_shapetopoi/internal/poi"
+	"golang.org/x/image/font"
+	"golang.org/x/image/font/basicfont"
+	"golang.org/x/image/math/fixed"
 )
 
 const (
@@ -288,13 +291,20 @@ func (tc *TileClient) scaleImageDown(src image.Image, width, height int) image.I
 	return scaled
 }
 
-// overlayPOIs draws POI markers on the map image
+// overlayPOIs draws POI markers and labels on the map image
 func overlayPOIs(img *image.RGBA, poiList *poi.List, topLeftTile TileCoordinate) {
+	// First pass: draw all POI circles
 	for _, p := range *poiList {
 		pixel := LatLonToPixel(p.Lat, p.Lon, topLeftTile)
-
-		// Draw a simple circle for each POI
 		drawCircle(img, pixel.X, pixel.Y, 3, parseHexColor(p.Color))
+	}
+
+	// Second pass: draw all text labels on top
+	for _, p := range *poiList {
+		if p.Text != "" {
+			pixel := LatLonToPixel(p.Lat, p.Lon, topLeftTile)
+			drawText(img, pixel.X, pixel.Y-8, p.Text, parseHexColor(p.Color))
+		}
 	}
 }
 
@@ -313,6 +323,54 @@ func drawCircle(img *image.RGBA, centerX, centerY, radius int, clr color.Color) 
 			}
 		}
 	}
+}
+
+// drawText draws text on the image with a colored background and contrasting text
+func drawText(img *image.RGBA, x, y int, text string, bgColor color.Color) {
+	bounds := img.Bounds()
+	if x < bounds.Min.X || x >= bounds.Max.X || y < bounds.Min.Y || y >= bounds.Max.Y {
+		return
+	}
+
+	// Convert background color to RGBA to calculate brightness
+	rgba := color.RGBAModel.Convert(bgColor).(color.RGBA) //nolint:errcheck // color conversion cannot fail
+
+	// Calculate brightness using luminance formula
+	brightness := 0.299*float64(rgba.R) + 0.587*float64(rgba.G) + 0.114*float64(rgba.B)
+
+	// Choose text color based on background brightness
+	var textColor color.Color
+	if brightness > 127 {
+		textColor = color.RGBA{0, 0, 0, 255} // Black text for bright backgrounds
+	} else {
+		textColor = color.RGBA{255, 255, 255, 255} // White text for dark backgrounds
+	}
+
+	// Use basic font for text rendering
+	face := basicfont.Face7x13
+	drawer := &font.Drawer{
+		Dst:  img,
+		Src:  image.NewUniform(textColor),
+		Face: face,
+		Dot:  fixed.Point26_6{X: fixed.I(x), Y: fixed.I(y)},
+	}
+
+	// Measure text to draw background
+	textBounds := drawer.MeasureString(text)
+	textWidth := int(textBounds >> 6)
+	textHeight := int(face.Metrics().Height >> 6)
+
+	// Draw square background rectangle in POI color
+	for bgY := y - textHeight + 2; bgY <= y+2; bgY++ {
+		for bgX := x - 2; bgX <= x+textWidth+2; bgX++ {
+			if bgX >= bounds.Min.X && bgX < bounds.Max.X && bgY >= bounds.Min.Y && bgY < bounds.Max.Y {
+				img.Set(bgX, bgY, rgba)
+			}
+		}
+	}
+
+	// Draw the text
+	drawer.DrawString(text)
 }
 
 // parseHexColor converts hex color string to color.Color

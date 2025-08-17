@@ -44,16 +44,22 @@ func HexToNimbyColor(hexColor string) string {
 }
 
 func GetReader(filePath string) (Reader, error) {
-	return GetReaderWithInterpolation(filePath, 0)
+	return GetReaderWithConfig(filePath, 0, 0)
 }
 
-func GetReaderWithInterpolation(filePath string, interpolateDistance float64) (Reader, error) {
+func GetReaderWithConfig(filePath string, interpolateDistance float64, labelInterval float64) (Reader, error) {
 	ext := strings.ToLower(filepath.Ext(filePath))
 	switch ext {
 	case ".shp":
-		return &ShapefileReader{InterpolateDistance: interpolateDistance}, nil
+		return &ShapefileReader{
+			InterpolateDistance: interpolateDistance,
+			LabelInterval:       labelInterval,
+		}, nil
 	case ".kml", ".kmz":
-		return &KMLReader{InterpolateDistance: interpolateDistance}, nil
+		return &KMLReader{
+			InterpolateDistance: interpolateDistance,
+			LabelInterval:       labelInterval,
+		}, nil
 	default:
 		return nil, fmt.Errorf("unsupported file format: %s", ext)
 	}
