@@ -107,3 +107,60 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// Track whether user has explicitly set a color
+let userSetColor = false;
+
+// Clear color field to use original colors
+function clearColorField() {
+    const colorInput = document.getElementById('poi-color');
+    if (colorInput) {
+        colorInput.removeAttribute('name'); // Remove from form submission
+        colorInput.value = '#000000'; // Reset to default display
+        userSetColor = false;
+        updateColorFieldState();
+    }
+}
+
+// Update the visual state of the color field
+function updateColorFieldState() {
+    const colorInput = document.getElementById('poi-color');
+    const clearBtn = document.querySelector('.clear-color-btn');
+    
+    if (colorInput && clearBtn) {
+        if (userSetColor) {
+            colorInput.style.opacity = '1';
+            clearBtn.style.display = 'flex';
+        } else {
+            colorInput.style.opacity = '0.5';
+            clearBtn.style.display = 'none';
+        }
+    }
+}
+
+// Initialize color field behavior
+document.addEventListener('DOMContentLoaded', function() {
+    const colorInput = document.getElementById('poi-color');
+    if (colorInput) {
+        // Initially, no color is set
+        colorInput.removeAttribute('name');
+        userSetColor = false;
+        updateColorFieldState();
+        
+        // Track when user changes the color
+        colorInput.addEventListener('change', function() {
+            userSetColor = true;
+            colorInput.setAttribute('name', 'poi-color'); // Include in form submission
+            updateColorFieldState();
+        });
+        
+        // Also track input events for real-time changes
+        colorInput.addEventListener('input', function() {
+            if (!userSetColor) {
+                userSetColor = true;
+                colorInput.setAttribute('name', 'poi-color');
+                updateColorFieldState();
+            }
+        });
+    }
+});

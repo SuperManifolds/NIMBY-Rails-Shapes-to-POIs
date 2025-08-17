@@ -2,6 +2,7 @@ package geometry
 
 import (
 	"log"
+	"strings"
 
 	"github.com/jonas-p/go-shp"
 	"github.com/supermanifolds/nimby_shapetopoi/internal/poi"
@@ -17,6 +18,37 @@ func (sr *ShapefileReader) ParseFile(filePath string) (*poi.List, error) {
 
 func (sr *ShapefileReader) ParseFileWithConfig(filePath string, maxLod int32) (*poi.List, error) {
 	return sr.ParseFileWithFullConfig(filePath, maxLod, defaultColor)
+}
+
+func (sr *ShapefileReader) GetTitle(filePath string) (string, error) {
+	shapefile, err := shp.Open(filePath)
+	if err != nil {
+		return "", err
+	}
+	defer shapefile.Close()
+
+	// Get field information
+	fields := shapefile.Fields()
+
+	// Look for common title field names
+	var titleFieldIndex = -1
+	for i, field := range fields {
+		fieldName := strings.ToUpper(field.String())
+		if strings.Contains(fieldName, "NAME") || strings.Contains(fieldName, "TITLE") || strings.Contains(fieldName, "LABEL") {
+			titleFieldIndex = i
+			break
+		}
+	}
+
+	// If we found a title field, read the first record
+	if titleFieldIndex >= 0 && shapefile.Next() {
+		titleValue := shapefile.ReadAttribute(0, titleFieldIndex)
+		if titleValue != "" {
+			return titleValue, nil
+		}
+	}
+
+	return "", nil
 }
 
 func (sr *ShapefileReader) ParseFileWithFullConfig(filePath string, maxLod int32, color string) (*poi.List, error) {

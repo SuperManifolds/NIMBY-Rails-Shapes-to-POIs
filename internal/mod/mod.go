@@ -20,6 +20,7 @@ type FileEntry struct {
 	TSVFileName string
 	POIList     poi.List
 	SourceFile  string
+	Title       string
 }
 
 func GenerateDefaultContent(modName string, entries []FileEntry) string {
@@ -35,12 +36,21 @@ version=1.0.0
 
 	for _, entry := range entries {
 		baseName := strings.TrimSuffix(entry.TSVFileName, ".tsv")
+
+		// Use extracted title if available, otherwise use filename
+		var layerName string
+		if entry.Title != "" {
+			layerName = entry.Title
+		} else {
+			layerName = baseName
+		}
+
 		sb.WriteString(fmt.Sprintf(`[POILayer]
 id = %s_pois
-name = %s POIs
+name = %s
 tsv = %s
 
-`, baseName, baseName, entry.TSVFileName))
+`, baseName, layerName, entry.TSVFileName))
 	}
 
 	return sb.String()
@@ -57,12 +67,21 @@ func UpdateTSVReferences(modContent string, entries []FileEntry) string {
 
 	for _, entry := range entries {
 		baseName := strings.TrimSuffix(entry.TSVFileName, ".tsv")
+
+		// Use extracted title if available, otherwise use filename
+		var layerName string
+		if entry.Title != "" {
+			layerName = entry.Title
+		} else {
+			layerName = baseName
+		}
+
 		sb.WriteString(fmt.Sprintf(`[POILayer]
 id = %s_pois
-name = %s POIs
+name = %s
 tsv = %s
 
-`, baseName, baseName, entry.TSVFileName))
+`, baseName, layerName, entry.TSVFileName))
 	}
 
 	return sb.String()

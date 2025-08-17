@@ -35,6 +35,30 @@ func (k *KMLReader) ParseFileWithFullConfig(filePath string, maxLod int32, color
 	return &poiList, nil
 }
 
+func (k *KMLReader) GetTitle(filePath string) (string, error) {
+	kmlData, err := kml.ParseFile(filePath)
+	if err != nil {
+		return "", err
+	}
+
+	if kmlData.Document != nil {
+		// First try to get a name from the first placemark (any geometry type)
+		placemarks := kmlData.Document.AllPlacemarks()
+		for _, placemark := range placemarks {
+			if placemark.Name != "" {
+				return placemark.Name, nil
+			}
+		}
+
+		// Fall back to document name if no placemark names found
+		if kmlData.Document.Name != "" {
+			return kmlData.Document.Name, nil
+		}
+	}
+
+	return "", nil
+}
+
 func (k *KMLReader) processPlacemark(placemark *kml.Placemark, document *kml.Document, poiList *poi.List, maxLod int32, color string) {
 	if placemark.Point != nil {
 		actualColor := color

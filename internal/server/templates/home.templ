@@ -50,9 +50,12 @@ templ Home() {
 						<small>Controls at what zoom level POIs disappear. 0 = only visible when zoomed in close, 10 = always visible.</small>
 					</div>
 					<div class="form-group">
-						<label for="poi-color">POI Color</label>
-						<input type="color" id="poi-color" name="poi-color" value="#0000ff"/>
-						<small>Color for POIs in the generated mod.</small>
+						<label for="poi-color">POI Color Override (optional)</label>
+						<div class="color-input-container">
+							<input type="color" id="poi-color" name="poi-color"/>
+							<button type="button" onclick="clearColorField()" class="clear-color-btn" title="Clear color to use original colors">✕</button>
+						</div>
+						<small>Override all POI colors with this color. Leave empty to use original colors from the source files.</small>
 					</div>
 					<button type="submit" class="btn" id="submit-button">
 						<span id="upload-spinner" class="spinner hidden"></span>

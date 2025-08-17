@@ -104,6 +104,7 @@ func (h *UploadHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		len(*result.POIList),
 		result.DownloadPath,
 		previewPath,
+		result.Entries,
 	)
 
 	if err := component.Render(r.Context(), w); err != nil {
@@ -117,6 +118,7 @@ type ProcessResult struct {
 	ModName      string
 	DownloadPath string
 	OutputPath   string
+	Entries      []mod.FileEntry
 }
 
 func (h *UploadHandler) processUploadedFiles(ctx context.Context, files []*multipart.FileHeader, outputName string, interpolateDistance float64, maxLod int32, poiColor string) (*ProcessResult, error) {
@@ -166,10 +168,20 @@ func (h *UploadHandler) processUploadedFiles(ctx context.Context, files []*multi
 			nameWithoutExt := strings.TrimSuffix(base, ext)
 			tsvFileName := nameWithoutExt + ".tsv"
 
+			// Extract title from file if available, fallback to clean filename
+			var title string
+			if extractedTitle, err := reader.GetTitle(inputFile); err == nil && extractedTitle != "" {
+				title = extractedTitle
+			} else {
+				// Use filename without extension as fallback
+				title = nameWithoutExt
+			}
+
 			entry := mod.FileEntry{
 				TSVFileName: tsvFileName,
 				POIList:     *poiList,
 				SourceFile:  inputFile,
+				Title:       title,
 			}
 			entries = append(entries, entry)
 
@@ -203,6 +215,7 @@ func (h *UploadHandler) processUploadedFiles(ctx context.Context, files []*multi
 		ModName:      outputName,
 		DownloadPath: downloadPath,
 		OutputPath:   outputPath,
+		Entries:      entries,
 	}, nil
 }
 

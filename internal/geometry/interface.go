@@ -21,6 +21,7 @@ type Reader interface {
 	ParseFile(filePath string) (*poi.List, error)
 	ParseFileWithConfig(filePath string, maxLod int32) (*poi.List, error)
 	ParseFileWithFullConfig(filePath string, maxLod int32, color string) (*poi.List, error)
+	GetTitle(filePath string) (string, error)
 }
 
 // HexToNimbyColor converts a hex color string (#RRGGBB) to NIMBY color format (RRGGBB)
