@@ -61,45 +61,36 @@ func (k *KMLReader) GetTitle(filePath string) (string, error) {
 	return "", nil
 }
 
+// resolveColor determines the final color to use for a geometry element
+// by checking override color first, then extracting from style, then falling back to default
+func (k *KMLReader) resolveColor(overrideColor string, placemark *kml.Placemark, document *kml.Document, geometryType string) string {
+	if overrideColor != "" {
+		return overrideColor
+	}
+
+	extractedColor := k.getColorForGeometry(placemark, document, geometryType)
+	if extractedColor != "" {
+		return extractedColor
+	}
+
+	return defaultColor
+}
+
 func (k *KMLReader) processPlacemark(placemark *kml.Placemark, document *kml.Document, poiList *poi.List, maxLod int32, color string) {
 	if placemark.Point != nil {
-		actualColor := color
-		if actualColor == "" {
-			actualColor = k.getColorForGeometry(placemark, document, "Point")
-			if actualColor == "" {
-				actualColor = defaultColor
-			}
-		}
+		actualColor := k.resolveColor(color, placemark, document, "Point")
 		k.processPoint(placemark.Point, poiList, maxLod, actualColor)
 	}
 	if placemark.LineString != nil {
-		actualColor := color
-		if actualColor == "" {
-			actualColor = k.getColorForGeometry(placemark, document, "LineString")
-			if actualColor == "" {
-				actualColor = defaultColor
-			}
-		}
+		actualColor := k.resolveColor(color, placemark, document, "LineString")
 		k.processLineString(placemark.LineString, placemark.Name, poiList, maxLod, actualColor)
 	}
 	if placemark.LinearRing != nil {
-		actualColor := color
-		if actualColor == "" {
-			actualColor = k.getColorForGeometry(placemark, document, "LinearRing")
-			if actualColor == "" {
-				actualColor = defaultColor
-			}
-		}
+		actualColor := k.resolveColor(color, placemark, document, "LinearRing")
 		k.processLinearRing(placemark.LinearRing, poiList, maxLod, actualColor)
 	}
 	if placemark.Polygon != nil {
-		actualColor := color
-		if actualColor == "" {
-			actualColor = k.getColorForGeometry(placemark, document, "Polygon")
-			if actualColor == "" {
-				actualColor = defaultColor
-			}
-		}
+		actualColor := k.resolveColor(color, placemark, document, "Polygon")
 		k.processPolygon(placemark.Polygon, poiList, maxLod, actualColor)
 	}
 	if placemark.MultiGeometry != nil {
@@ -230,31 +221,19 @@ func (k *KMLReader) processPolygon(polygon *kml.Polygon, poiList *poi.List, maxL
 
 func (k *KMLReader) processMultiGeometry(multiGeometry *kml.MultiGeometry, document *kml.Document, placemark *kml.Placemark, poiList *poi.List, maxLod int32, color string) {
 	for _, point := range multiGeometry.Points {
-		actualColor := color
-		if actualColor == "" {
-			actualColor = k.getColorForGeometry(placemark, document, "Point")
-		}
+		actualColor := k.resolveColor(color, placemark, document, "Point")
 		k.processPoint(&point, poiList, maxLod, actualColor)
 	}
 	for _, lineString := range multiGeometry.LineStrings {
-		actualColor := color
-		if actualColor == "" {
-			actualColor = k.getColorForGeometry(placemark, document, "LineString")
-		}
+		actualColor := k.resolveColor(color, placemark, document, "LineString")
 		k.processLineString(&lineString, placemark.Name, poiList, maxLod, actualColor)
 	}
 	for _, linearRing := range multiGeometry.LinearRings {
-		actualColor := color
-		if actualColor == "" {
-			actualColor = k.getColorForGeometry(placemark, document, "LinearRing")
-		}
+		actualColor := k.resolveColor(color, placemark, document, "LinearRing")
 		k.processLinearRing(&linearRing, poiList, maxLod, actualColor)
 	}
 	for _, polygon := range multiGeometry.Polygons {
-		actualColor := color
-		if actualColor == "" {
-			actualColor = k.getColorForGeometry(placemark, document, "Polygon")
-		}
+		actualColor := k.resolveColor(color, placemark, document, "Polygon")
 		k.processPolygon(&polygon, poiList, maxLod, actualColor)
 	}
 	// Handle nested MultiGeometry

@@ -380,7 +380,7 @@ func drawText(img *image.RGBA, x, y int, text string, bgColor color.Color) {
 
 // parseHexColor converts hex color string to color.Color
 func parseHexColor(hexColor string) color.Color {
-	// Remove the alpha suffix if present (NIMBY format is RRGGBBAA, we want RRGGBB)
+	// Remove the alpha suffix if present (NIMBY format is RRGGBB, but input may be RRGGBBAA)
 	if len(hexColor) == 8 {
 		hexColor = hexColor[:6] // Remove alpha channel from the end
 	}

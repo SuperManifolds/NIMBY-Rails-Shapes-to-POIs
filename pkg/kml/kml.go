@@ -334,7 +334,25 @@ func GetColorFromStyle(style *Style, geometryType string) string {
 	return ""
 }
 
-// ConvertKMLColorToNimby converts KML color format (aabbggrr) to NIMBY format (rrggbb)
+// ConvertKMLColorToNimby converts KML color format to NIMBY Rails color format.
+//
+// KML uses an 8-character color format: aabbggrr (alpha, blue, green, red)
+// NIMBY Rails uses a 6-character color format: rrggbb (red, green, blue, no alpha)
+//
+// The function extracts the RGB components from the KML color and reorders them
+// for NIMBY Rails compatibility, discarding the alpha channel.
+//
+// Parameters:
+//   - kmlColor: 8-character hex string in KML format (aabbggrr)
+//
+// Returns:
+//   - 6-character hex string in NIMBY format (rrggbb), or empty string if input is invalid
+//
+// Examples:
+//   - "ff0000ff" (opaque red in KML) -> "ff0000" (red in NIMBY)
+//   - "ffff0000" (opaque blue in KML) -> "0000ff" (blue in NIMBY)
+//   - "ff00ff00" (opaque green in KML) -> "00ff00" (green in NIMBY)
+//   - "8000ffff" (semi-transparent yellow in KML) -> "ffff00" (yellow in NIMBY, alpha discarded)
 func ConvertKMLColorToNimby(kmlColor string) string {
 	if len(kmlColor) != 8 {
 		return ""

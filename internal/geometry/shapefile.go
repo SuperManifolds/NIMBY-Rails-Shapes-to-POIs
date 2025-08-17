@@ -1,6 +1,7 @@
 package geometry
 
 import (
+	"fmt"
 	"log"
 	"strings"
 
@@ -68,8 +69,8 @@ func (sr *ShapefileReader) getShapeLabel(shapefile *shp.Reader, shapeIndex int) 
 		}
 	}
 
-	// No meaningful name found, use generic label
-	return "Line"
+	// No meaningful name found, use generic label with index
+	return fmt.Sprintf("Line %d", shapeIndex+1)
 }
 
 // getShapeColor tries to extract a color from shapefile attributes
