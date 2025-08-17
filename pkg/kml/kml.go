@@ -334,18 +334,17 @@ func GetColorFromStyle(style *Style, geometryType string) string {
 	return ""
 }
 
-// ConvertKMLColorToNimby converts KML color format (aabbggrr) to NIMBY format (rrggbbaa)
+// ConvertKMLColorToNimby converts KML color format (aabbggrr) to NIMBY format (rrggbb)
 func ConvertKMLColorToNimby(kmlColor string) string {
 	if len(kmlColor) != 8 {
 		return ""
 	}
 
 	// KML format: aabbggrr
-	// NIMBY format: rrggbbaa
-	aa := kmlColor[0:2] // alpha
+	// NIMBY format: rrggbb (no alpha)
 	bb := kmlColor[2:4] // blue
 	gg := kmlColor[4:6] // green
 	rr := kmlColor[6:8] // red
 
-	return rr + gg + bb + aa
+	return rr + gg + bb
 }

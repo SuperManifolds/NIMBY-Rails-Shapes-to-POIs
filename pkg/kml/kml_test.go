@@ -359,17 +359,17 @@ func TestConvertKMLColorToNimby(t *testing.T) {
 		{
 			name:     "red color",
 			kmlColor: "ff0000ff", // KML: aabbggrr (alpha=ff, blue=00, green=00, red=ff)
-			expected: "ff0000ff", // NIMBY: rrggbbaa (red=ff, green=00, blue=00, alpha=ff)
+			expected: "ff0000",   // NIMBY: rrggbb (red=ff, green=00, blue=00)
 		},
 		{
 			name:     "blue color",
 			kmlColor: "ffff0000", // KML: aabbggrr (alpha=ff, blue=ff, green=00, red=00)
-			expected: "0000ffff", // NIMBY: rrggbbaa (red=00, green=00, blue=ff, alpha=ff)
+			expected: "0000ff",   // NIMBY: rrggbb (red=00, green=00, blue=ff)
 		},
 		{
 			name:     "green color",
 			kmlColor: "ff00ff00", // KML: aabbggrr (alpha=ff, blue=00, green=ff, red=00)
-			expected: "00ff00ff", // NIMBY: rrggbbaa (red=00, green=ff, blue=00, alpha=ff)
+			expected: "00ff00",   // NIMBY: rrggbb (red=00, green=ff, blue=00)
 		},
 		{
 			name:     "invalid length",
@@ -379,7 +379,7 @@ func TestConvertKMLColorToNimby(t *testing.T) {
 		{
 			name:     "semi-transparent red",
 			kmlColor: "800000ff", // KML: aabbggrr (alpha=80, blue=00, green=00, red=ff)
-			expected: "ff000080", // NIMBY: rrggbbaa (red=ff, green=00, blue=00, alpha=80)
+			expected: "ff0000",   // NIMBY: rrggbb (red=ff, green=00, blue=00)
 		},
 	}
 
@@ -405,14 +405,14 @@ func TestGetColorFromStyle(t *testing.T) {
 
 	// Test LineString color extraction
 	lineColor := GetColorFromStyle(style, "LineString")
-	expectedLineColor := "ff0000ff" // Red in NIMBY format
+	expectedLineColor := "ff0000" // Red in NIMBY format
 	if lineColor != expectedLineColor {
 		t.Errorf("GetColorFromStyle for LineString: expected %s, got %s", expectedLineColor, lineColor)
 	}
 
 	// Test Point color extraction
 	pointColor := GetColorFromStyle(style, "Point")
-	expectedPointColor := "00ff00ff" // Green in NIMBY format
+	expectedPointColor := "00ff00" // Green in NIMBY format
 	if pointColor != expectedPointColor {
 		t.Errorf("GetColorFromStyle for Point: expected %s, got %s", expectedPointColor, pointColor)
 	}

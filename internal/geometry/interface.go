@@ -24,23 +24,31 @@ type Reader interface {
 	GetTitle(filePath string) (string, error)
 }
 
-// HexToNimbyColor converts a hex color string (#RRGGBB) to NIMBY color format (RRGGBB)
+// HexToNimbyColor converts a hex color string (#RRGGBB or RRGGBB) to NIMBY color format (RRGGBB)
 func HexToNimbyColor(hexColor string) string {
 	// Remove # if present
 	hexColor = strings.TrimPrefix(hexColor, "#")
+	hexColor = strings.ToUpper(hexColor)
 
-	// Default to blue if invalid
-	if len(hexColor) != 6 {
+	// Handle different color formats
+	switch len(hexColor) {
+	case 6:
+		// Standard RGB format - validate and return
+		if _, err := strconv.ParseUint(hexColor, 16, 32); err != nil {
+			return defaultColor
+		}
+		return hexColor
+	case 8:
+		// RRGGBBAA format - strip alpha and return RGB
+		rgbPart := hexColor[:6]
+		if _, err := strconv.ParseUint(rgbPart, 16, 32); err != nil {
+			return defaultColor
+		}
+		return rgbPart
+	default:
+		// Invalid format
 		return defaultColor
 	}
-
-	// Validate it's a valid hex color
-	if _, err := strconv.ParseUint(hexColor, 16, 32); err != nil {
-		return defaultColor
-	}
-
-	// Return as standard 6-character hex color
-	return hexColor
 }
 
 func GetReader(filePath string) (Reader, error) {

@@ -124,7 +124,7 @@ func (sr *ShapefileReader) ParseFileWithFullConfig(filePath string, maxLod int32
 		shapeColor := color
 		if color == "" {
 			if extractedColor := sr.getShapeColor(shapefile, shapeIndex); extractedColor != "" {
-				shapeColor = extractedColor
+				shapeColor = HexToNimbyColor(extractedColor)
 			} else {
 				shapeColor = defaultColor
 			}

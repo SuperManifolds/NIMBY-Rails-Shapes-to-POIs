@@ -65,6 +65,9 @@ func (k *KMLReader) processPlacemark(placemark *kml.Placemark, document *kml.Doc
 		actualColor := color
 		if actualColor == "" {
 			actualColor = k.getColorForGeometry(placemark, document, "Point")
+			if actualColor == "" {
+				actualColor = defaultColor
+			}
 		}
 		k.processPoint(placemark.Point, poiList, maxLod, actualColor)
 	}
@@ -72,6 +75,9 @@ func (k *KMLReader) processPlacemark(placemark *kml.Placemark, document *kml.Doc
 		actualColor := color
 		if actualColor == "" {
 			actualColor = k.getColorForGeometry(placemark, document, "LineString")
+			if actualColor == "" {
+				actualColor = defaultColor
+			}
 		}
 		k.processLineString(placemark.LineString, placemark.Name, poiList, maxLod, actualColor)
 	}
@@ -79,6 +85,9 @@ func (k *KMLReader) processPlacemark(placemark *kml.Placemark, document *kml.Doc
 		actualColor := color
 		if actualColor == "" {
 			actualColor = k.getColorForGeometry(placemark, document, "LinearRing")
+			if actualColor == "" {
+				actualColor = defaultColor
+			}
 		}
 		k.processLinearRing(placemark.LinearRing, poiList, maxLod, actualColor)
 	}
@@ -86,6 +95,9 @@ func (k *KMLReader) processPlacemark(placemark *kml.Placemark, document *kml.Doc
 		actualColor := color
 		if actualColor == "" {
 			actualColor = k.getColorForGeometry(placemark, document, "Polygon")
+			if actualColor == "" {
+				actualColor = defaultColor
+			}
 		}
 		k.processPolygon(placemark.Polygon, poiList, maxLod, actualColor)
 	}
