@@ -72,6 +72,42 @@ func (sr *ShapefileReader) getShapeLabel(shapefile *shp.Reader, shapeIndex int) 
 	return "Line"
 }
 
+// getShapeColor tries to extract a color from shapefile attributes
+func (sr *ShapefileReader) getShapeColor(shapefile *shp.Reader, shapeIndex int) string {
+	// Get field information
+	fields := shapefile.Fields()
+
+	// Look for common color fields
+	for i, field := range fields {
+		fieldName := strings.ToUpper(field.String())
+		if strings.Contains(fieldName, "COLOR") || strings.Contains(fieldName, "COLOUR") ||
+			strings.Contains(fieldName, "RGB") || strings.Contains(fieldName, "HEX") {
+			value := shapefile.ReadAttribute(shapeIndex, i)
+			if value != "" {
+				// Clean up the color value (remove # if present, ensure proper format)
+				cleanColor := strings.TrimPrefix(strings.ToUpper(value), "#")
+				// Validate it's a hex color (6 or 8 characters)
+				if len(cleanColor) == 6 || len(cleanColor) == 8 {
+					// Check if all characters are valid hex
+					isValidHex := true
+					for _, char := range cleanColor {
+						if (char < '0' || char > '9') && (char < 'A' || char > 'F') {
+							isValidHex = false
+							break
+						}
+					}
+					if isValidHex {
+						return cleanColor
+					}
+				}
+			}
+		}
+	}
+
+	// No color found
+	return ""
+}
+
 func (sr *ShapefileReader) ParseFileWithFullConfig(filePath string, maxLod int32, color string) (*poi.List, error) {
 	shapefile, err := shp.Open(filePath)
 	if err != nil {
@@ -84,12 +120,22 @@ func (sr *ShapefileReader) ParseFileWithFullConfig(filePath string, maxLod int32
 	for shapeIndex := 0; shapefile.Next(); shapeIndex++ {
 		_, shape := shapefile.Shape()
 
+		// Determine color to use - override takes precedence, then extracted color, then default
+		shapeColor := color
+		if color == "" {
+			if extractedColor := sr.getShapeColor(shapefile, shapeIndex); extractedColor != "" {
+				shapeColor = extractedColor
+			} else {
+				shapeColor = defaultColor
+			}
+		}
+
 		switch s := shape.(type) {
 		case *shp.Point:
 			p := poi.POI{
 				Lon:         s.X,
 				Lat:         s.Y,
-				Color:       color,
+				Color:       shapeColor,
 				Text:        "",
 				FontSize:    defaultFontSize,
 				MaxLod:      maxLod,
@@ -106,7 +152,7 @@ func (sr *ShapefileReader) ParseFileWithFullConfig(filePath string, maxLod int32
 				p := poi.POI{
 					Lon:         point.X,
 					Lat:         point.Y,
-					Color:       color,
+					Color:       shapeColor,
 					Text:        "",
 					FontSize:    12,
 					MaxLod:      maxLod,
