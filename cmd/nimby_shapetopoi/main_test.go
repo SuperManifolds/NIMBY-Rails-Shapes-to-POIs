@@ -176,7 +176,7 @@ func TestPrepareModContentMultiple_DefaultContent(t *testing.T) {
 		"author=nimby_shapetopoi",
 		"tsv = test.tsv",
 		"id = test_pois",
-		"name = test POIs",
+		"name = test",
 	}
 
 	for _, expected := range expectedStrings {

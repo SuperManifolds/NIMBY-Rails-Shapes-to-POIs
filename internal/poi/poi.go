@@ -111,22 +111,18 @@ func (p *List) AddLabelsAtInterval(intervalMeters float64, labelText string) {
 	}
 
 	var totalDistance float64
-	var nextLabelDistance = intervalMeters
-	var labelApplied = false
+	nextLabelDistance := intervalMeters
 
 	for i := 0; i < len(*p)-1; i++ {
 		current := (*p)[i]
 		next := (*p)[i+1]
 		segmentDistance := gis.HaversineDistance(current.Lat, current.Lon, next.Lat, next.Lon)
 
-		// Check if we've passed the next label distance in this segment
-		if totalDistance+segmentDistance >= nextLabelDistance && !labelApplied {
+		// Check if we cross the next label distance threshold in this segment
+		if totalDistance < nextLabelDistance && totalDistance+segmentDistance >= nextLabelDistance {
 			// Apply label to the next POI (the end of this segment)
 			(*p)[i+1].Text = labelText
 			nextLabelDistance += intervalMeters
-			labelApplied = true
-		} else if totalDistance+segmentDistance < nextLabelDistance {
-			labelApplied = false
 		}
 
 		totalDistance += segmentDistance

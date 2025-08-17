@@ -44,6 +44,7 @@ func (k *KMLReader) GetTitle(filePath string) (string, error) {
 
 	if kmlData.Document != nil {
 		// First try to get a name from the first placemark (any geometry type)
+		// Cache the result to avoid duplicate computation
 		placemarks := kmlData.Document.AllPlacemarks()
 		for _, placemark := range placemarks {
 			if placemark.Name != "" {

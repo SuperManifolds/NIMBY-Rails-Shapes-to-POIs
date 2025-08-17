@@ -35,10 +35,10 @@ func TestGenerateDefaultContent(t *testing.T) {
 		"schema=1",
 		"version=1.0.0",
 		"id = test_data_pois",
-		"name = test_data POIs",
+		"name = test_data",
 		"tsv = test_data.tsv",
 		"id = test_data2_pois",
-		"name = test_data2 POIs",
+		"name = test_data2",
 		"tsv = test_data2.tsv",
 	}
 

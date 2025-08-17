@@ -537,17 +537,17 @@ func TestKMLReader_ParseFile_ActualTestFile(t *testing.T) {
 		t.Logf("  %s: %d POIs", color, count)
 	}
 
-	// The depot.kmz file should have red lines, so we expect converted red color (0000ffff)
-	// But we're seeing ff0000ff which is the raw KML color - the conversion isn't happening
-	redCount := colorCounts["0000ffff"]
+	// The depot.kmz file should have red lines, so we expect converted red color (ff0000)
+	// KML color ff0000ff should be converted to NIMBY color ff0000 (6-character format)
+	redCount := colorCounts["ff0000"]
 	rawKMLRedCount := colorCounts["ff0000ff"]
 
 	if rawKMLRedCount > 0 {
 		t.Errorf("Found %d POIs with raw KML color 'ff0000ff' - color conversion is not working", rawKMLRedCount)
 	}
 
-	if redCount == 0 && rawKMLRedCount == 0 {
-		t.Errorf("Expected some POIs to have red color extracted from StyleMap, but found none")
+	if redCount == 0 {
+		t.Errorf("Expected some POIs to have red color (ff0000) extracted from StyleMap, but found none")
 	}
 }
 

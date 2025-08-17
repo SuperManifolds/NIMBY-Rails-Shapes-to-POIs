@@ -333,7 +333,12 @@ func drawText(img *image.RGBA, x, y int, text string, bgColor color.Color) {
 	}
 
 	// Convert background color to RGBA to calculate brightness
-	rgba := color.RGBAModel.Convert(bgColor).(color.RGBA) //nolint:errcheck // color conversion cannot fail
+	rgbaColor := color.RGBAModel.Convert(bgColor)
+	rgba, ok := rgbaColor.(color.RGBA)
+	if !ok {
+		// Fallback to black if conversion fails
+		rgba = color.RGBA{0, 0, 0, 255}
+	}
 
 	// Calculate brightness using luminance formula
 	brightness := 0.299*float64(rgba.R) + 0.587*float64(rgba.G) + 0.114*float64(rgba.B)

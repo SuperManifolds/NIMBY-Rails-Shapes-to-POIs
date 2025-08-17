@@ -42,8 +42,9 @@ function updateFileList() {
     }
 }
 
-// Initialize file input click handler
+// Initialize all DOM elements and event handlers
 document.addEventListener('DOMContentLoaded', function() {
+    // File input click handler
     const uploadClickArea = document.querySelector('.upload-click-area');
     if (uploadClickArea) {
         uploadClickArea.addEventListener('click', function() {
@@ -67,6 +68,41 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize button state
     updateFileList();
+
+    // Max LOD slider interaction
+    const slider = document.getElementById('max-lod');
+    const valueDisplay = document.getElementById('max-lod-value');
+    
+    if (slider && valueDisplay) {
+        slider.addEventListener('input', function() {
+            valueDisplay.textContent = this.value;
+        });
+    }
+
+    // Color field behavior initialization
+    const colorInput = document.getElementById('poi-color');
+    if (colorInput) {
+        // Initially, no color is set
+        colorInput.removeAttribute('name');
+        userSetColor = false;
+        updateColorFieldState();
+        
+        // Track when user changes the color
+        colorInput.addEventListener('change', function() {
+            userSetColor = true;
+            colorInput.setAttribute('name', 'poi-color'); // Include in form submission
+            updateColorFieldState();
+        });
+        
+        // Also track input events for real-time changes
+        colorInput.addEventListener('input', function() {
+            if (!userSetColor) {
+                userSetColor = true;
+                colorInput.setAttribute('name', 'poi-color');
+                updateColorFieldState();
+            }
+        });
+    }
 });
 
 // HTMX event handling for loading spinners and form validation
@@ -96,17 +132,6 @@ document.body.addEventListener('htmx:afterRequest', function(e) {
     }
 });
 
-// Max LOD slider interaction
-document.addEventListener('DOMContentLoaded', function() {
-    const slider = document.getElementById('max-lod');
-    const valueDisplay = document.getElementById('max-lod-value');
-    
-    if (slider && valueDisplay) {
-        slider.addEventListener('input', function() {
-            valueDisplay.textContent = this.value;
-        });
-    }
-});
 
 // Track whether user has explicitly set a color
 let userSetColor = false;
@@ -138,29 +163,3 @@ function updateColorFieldState() {
     }
 }
 
-// Initialize color field behavior
-document.addEventListener('DOMContentLoaded', function() {
-    const colorInput = document.getElementById('poi-color');
-    if (colorInput) {
-        // Initially, no color is set
-        colorInput.removeAttribute('name');
-        userSetColor = false;
-        updateColorFieldState();
-        
-        // Track when user changes the color
-        colorInput.addEventListener('change', function() {
-            userSetColor = true;
-            colorInput.setAttribute('name', 'poi-color'); // Include in form submission
-            updateColorFieldState();
-        });
-        
-        // Also track input events for real-time changes
-        colorInput.addEventListener('input', function() {
-            if (!userSetColor) {
-                userSetColor = true;
-                colorInput.setAttribute('name', 'poi-color');
-                updateColorFieldState();
-            }
-        });
-    }
-});
