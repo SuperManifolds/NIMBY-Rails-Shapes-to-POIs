@@ -7,6 +7,7 @@ import (
 
 type KMLReader struct {
 	InterpolateDistance float64
+	LabelInterval       float64
 }
 
 func (k *KMLReader) ParseFile(filePath string) (*poi.List, error) {
@@ -28,28 +29,72 @@ func (k *KMLReader) ParseFileWithFullConfig(filePath string, maxLod int32, color
 	if kmlData.Document != nil {
 		placemarks := kmlData.Document.AllPlacemarks()
 		for _, placemark := range placemarks {
-			k.processPlacemark(&placemark, &poiList, maxLod, color)
+			k.processPlacemark(&placemark, kmlData.Document, &poiList, maxLod, color)
 		}
 	}
 
 	return &poiList, nil
 }
 
-func (k *KMLReader) processPlacemark(placemark *kml.Placemark, poiList *poi.List, maxLod int32, color string) {
+func (k *KMLReader) GetTitle(filePath string) (string, error) {
+	kmlData, err := kml.ParseFile(filePath)
+	if err != nil {
+		return "", err
+	}
+
+	if kmlData.Document != nil {
+		// First try to get a name from the first placemark (any geometry type)
+		// Cache the result to avoid duplicate computation
+		placemarks := kmlData.Document.AllPlacemarks()
+		for _, placemark := range placemarks {
+			if placemark.Name != "" {
+				return placemark.Name, nil
+			}
+		}
+
+		// Fall back to document name if no placemark names found
+		if kmlData.Document.Name != "" {
+			return kmlData.Document.Name, nil
+		}
+	}
+
+	return "", nil
+}
+
+// resolveColor determines the final color to use for a geometry element
+// by checking override color first, then extracting from style, then falling back to default
+func (k *KMLReader) resolveColor(overrideColor string, placemark *kml.Placemark, document *kml.Document, geometryType string) string {
+	if overrideColor != "" {
+		return overrideColor
+	}
+
+	extractedColor := k.getColorForGeometry(placemark, document, geometryType)
+	if extractedColor != "" {
+		return extractedColor
+	}
+
+	return defaultColor
+}
+
+func (k *KMLReader) processPlacemark(placemark *kml.Placemark, document *kml.Document, poiList *poi.List, maxLod int32, color string) {
 	if placemark.Point != nil {
-		k.processPoint(placemark.Point, poiList, maxLod, color)
+		actualColor := k.resolveColor(color, placemark, document, "Point")
+		k.processPoint(placemark.Point, poiList, maxLod, actualColor)
 	}
 	if placemark.LineString != nil {
-		k.processLineString(placemark.LineString, poiList, maxLod, color)
+		actualColor := k.resolveColor(color, placemark, document, "LineString")
+		k.processLineString(placemark.LineString, placemark.Name, poiList, maxLod, actualColor)
 	}
 	if placemark.LinearRing != nil {
-		k.processLinearRing(placemark.LinearRing, poiList, maxLod, color)
+		actualColor := k.resolveColor(color, placemark, document, "LinearRing")
+		k.processLinearRing(placemark.LinearRing, poiList, maxLod, actualColor)
 	}
 	if placemark.Polygon != nil {
-		k.processPolygon(placemark.Polygon, poiList, maxLod, color)
+		actualColor := k.resolveColor(color, placemark, document, "Polygon")
+		k.processPolygon(placemark.Polygon, poiList, maxLod, actualColor)
 	}
 	if placemark.MultiGeometry != nil {
-		k.processMultiGeometry(placemark.MultiGeometry, poiList, maxLod, color)
+		k.processMultiGeometry(placemark.MultiGeometry, document, placemark, poiList, maxLod, color)
 	}
 }
 
@@ -57,6 +102,10 @@ func (k *KMLReader) processPoint(point *kml.Point, poiList *poi.List, maxLod int
 	coords, err := kml.ParseCoordinates(point.Coordinates)
 	if err != nil {
 		return
+	}
+
+	if color == "" {
+		color = defaultColor
 	}
 
 	for _, coord := range coords {
@@ -75,10 +124,14 @@ func (k *KMLReader) processPoint(point *kml.Point, poiList *poi.List, maxLod int
 	}
 }
 
-func (k *KMLReader) processLineString(lineString *kml.LineString, poiList *poi.List, maxLod int32, color string) {
+func (k *KMLReader) processLineString(lineString *kml.LineString, placemarkName string, poiList *poi.List, maxLod int32, color string) {
 	coords, err := kml.ParseCoordinates(lineString.Coordinates)
 	if err != nil {
 		return
+	}
+
+	if color == "" {
+		color = defaultColor
 	}
 
 	// Create temporary list for this line string
@@ -104,6 +157,11 @@ func (k *KMLReader) processLineString(lineString *kml.LineString, poiList *poi.L
 		tempList = *interpolated
 	}
 
+	// Add labels at intervals if configured
+	if k.LabelInterval > 0 && placemarkName != "" {
+		tempList.AddLabelsAtInterval(k.LabelInterval, placemarkName)
+	}
+
 	// Add all points (interpolated or not) to the main list
 	for _, p := range tempList {
 		poiList.Add(p)
@@ -114,6 +172,10 @@ func (k *KMLReader) processLinearRing(linearRing *kml.LinearRing, poiList *poi.L
 	coords, err := kml.ParseCoordinates(linearRing.Coordinates)
 	if err != nil {
 		return
+	}
+
+	if color == "" {
+		color = defaultColor
 	}
 
 	// LinearRing is a closed geometry - remove the duplicate closing point to avoid
@@ -157,21 +219,36 @@ func (k *KMLReader) processPolygon(polygon *kml.Polygon, poiList *poi.List, maxL
 	}
 }
 
-func (k *KMLReader) processMultiGeometry(multiGeometry *kml.MultiGeometry, poiList *poi.List, maxLod int32, color string) {
+func (k *KMLReader) processMultiGeometry(multiGeometry *kml.MultiGeometry, document *kml.Document, placemark *kml.Placemark, poiList *poi.List, maxLod int32, color string) {
 	for _, point := range multiGeometry.Points {
-		k.processPoint(&point, poiList, maxLod, color)
+		actualColor := k.resolveColor(color, placemark, document, "Point")
+		k.processPoint(&point, poiList, maxLod, actualColor)
 	}
 	for _, lineString := range multiGeometry.LineStrings {
-		k.processLineString(&lineString, poiList, maxLod, color)
+		actualColor := k.resolveColor(color, placemark, document, "LineString")
+		k.processLineString(&lineString, placemark.Name, poiList, maxLod, actualColor)
 	}
 	for _, linearRing := range multiGeometry.LinearRings {
-		k.processLinearRing(&linearRing, poiList, maxLod, color)
+		actualColor := k.resolveColor(color, placemark, document, "LinearRing")
+		k.processLinearRing(&linearRing, poiList, maxLod, actualColor)
 	}
 	for _, polygon := range multiGeometry.Polygons {
-		k.processPolygon(&polygon, poiList, maxLod, color)
+		actualColor := k.resolveColor(color, placemark, document, "Polygon")
+		k.processPolygon(&polygon, poiList, maxLod, actualColor)
 	}
 	// Handle nested MultiGeometry
 	for _, nestedMultiGeometry := range multiGeometry.MultiGeometries {
-		k.processMultiGeometry(&nestedMultiGeometry, poiList, maxLod, color)
+		k.processMultiGeometry(&nestedMultiGeometry, document, placemark, poiList, maxLod, color)
 	}
+}
+
+// getColorForGeometry extracts color from KML placemark style
+func (k *KMLReader) getColorForGeometry(placemark *kml.Placemark, document *kml.Document, geometryType string) string {
+	// Try to get color from placemark style
+	if style := document.GetStyleForPlacemark(placemark); style != nil {
+		return kml.GetColorFromStyle(style, geometryType)
+	}
+
+	// Return empty string if no color found
+	return ""
 }

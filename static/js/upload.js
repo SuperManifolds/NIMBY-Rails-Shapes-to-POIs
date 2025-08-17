@@ -42,8 +42,9 @@ function updateFileList() {
     }
 }
 
-// Initialize file input click handler
+// Initialize all DOM elements and event handlers
 document.addEventListener('DOMContentLoaded', function() {
+    // File input click handler
     const uploadClickArea = document.querySelector('.upload-click-area');
     if (uploadClickArea) {
         uploadClickArea.addEventListener('click', function() {
@@ -67,6 +68,41 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize button state
     updateFileList();
+
+    // Max LOD slider interaction
+    const slider = document.getElementById('max-lod');
+    const valueDisplay = document.getElementById('max-lod-value');
+    
+    if (slider && valueDisplay) {
+        slider.addEventListener('input', function() {
+            valueDisplay.textContent = this.value;
+        });
+    }
+
+    // Color field behavior initialization
+    const colorInput = document.getElementById('poi-color');
+    if (colorInput) {
+        // Initially, no color is set
+        colorInput.removeAttribute('name');
+        ColorFieldManager.setUserSetColor(false);
+        ColorFieldManager.updateColorFieldState();
+        
+        // Track when user changes the color
+        colorInput.addEventListener('change', function() {
+            ColorFieldManager.setUserSetColor(true);
+            colorInput.setAttribute('name', 'poi-color'); // Include in form submission
+            ColorFieldManager.updateColorFieldState();
+        });
+        
+        // Also track input events for real-time changes
+        colorInput.addEventListener('input', function() {
+            if (!ColorFieldManager.getUserSetColor()) {
+                ColorFieldManager.setUserSetColor(true);
+                colorInput.setAttribute('name', 'poi-color');
+                ColorFieldManager.updateColorFieldState();
+            }
+        });
+    }
 });
 
 // HTMX event handling for loading spinners and form validation
@@ -96,14 +132,55 @@ document.body.addEventListener('htmx:afterRequest', function(e) {
     }
 });
 
-// Max LOD slider interaction
-document.addEventListener('DOMContentLoaded', function() {
-    const slider = document.getElementById('max-lod');
-    const valueDisplay = document.getElementById('max-lod-value');
+
+// Color field management module
+const ColorFieldManager = (function() {
+    let userSetColor = false;
     
-    if (slider && valueDisplay) {
-        slider.addEventListener('input', function() {
-            valueDisplay.textContent = this.value;
-        });
+    function clearColorField() {
+        const colorInput = document.getElementById('poi-color');
+        if (colorInput) {
+            colorInput.removeAttribute('name'); // Remove from form submission
+            colorInput.value = '#000000'; // Reset to default display
+            userSetColor = false;
+            updateColorFieldState();
+        }
     }
-});
+    
+    function updateColorFieldState() {
+        const colorInput = document.getElementById('poi-color');
+        const clearBtn = document.querySelector('.clear-color-btn');
+        
+        if (colorInput && clearBtn) {
+            if (userSetColor) {
+                colorInput.style.opacity = '1';
+                clearBtn.style.display = 'flex';
+            } else {
+                colorInput.style.opacity = '0.5';
+                clearBtn.style.display = 'none';
+            }
+        }
+    }
+    
+    function setUserSetColor(value) {
+        userSetColor = value;
+    }
+    
+    function getUserSetColor() {
+        return userSetColor;
+    }
+    
+    // Expose public methods
+    return {
+        clearColorField: clearColorField,
+        updateColorFieldState: updateColorFieldState,
+        setUserSetColor: setUserSetColor,
+        getUserSetColor: getUserSetColor
+    };
+})();
+
+// Expose clearColorField globally for onclick handler
+function clearColorField() {
+    ColorFieldManager.clearColorField();
+}
+

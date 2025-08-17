@@ -254,3 +254,115 @@ func (f *Folder) AllPlacemarks() []Placemark {
 
 	return placemarks
 }
+
+// GetStyleByID finds a style by its ID in the document
+func (d *Document) GetStyleByID(styleID string) *Style {
+	// Remove # prefix if present
+	styleID = strings.TrimPrefix(styleID, "#")
+
+	for i := range d.Styles {
+		if d.Styles[i].ID == styleID {
+			return &d.Styles[i]
+		}
+	}
+	return nil
+}
+
+// GetStyleForPlacemark returns the appropriate style for a placemark
+func (d *Document) GetStyleForPlacemark(placemark *Placemark) *Style {
+	if placemark.StyleURL == "" {
+		return nil
+	}
+
+	// First try to get it as a direct style
+	if style := d.GetStyleByID(placemark.StyleURL); style != nil {
+		return style
+	}
+
+	// Check if it's a StyleMap
+	styleMap := d.GetStyleMapByID(placemark.StyleURL)
+	if styleMap != nil {
+		// Use the normal style from the StyleMap
+		for _, pair := range styleMap.Pairs {
+			if pair.Key == "normal" {
+				return d.GetStyleByID(pair.StyleURL)
+			}
+		}
+	}
+
+	return nil
+}
+
+// GetStyleMapByID finds a StyleMap by its ID
+func (d *Document) GetStyleMapByID(styleID string) *StyleMap {
+	// Remove # prefix if present
+	styleID = strings.TrimPrefix(styleID, "#")
+
+	for i := range d.StyleMaps {
+		if d.StyleMaps[i].ID == styleID {
+			return &d.StyleMaps[i]
+		}
+	}
+	return nil
+}
+
+// GetColorFromStyle extracts color from a style based on geometry type
+func GetColorFromStyle(style *Style, geometryType string) string {
+	if style == nil {
+		return ""
+	}
+
+	switch geometryType {
+	case "Point":
+		if style.IconStyle != nil && style.IconStyle.Color != "" {
+			return ConvertKMLColorToNimby(style.IconStyle.Color)
+		}
+	case "LineString", "LinearRing":
+		if style.LineStyle != nil && style.LineStyle.Color != "" {
+			return ConvertKMLColorToNimby(style.LineStyle.Color)
+		}
+	case "Polygon":
+		if style.PolyStyle != nil && style.PolyStyle.Color != "" {
+			return ConvertKMLColorToNimby(style.PolyStyle.Color)
+		}
+		// Fallback to line style for polygon outline
+		if style.LineStyle != nil && style.LineStyle.Color != "" {
+			return ConvertKMLColorToNimby(style.LineStyle.Color)
+		}
+	}
+
+	return ""
+}
+
+// ConvertKMLColorToNimby converts KML color format to NIMBY Rails color format.
+//
+// KML uses an 8-character color format: aabbggrr (alpha, blue, green, red)
+// NIMBY Rails uses a 6-character color format: rrggbb (red, green, blue, no alpha)
+//
+// The function extracts the RGB components from the KML color and reorders them
+// for NIMBY Rails compatibility, discarding the alpha channel.
+//
+// Parameters:
+//   - kmlColor: 8-character hex string in KML format (aabbggrr)
+//
+// Returns:
+//   - 6-character hex string in NIMBY format (rrggbb), or empty string if input is invalid
+//
+// Examples:
+//   - "ff0000ff" (opaque red in KML) -> "ff0000" (red in NIMBY)
+//   - "ffff0000" (opaque blue in KML) -> "0000ff" (blue in NIMBY)
+//   - "ff00ff00" (opaque green in KML) -> "00ff00" (green in NIMBY)
+//   - "8000ffff" (semi-transparent yellow in KML) -> "ffff00" (yellow in NIMBY, alpha discarded)
+func ConvertKMLColorToNimby(kmlColor string) string {
+	if len(kmlColor) != 8 {
+		return ""
+	}
+
+	// KML format: aabbggrr
+	// NIMBY format: rrggbb (no alpha)
+	bb := kmlColor[2:4] // blue
+	gg := kmlColor[4:6] // green
+	rr := kmlColor[6:8] // red
+
+	return rr + gg + bb
+}

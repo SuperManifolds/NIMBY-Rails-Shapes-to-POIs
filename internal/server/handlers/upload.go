@@ -68,6 +68,14 @@ func (h *UploadHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	// Parse label interval distance
+	var labelInterval float64
+	if intervalStr := r.FormValue("label-interval"); intervalStr != "" {
+		if interval, err := strconv.ParseFloat(intervalStr, 64); err == nil && interval > 0 {
+			labelInterval = interval
+		}
+	}
+
 	// Parse max LOD value
 	var maxLod int32 // Default to 0 (close zoom only)
 	if maxLodStr := r.FormValue("max-lod"); maxLodStr != "" {
@@ -76,14 +84,22 @@ func (h *UploadHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Parse color value
+	// Parse color value - empty means use original colors from files
 	poiColor := r.FormValue("poi-color")
-	if poiColor == "" {
-		poiColor = "#0000ff" // Default to blue
+	// Convert hex color to NIMBY format if provided, otherwise leave empty
+	if poiColor != "" {
+		poiColor = geometry.HexToNimbyColor(poiColor)
 	}
 
 	// Process uploaded files
-	result, err := h.processUploadedFiles(r.Context(), files, outputName, interpolateDistance, maxLod, poiColor)
+	config := ProcessConfig{
+		OutputName:          outputName,
+		InterpolateDistance: interpolateDistance,
+		LabelInterval:       labelInterval,
+		MaxLod:              maxLod,
+		POIColor:            poiColor,
+	}
+	result, err := h.processUploadedFiles(r.Context(), files, config)
 	if err != nil {
 		h.logger.ErrorContext(r.Context(), "Failed to process uploaded files", "error", err)
 		h.renderError(w, r, "Failed to process uploaded files: "+err.Error())
@@ -103,6 +119,7 @@ func (h *UploadHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		len(*result.POIList),
 		result.DownloadPath,
 		previewPath,
+		result.Entries,
 	)
 
 	if err := component.Render(r.Context(), w); err != nil {
@@ -111,14 +128,23 @@ func (h *UploadHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+type ProcessConfig struct {
+	OutputName          string
+	InterpolateDistance float64
+	LabelInterval       float64
+	MaxLod              int32
+	POIColor            string
+}
+
 type ProcessResult struct {
 	POIList      *poi.List
 	ModName      string
 	DownloadPath string
 	OutputPath   string
+	Entries      []mod.FileEntry
 }
 
-func (h *UploadHandler) processUploadedFiles(ctx context.Context, files []*multipart.FileHeader, outputName string, interpolateDistance float64, maxLod int32, poiColor string) (*ProcessResult, error) {
+func (h *UploadHandler) processUploadedFiles(ctx context.Context, files []*multipart.FileHeader, config ProcessConfig) (*ProcessResult, error) {
 	// Create temporary directory for uploaded files
 	tempDir, err := os.MkdirTemp("", "shapetopoi-upload-*")
 	if err != nil {
@@ -133,49 +159,75 @@ func (h *UploadHandler) processUploadedFiles(ctx context.Context, files []*multi
 		}
 	}
 
-	// Process files
-	combinedPOIList := make(poi.List, 0)
+	// Process files individually to create separate TSV entries
+	var entries []mod.FileEntry
+	combinedPOIList := make(poi.List, 0) // Keep for preview generation
 
 	for _, inputFile := range inputFiles {
 		h.logger.InfoContext(ctx, "Processing uploaded file", "path", inputFile)
 
-		// Create reader with interpolation distance
-		reader, err := geometry.GetReaderWithInterpolation(inputFile, interpolateDistance)
+		// Create reader with interpolation distance and label interval
+		reader, err := geometry.GetReaderWithConfig(inputFile, config.InterpolateDistance, config.LabelInterval)
 		if err != nil {
 			h.logger.ErrorContext(ctx, "Error getting reader for file", "path", inputFile, "error", err)
 			continue
 		}
 
-		// Convert hex color to NIMBY format
-		nimbyColor := geometry.HexToNimbyColor(poiColor)
-		poiList, err := reader.ParseFileWithFullConfig(inputFile, maxLod, nimbyColor)
+		// Convert hex color to NIMBY format only if color override is provided
+		var nimbyColor string
+		if config.POIColor != "" {
+			nimbyColor = geometry.HexToNimbyColor(config.POIColor)
+		}
+		poiList, err := reader.ParseFileWithFullConfig(inputFile, config.MaxLod, nimbyColor)
 		if err != nil {
 			h.logger.ErrorContext(ctx, "Error parsing file", "path", inputFile, "error", err)
 			continue
 		}
 
-		combinedPOIList = append(combinedPOIList, *poiList...)
-		h.logger.InfoContext(ctx, "Added POIs from file", "count", len(*poiList), "path", inputFile)
+		if len(*poiList) > 0 {
+			// Generate TSV filename based on the input file name
+			base := filepath.Base(inputFile)
+			ext := filepath.Ext(base)
+			nameWithoutExt := strings.TrimSuffix(base, ext)
+			tsvFileName := nameWithoutExt + ".tsv"
+
+			// Extract title from file if available, fallback to clean filename
+			var title string
+			if extractedTitle, err := reader.GetTitle(inputFile); err == nil && extractedTitle != "" {
+				title = extractedTitle
+			} else {
+				// Use filename without extension as fallback
+				title = nameWithoutExt
+			}
+
+			entry := mod.FileEntry{
+				TSVFileName: tsvFileName,
+				POIList:     *poiList,
+				SourceFile:  inputFile,
+				Title:       title,
+			}
+			entries = append(entries, entry)
+
+			// Add to combined list for preview
+			combinedPOIList = append(combinedPOIList, *poiList...)
+			h.logger.InfoContext(ctx, "Added POIs from file", "count", len(*poiList), "path", inputFile, "tsv", tsvFileName)
+		}
 	}
 
-	if len(combinedPOIList) == 0 {
+	if len(entries) == 0 {
 		return nil, errors.New("no POIs extracted from uploaded files")
 	}
 
-	// Note: Interpolation is now done during parsing for each line segment
-
 	// Generate output file
-	outputPath := filepath.Join(os.TempDir(), outputName+"-"+generateTimestamp()+".zip")
-	tsvFileName := outputName + ".tsv"
+	outputPath := filepath.Join(os.TempDir(), config.OutputName+"-"+generateTimestamp()+".zip")
 
-	config := mod.Config{
-		OutputPath:  outputPath,
-		TSVFileName: tsvFileName,
+	modConfig := mod.Config{
+		OutputPath: outputPath,
 	}
 
-	modContent := mod.GenerateDefaultContent(outputName, tsvFileName)
+	modContent := mod.GenerateDefaultContent(config.OutputName, entries)
 
-	if err := mod.CreateZip(config, combinedPOIList, modContent); err != nil {
+	if err := mod.CreateZip(modConfig, entries, modContent); err != nil {
 		return nil, fmt.Errorf("failed to create mod zip: %w", err)
 	}
 
@@ -183,9 +235,10 @@ func (h *UploadHandler) processUploadedFiles(ctx context.Context, files []*multi
 
 	return &ProcessResult{
 		POIList:      &combinedPOIList,
-		ModName:      outputName,
+		ModName:      config.OutputName,
 		DownloadPath: downloadPath,
 		OutputPath:   outputPath,
+		Entries:      entries,
 	}, nil
 }
 

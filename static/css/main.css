@@ -106,6 +106,50 @@ body {
     background: linear-gradient(135deg, #6b7280, #4b5563);
 }
 
+.color-input-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.color-input-container input[type="color"] {
+    width: 60px;
+    height: 40px;
+    padding: 0;
+    border: 2px solid var(--border-primary);
+    border-radius: 8px;
+    cursor: pointer;
+    background: none;
+}
+
+.clear-color-btn {
+    width: 24px;
+    height: 24px;
+    border: 1px solid var(--border-primary);
+    border-radius: 50%;
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.clear-color-btn:hover {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border-color: var(--border-focus);
+    transform: scale(1.1);
+}
+
+.clear-color-btn[style*="display: none"] {
+    display: none !important;
+}
+
 .form-group {
     margin: 20px 0;
 }

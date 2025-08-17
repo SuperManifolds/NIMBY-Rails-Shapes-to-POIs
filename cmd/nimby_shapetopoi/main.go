@@ -14,7 +14,6 @@ import (
 
 	"github.com/supermanifolds/nimby_shapetopoi/internal/geometry"
 	"github.com/supermanifolds/nimby_shapetopoi/internal/mod"
-	"github.com/supermanifolds/nimby_shapetopoi/internal/poi"
 	"github.com/supermanifolds/nimby_shapetopoi/internal/server"
 )
 
@@ -66,18 +65,15 @@ func main() {
 		outputPath = strings.TrimSuffix(outputPath, filepath.Ext(outputPath)) + ".zip"
 	}
 
-	// Generate TSV filename based on the output zip name
-	tsvFileName := strings.TrimSuffix(filepath.Base(outputPath), ".zip") + ".tsv"
-
-	// Process all input files (with interpolation if requested)
-	poiList, err := processInputFiles(ctx, logger, inputFiles, interpolateDistance)
+	// Process input files individually (with interpolation if requested)
+	entries, err := processInputFilesIndividually(ctx, logger, inputFiles, interpolateDistance)
 	if err != nil {
 		logger.ErrorContext(ctx, "Fatal error", "error", err)
 		os.Exit(1)
 	}
 
 	// Prepare mod content
-	modContent, err := prepareModContent(modFilePath, outputPath, tsvFileName)
+	modContent, err := prepareModContentMultiple(modFilePath, outputPath, entries)
 	if err != nil {
 		logger.ErrorContext(ctx, "Fatal error", "error", err)
 		os.Exit(1)
@@ -85,17 +81,20 @@ func main() {
 
 	// Create the mod zip
 	config := mod.Config{
-		OutputPath:  outputPath,
-		TSVFileName: tsvFileName,
+		OutputPath: outputPath,
 	}
 
-	err = mod.CreateZip(config, *poiList, modContent)
+	err = mod.CreateZip(config, entries, modContent)
 	if err != nil {
 		logger.ErrorContext(ctx, "Failed to create mod zip", "error", err)
 		os.Exit(1)
 	}
 
-	logger.InfoContext(ctx, "Successfully created mod file", "path", outputPath, "poi_count", len(*poiList))
+	totalPOIs := 0
+	for _, entry := range entries {
+		totalPOIs += len(entry.POIList)
+	}
+	logger.InfoContext(ctx, "Successfully created mod file", "path", outputPath, "files", len(entries), "total_pois", totalPOIs)
 }
 
 func printUsage() {
@@ -126,14 +125,14 @@ func generateOutputPath(inputFiles []string) string {
 	return "combined_mod.zip"
 }
 
-func processInputFiles(ctx context.Context, logger *slog.Logger, inputFiles []string, interpolateDistance float64) (*poi.List, error) {
-	combinedPOIList := make(poi.List, 0)
+func processInputFilesIndividually(ctx context.Context, logger *slog.Logger, inputFiles []string, interpolateDistance float64) ([]mod.FileEntry, error) {
+	var entries []mod.FileEntry
 
 	for _, inputFile := range inputFiles {
 		logger.InfoContext(ctx, "Processing file", "path", inputFile)
 
-		// Create reader with interpolation distance
-		reader, err := geometry.GetReaderWithInterpolation(inputFile, interpolateDistance)
+		// Create reader with interpolation distance (no labels in CLI mode)
+		reader, err := geometry.GetReaderWithConfig(inputFile, interpolateDistance, 0)
 		if err != nil {
 			logger.ErrorContext(ctx, "Error getting reader for file", "path", inputFile, "error", err)
 			continue
@@ -145,31 +144,44 @@ func processInputFiles(ctx context.Context, logger *slog.Logger, inputFiles []st
 			continue
 		}
 
-		combinedPOIList = append(combinedPOIList, *poiList...)
-		logger.InfoContext(ctx, "Added POIs from file", "count", len(*poiList), "path", inputFile)
+		if len(*poiList) > 0 {
+			// Generate TSV filename based on the input file name
+			base := filepath.Base(inputFile)
+			ext := filepath.Ext(base)
+			nameWithoutExt := strings.TrimSuffix(base, ext)
+			tsvFileName := nameWithoutExt + ".tsv"
+
+			entry := mod.FileEntry{
+				TSVFileName: tsvFileName,
+				POIList:     *poiList,
+				SourceFile:  inputFile,
+			}
+			entries = append(entries, entry)
+			logger.InfoContext(ctx, "Added POIs from file", "count", len(*poiList), "path", inputFile, "tsv", tsvFileName)
+		}
 	}
 
-	if len(combinedPOIList) == 0 {
+	if len(entries) == 0 {
 		return nil, errors.New("no POIs extracted from any input files")
 	}
 
-	return &combinedPOIList, nil
+	return entries, nil
 }
 
-func prepareModContent(modFilePath, outputPath, tsvFileName string) (string, error) {
+func prepareModContentMultiple(modFilePath, outputPath string, entries []mod.FileEntry) (string, error) {
 	if modFilePath != "" {
 		// Read custom mod.txt file
 		content, err := os.ReadFile(modFilePath)
 		if err != nil {
 			return "", fmt.Errorf("failed to read mod file %s: %w", modFilePath, err)
 		}
-		// Update the TSV reference in the mod content
-		return mod.UpdateTSVReference(string(content), tsvFileName), nil
+		// Update the TSV references in the mod content
+		return mod.UpdateTSVReferences(string(content), entries), nil
 	}
 
 	// Generate default mod.txt content
 	modName := strings.TrimSuffix(filepath.Base(outputPath), ".zip")
-	return mod.GenerateDefaultContent(modName, tsvFileName), nil
+	return mod.GenerateDefaultContent(modName, entries), nil
 }
 
 func startWebServer(ctx context.Context, logger *slog.Logger, port string) {

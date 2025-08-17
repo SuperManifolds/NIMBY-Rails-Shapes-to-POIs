@@ -3,6 +3,8 @@ package geometry
 import (
 	"os"
 	"testing"
+
+	"github.com/jonas-p/go-shp"
 )
 
 func TestShapefileReader_ParseFile_NonExistentFile(t *testing.T) {
@@ -11,6 +13,45 @@ func TestShapefileReader_ParseFile_NonExistentFile(t *testing.T) {
 
 	if err == nil {
 		t.Error("Expected error for nonexistent file, but got none")
+	}
+}
+
+func TestShapefileReader_GetTitle_ActualTestFile(t *testing.T) {
+	// Test with actual test file if it exists
+	testFile := "../../testdata/line.shp"
+	if _, err := os.Stat(testFile); os.IsNotExist(err) {
+		t.Skip("Test shapefile not found, skipping")
+		return
+	}
+
+	reader := &ShapefileReader{}
+	title, err := reader.GetTitle(testFile)
+
+	if err != nil {
+		t.Fatalf("GetTitle returned error for actual test file: %v", err)
+	}
+
+	t.Logf("Title extracted from line.shp: '%s'", title)
+
+	// Debug: Log what fields are available in the shapefile
+	// This will help us understand the structure for debugging
+	shapefile, err := shp.Open(testFile)
+	if err == nil {
+		defer shapefile.Close()
+		fields := shapefile.Fields()
+		t.Logf("Available fields in line.shp:")
+		for i, field := range fields {
+			t.Logf("  Field %d: %s", i, field.String())
+		}
+
+		// Try to read the first record to see what data looks like
+		if shapefile.Next() {
+			t.Logf("First record values:")
+			for i := range fields {
+				value := shapefile.ReadAttribute(0, i)
+				t.Logf("  Field %d value: '%s'", i, value)
+			}
+		}
 	}
 }
 

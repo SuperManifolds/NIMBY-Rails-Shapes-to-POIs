@@ -36,8 +36,13 @@ templ Home() {
 					</div>
 					<div class="form-group">
 						<label for="interpolate-distance">Point Interpolation Distance (optional)</label>
-						<input type="number" id="interpolate-distance" name="interpolate-distance" placeholder="500" min="1" max="10000" step="1"/>
+						<input type="number" id="interpolate-distance" name="interpolate-distance" placeholder="50" min="1" max="10000" step="1"/>
 						<small>Add extra points along lines if segments are longer than this distance (meters). Leave empty to disable.</small>
+					</div>
+					<div class="form-group">
+						<label for="label-interval">Label Interval Distance (optional)</label>
+						<input type="number" id="label-interval" name="label-interval" placeholder="1000" min="100" max="50000" step="100"/>
+						<small>Add name labels at regular intervals along lines (meters). Leave empty to disable labeling.</small>
 					</div>
 					<div class="form-group">
 						<label for="max-lod">Max Zoom Level</label>
@@ -50,9 +55,12 @@ templ Home() {
 						<small>Controls at what zoom level POIs disappear. 0 = only visible when zoomed in close, 10 = always visible.</small>
 					</div>
 					<div class="form-group">
-						<label for="poi-color">POI Color</label>
-						<input type="color" id="poi-color" name="poi-color" value="#0000ff"/>
-						<small>Color for POIs in the generated mod.</small>
+						<label for="poi-color">POI Color Override (optional)</label>
+						<div class="color-input-container">
+							<input type="color" id="poi-color" name="poi-color"/>
+							<button type="button" onclick="clearColorField()" class="clear-color-btn" title="Clear color to use original colors">✕</button>
+						</div>
+						<small>Override all POI colors with this color. Leave empty to use original colors from the source files.</small>
 					</div>
 					<button type="submit" class="btn" id="submit-button">
 						<span id="upload-spinner" class="spinner hidden"></span>
@@ -68,6 +76,11 @@ templ Home() {
 			<h3>About</h3>
 			<p>This tool converts geographic data files into NIMBY Rails mod files containing Points of Interest (POI).</p>
 			<p><strong>Supported formats:</strong> Shapefiles (.shp), KML (.kml), KMZ (.kmz)</p>
+			<p><strong>Links:</strong> 
+				<a href="https://github.com/supermanifolds/nimby_shapetopoi" target="_blank" rel="noopener noreferrer" style="color: #3b82f6; text-decoration: none;">GitHub Repository</a> • 
+				<a href="https://github.com/supermanifolds/nimby_shapetopoi/issues" target="_blank" rel="noopener noreferrer" style="color: #3b82f6; text-decoration: none;">Report Issues</a> • 
+				<a href="https://github.com/supermanifolds/nimby_shapetopoi/releases" target="_blank" rel="noopener noreferrer" style="color: #3b82f6; text-decoration: none;">Changelog</a>
+			</p>
 			<hr style="margin: 20px 0; border: none; border-top: 1px solid #e5e7eb;"/>
 			<p style="text-align: center; color: #6b7280; font-size: 14px;">
 				Created by <a href="https://github.com/supermanifolds" target="_blank" rel="noopener noreferrer" style="color: #3b82f6; text-decoration: none;">Alex Sørlie (SuperManifolds)</a>

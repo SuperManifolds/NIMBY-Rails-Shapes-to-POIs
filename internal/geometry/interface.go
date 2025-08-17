@@ -21,38 +21,53 @@ type Reader interface {
 	ParseFile(filePath string) (*poi.List, error)
 	ParseFileWithConfig(filePath string, maxLod int32) (*poi.List, error)
 	ParseFileWithFullConfig(filePath string, maxLod int32, color string) (*poi.List, error)
+	GetTitle(filePath string) (string, error)
 }
 
-// HexToNimbyColor converts a hex color string (#RRGGBB) to NIMBY color format (RRGGBB)
+// HexToNimbyColor converts a hex color string (#RRGGBB or RRGGBB) to NIMBY color format (RRGGBB)
 func HexToNimbyColor(hexColor string) string {
 	// Remove # if present
 	hexColor = strings.TrimPrefix(hexColor, "#")
+	hexColor = strings.ToUpper(hexColor)
 
-	// Default to blue if invalid
-	if len(hexColor) != 6 {
+	// Handle different color formats
+	switch len(hexColor) {
+	case 6:
+		// Standard RGB format - validate and return
+		if _, err := strconv.ParseUint(hexColor, 16, 32); err != nil {
+			return defaultColor
+		}
+		return hexColor
+	case 8:
+		// RRGGBBAA format - strip alpha and return RGB
+		rgbPart := hexColor[:6]
+		if _, err := strconv.ParseUint(rgbPart, 16, 32); err != nil {
+			return defaultColor
+		}
+		return rgbPart
+	default:
+		// Invalid format
 		return defaultColor
 	}
-
-	// Validate it's a valid hex color
-	if _, err := strconv.ParseUint(hexColor, 16, 32); err != nil {
-		return defaultColor
-	}
-
-	// Return as standard 6-character hex color
-	return hexColor
 }
 
 func GetReader(filePath string) (Reader, error) {
-	return GetReaderWithInterpolation(filePath, 0)
+	return GetReaderWithConfig(filePath, 0, 0)
 }
 
-func GetReaderWithInterpolation(filePath string, interpolateDistance float64) (Reader, error) {
+func GetReaderWithConfig(filePath string, interpolateDistance float64, labelInterval float64) (Reader, error) {
 	ext := strings.ToLower(filepath.Ext(filePath))
 	switch ext {
 	case ".shp":
-		return &ShapefileReader{InterpolateDistance: interpolateDistance}, nil
+		return &ShapefileReader{
+			InterpolateDistance: interpolateDistance,
+			LabelInterval:       labelInterval,
+		}, nil
 	case ".kml", ".kmz":
-		return &KMLReader{InterpolateDistance: interpolateDistance}, nil
+		return &KMLReader{
+			InterpolateDistance: interpolateDistance,
+			LabelInterval:       labelInterval,
+		}, nil
 	default:
 		return nil, fmt.Errorf("unsupported file format: %s", ext)
 	}

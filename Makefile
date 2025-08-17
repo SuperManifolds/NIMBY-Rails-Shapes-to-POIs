@@ -1,11 +1,13 @@
-.PHONY: build clean test install
+.PHONY: build clean test install run
 
 # Build the application
 build:
+	templ generate
 	go build -o bin/nimby_shapetopoi ./cmd/nimby_shapetopoi
 
 # Build for multiple platforms
 build-all:
+	templ generate
 	GOOS=windows GOARCH=amd64 go build -o bin/nimby_shapetopoi-windows-amd64.exe ./cmd/nimby_shapetopoi
 	GOOS=darwin GOARCH=amd64 go build -o bin/nimby_shapetopoi-darwin-amd64 ./cmd/nimby_shapetopoi
 	GOOS=darwin GOARCH=arm64 go build -o bin/nimby_shapetopoi-darwin-arm64 ./cmd/nimby_shapetopoi
@@ -61,4 +63,9 @@ lint-fix:
 
 # Development build (with race detector)
 build-dev:
+	templ generate
 	go build -race -o bin/nimby_shapetopoi-dev ./cmd/nimby_shapetopoi
+
+# Run the web server
+run:
+	go run ./cmd/nimby_shapetopoi --server --port 8000
