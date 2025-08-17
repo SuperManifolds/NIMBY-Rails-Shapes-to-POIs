@@ -76,10 +76,11 @@ func (h *UploadHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Parse color value
+	// Parse color value - empty means use original colors from files
 	poiColor := r.FormValue("poi-color")
-	if poiColor == "" {
-		poiColor = "#0000ff" // Default to blue
+	// Convert hex color to NIMBY format if provided, otherwise leave empty
+	if poiColor != "" {
+		poiColor = geometry.HexToNimbyColor(poiColor)
 	}
 
 	// Process uploaded files
@@ -147,8 +148,11 @@ func (h *UploadHandler) processUploadedFiles(ctx context.Context, files []*multi
 			continue
 		}
 
-		// Convert hex color to NIMBY format
-		nimbyColor := geometry.HexToNimbyColor(poiColor)
+		// Convert hex color to NIMBY format only if color override is provided
+		var nimbyColor string
+		if poiColor != "" {
+			nimbyColor = geometry.HexToNimbyColor(poiColor)
+		}
 		poiList, err := reader.ParseFileWithFullConfig(inputFile, maxLod, nimbyColor)
 		if err != nil {
 			h.logger.ErrorContext(ctx, "Error parsing file", "path", inputFile, "error", err)

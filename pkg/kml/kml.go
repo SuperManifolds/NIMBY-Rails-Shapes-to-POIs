@@ -254,3 +254,98 @@ func (f *Folder) AllPlacemarks() []Placemark {
 
 	return placemarks
 }
+
+// GetStyleByID finds a style by its ID in the document
+func (d *Document) GetStyleByID(styleID string) *Style {
+	// Remove # prefix if present
+	styleID = strings.TrimPrefix(styleID, "#")
+
+	for i := range d.Styles {
+		if d.Styles[i].ID == styleID {
+			return &d.Styles[i]
+		}
+	}
+	return nil
+}
+
+// GetStyleForPlacemark returns the appropriate style for a placemark
+func (d *Document) GetStyleForPlacemark(placemark *Placemark) *Style {
+	if placemark.StyleURL == "" {
+		return nil
+	}
+
+	// First try to get it as a direct style
+	if style := d.GetStyleByID(placemark.StyleURL); style != nil {
+		return style
+	}
+
+	// Check if it's a StyleMap
+	styleMap := d.GetStyleMapByID(placemark.StyleURL)
+	if styleMap != nil {
+		// Use the normal style from the StyleMap
+		for _, pair := range styleMap.Pairs {
+			if pair.Key == "normal" {
+				return d.GetStyleByID(pair.StyleURL)
+			}
+		}
+	}
+
+	return nil
+}
+
+// GetStyleMapByID finds a StyleMap by its ID
+func (d *Document) GetStyleMapByID(styleID string) *StyleMap {
+	// Remove # prefix if present
+	styleID = strings.TrimPrefix(styleID, "#")
+
+	for i := range d.StyleMaps {
+		if d.StyleMaps[i].ID == styleID {
+			return &d.StyleMaps[i]
+		}
+	}
+	return nil
+}
+
+// GetColorFromStyle extracts color from a style based on geometry type
+func GetColorFromStyle(style *Style, geometryType string) string {
+	if style == nil {
+		return ""
+	}
+
+	switch geometryType {
+	case "Point":
+		if style.IconStyle != nil && style.IconStyle.Color != "" {
+			return ConvertKMLColorToNimby(style.IconStyle.Color)
+		}
+	case "LineString", "LinearRing":
+		if style.LineStyle != nil && style.LineStyle.Color != "" {
+			return ConvertKMLColorToNimby(style.LineStyle.Color)
+		}
+	case "Polygon":
+		if style.PolyStyle != nil && style.PolyStyle.Color != "" {
+			return ConvertKMLColorToNimby(style.PolyStyle.Color)
+		}
+		// Fallback to line style for polygon outline
+		if style.LineStyle != nil && style.LineStyle.Color != "" {
+			return ConvertKMLColorToNimby(style.LineStyle.Color)
+		}
+	}
+
+	return ""
+}
+
+// ConvertKMLColorToNimby converts KML color format (aabbggrr) to NIMBY format (rrggbbaa)
+func ConvertKMLColorToNimby(kmlColor string) string {
+	if len(kmlColor) != 8 {
+		return ""
+	}
+
+	// KML format: aabbggrr
+	// NIMBY format: rrggbbaa
+	aa := kmlColor[0:2] // alpha
+	bb := kmlColor[2:4] // blue
+	gg := kmlColor[4:6] // green
+	rr := kmlColor[6:8] // red
+
+	return rr + gg + bb + aa
+}

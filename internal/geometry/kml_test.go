@@ -322,7 +322,7 @@ func TestKMLReader_ParseFile_ActualTestFile(t *testing.T) {
 	}
 
 	reader := &KMLReader{}
-	poiList, err := reader.ParseFile(testFile)
+	poiList, err := reader.ParseFileWithFullConfig(testFile, 0, "") // Empty color to use file colors
 
 	if err != nil {
 		t.Fatalf("ParseFile returned error for actual test file: %v", err)
@@ -336,6 +336,30 @@ func TestKMLReader_ParseFile_ActualTestFile(t *testing.T) {
 	expectedCount := 94
 	if len(*poiList) != expectedCount {
 		t.Errorf("Expected %d POIs from depot.kmz, got %d", expectedCount, len(*poiList))
+	}
+
+	// Check color extraction - log what colors we're getting
+	colorCounts := make(map[string]int)
+	for _, poi := range *poiList {
+		colorCounts[poi.Color]++
+	}
+
+	t.Logf("Color distribution in depot.kmz:")
+	for color, count := range colorCounts {
+		t.Logf("  %s: %d POIs", color, count)
+	}
+
+	// The depot.kmz file should have red lines, so we expect converted red color (0000ffff)
+	// But we're seeing ff0000ff which is the raw KML color - the conversion isn't happening
+	redCount := colorCounts["0000ffff"]
+	rawKMLRedCount := colorCounts["ff0000ff"]
+
+	if rawKMLRedCount > 0 {
+		t.Errorf("Found %d POIs with raw KML color 'ff0000ff' - color conversion is not working", rawKMLRedCount)
+	}
+
+	if redCount == 0 && rawKMLRedCount == 0 {
+		t.Errorf("Expected some POIs to have red color extracted from StyleMap, but found none")
 	}
 }
 

@@ -317,12 +317,12 @@ func drawCircle(img *image.RGBA, centerX, centerY, radius int, clr color.Color) 
 
 // parseHexColor converts hex color string to color.Color
 func parseHexColor(hexColor string) color.Color {
-	// Remove the 'ff' prefix if present (NIMBY format is AARRGGBB, we want RRGGBB)
+	// Remove the alpha suffix if present (NIMBY format is RRGGBBAA, we want RRGGBB)
 	if len(hexColor) == 8 {
-		hexColor = hexColor[2:] // Remove alpha channel
+		hexColor = hexColor[:6] // Remove alpha channel from the end
 	}
 
-	// Default to red if parsing fails
+	// Default to black if parsing fails
 	if len(hexColor) != 6 {
 		return color.Black
 	}

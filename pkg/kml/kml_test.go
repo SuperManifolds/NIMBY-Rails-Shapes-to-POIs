@@ -350,6 +350,80 @@ func TestParse_InvalidKML(t *testing.T) {
 	}
 }
 
+func TestConvertKMLColorToNimby(t *testing.T) {
+	tests := []struct {
+		name     string
+		kmlColor string
+		expected string
+	}{
+		{
+			name:     "red color",
+			kmlColor: "ff0000ff", // KML: aabbggrr (alpha=ff, blue=00, green=00, red=ff)
+			expected: "ff0000ff", // NIMBY: rrggbbaa (red=ff, green=00, blue=00, alpha=ff)
+		},
+		{
+			name:     "blue color",
+			kmlColor: "ffff0000", // KML: aabbggrr (alpha=ff, blue=ff, green=00, red=00)
+			expected: "0000ffff", // NIMBY: rrggbbaa (red=00, green=00, blue=ff, alpha=ff)
+		},
+		{
+			name:     "green color",
+			kmlColor: "ff00ff00", // KML: aabbggrr (alpha=ff, blue=00, green=ff, red=00)
+			expected: "00ff00ff", // NIMBY: rrggbbaa (red=00, green=ff, blue=00, alpha=ff)
+		},
+		{
+			name:     "invalid length",
+			kmlColor: "ff0000",
+			expected: "",
+		},
+		{
+			name:     "semi-transparent red",
+			kmlColor: "800000ff", // KML: aabbggrr (alpha=80, blue=00, green=00, red=ff)
+			expected: "ff000080", // NIMBY: rrggbbaa (red=ff, green=00, blue=00, alpha=80)
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := ConvertKMLColorToNimby(tt.kmlColor)
+			if result != tt.expected {
+				t.Errorf("ConvertKMLColorToNimby(%s) = %s, expected %s", tt.kmlColor, result, tt.expected)
+			}
+		})
+	}
+}
+
+func TestGetColorFromStyle(t *testing.T) {
+	style := &Style{
+		LineStyle: &LineStyle{
+			Color: "ff0000ff", // Red in KML format
+		},
+		IconStyle: &IconStyle{
+			Color: "ff00ff00", // Green in KML format
+		},
+	}
+
+	// Test LineString color extraction
+	lineColor := GetColorFromStyle(style, "LineString")
+	expectedLineColor := "ff0000ff" // Red in NIMBY format
+	if lineColor != expectedLineColor {
+		t.Errorf("GetColorFromStyle for LineString: expected %s, got %s", expectedLineColor, lineColor)
+	}
+
+	// Test Point color extraction
+	pointColor := GetColorFromStyle(style, "Point")
+	expectedPointColor := "00ff00ff" // Green in NIMBY format
+	if pointColor != expectedPointColor {
+		t.Errorf("GetColorFromStyle for Point: expected %s, got %s", expectedPointColor, pointColor)
+	}
+
+	// Test nil style
+	nilColor := GetColorFromStyle(nil, "LineString")
+	if nilColor != "" {
+		t.Errorf("GetColorFromStyle for nil style: expected empty string, got %s", nilColor)
+	}
+}
+
 func TestAllPlacemarks_NestedFolders(t *testing.T) {
 	doc := &Document{
 		Placemarks: []Placemark{
