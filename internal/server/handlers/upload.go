@@ -133,8 +133,9 @@ func (h *UploadHandler) processUploadedFiles(ctx context.Context, files []*multi
 		}
 	}
 
-	// Process files
-	combinedPOIList := make(poi.List, 0)
+	// Process files individually to create separate TSV entries
+	var entries []mod.FileEntry
+	combinedPOIList := make(poi.List, 0) // Keep for preview generation
 
 	for _, inputFile := range inputFiles {
 		h.logger.InfoContext(ctx, "Processing uploaded file", "path", inputFile)
@@ -154,28 +155,40 @@ func (h *UploadHandler) processUploadedFiles(ctx context.Context, files []*multi
 			continue
 		}
 
-		combinedPOIList = append(combinedPOIList, *poiList...)
-		h.logger.InfoContext(ctx, "Added POIs from file", "count", len(*poiList), "path", inputFile)
+		if len(*poiList) > 0 {
+			// Generate TSV filename based on the input file name
+			base := filepath.Base(inputFile)
+			ext := filepath.Ext(base)
+			nameWithoutExt := strings.TrimSuffix(base, ext)
+			tsvFileName := nameWithoutExt + ".tsv"
+
+			entry := mod.FileEntry{
+				TSVFileName: tsvFileName,
+				POIList:     *poiList,
+				SourceFile:  inputFile,
+			}
+			entries = append(entries, entry)
+
+			// Add to combined list for preview
+			combinedPOIList = append(combinedPOIList, *poiList...)
+			h.logger.InfoContext(ctx, "Added POIs from file", "count", len(*poiList), "path", inputFile, "tsv", tsvFileName)
+		}
 	}
 
-	if len(combinedPOIList) == 0 {
+	if len(entries) == 0 {
 		return nil, errors.New("no POIs extracted from uploaded files")
 	}
 
-	// Note: Interpolation is now done during parsing for each line segment
-
 	// Generate output file
 	outputPath := filepath.Join(os.TempDir(), outputName+"-"+generateTimestamp()+".zip")
-	tsvFileName := outputName + ".tsv"
 
 	config := mod.Config{
-		OutputPath:  outputPath,
-		TSVFileName: tsvFileName,
+		OutputPath: outputPath,
 	}
 
-	modContent := mod.GenerateDefaultContent(outputName, tsvFileName)
+	modContent := mod.GenerateDefaultContent(outputName, entries)
 
-	if err := mod.CreateZip(config, combinedPOIList, modContent); err != nil {
+	if err := mod.CreateZip(config, entries, modContent); err != nil {
 		return nil, fmt.Errorf("failed to create mod zip: %w", err)
 	}
 

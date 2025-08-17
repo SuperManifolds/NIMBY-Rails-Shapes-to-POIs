@@ -14,39 +14,61 @@ import (
 type Config struct {
 	OutputPath  string
 	ModFilePath string
-	TSVFileName string
 }
 
-func GenerateDefaultContent(modName, tsvFileName string) string {
-	return fmt.Sprintf(`[ModMeta]
+type FileEntry struct {
+	TSVFileName string
+	POIList     poi.List
+	SourceFile  string
+}
+
+func GenerateDefaultContent(modName string, entries []FileEntry) string {
+	var sb strings.Builder
+	sb.WriteString(fmt.Sprintf(`[ModMeta]
 schema=1
 name=%s
 author=nimby_shapetopoi
 desc=Generated POI layer from geographic files
 version=1.0.0
 
-[POILayer]
+`, modName))
+
+	for _, entry := range entries {
+		baseName := strings.TrimSuffix(entry.TSVFileName, ".tsv")
+		sb.WriteString(fmt.Sprintf(`[POILayer]
 id = %s_pois
 name = %s POIs
 tsv = %s
-`, modName, modName, modName, tsvFileName)
-}
 
-func UpdateTSVReference(modContent, tsvFileName string) string {
-	lines := strings.Split(modContent, "\n")
-	for i, line := range lines {
-		trimmed := strings.TrimSpace(line)
-		if strings.HasPrefix(trimmed, "tsv") && strings.Contains(trimmed, "=") {
-			parts := strings.SplitN(trimmed, "=", 2)
-			if len(parts) == 2 {
-				lines[i] = fmt.Sprintf("tsv = %s", tsvFileName)
-			}
-		}
+`, baseName, baseName, entry.TSVFileName))
 	}
-	return strings.Join(lines, "\n")
+
+	return sb.String()
 }
 
-func CreateZip(config Config, poiList poi.List, modContent string) error {
+func UpdateTSVReferences(modContent string, entries []FileEntry) string {
+	// For custom mod.txt files, we'll append POILayer sections for each file
+	var sb strings.Builder
+	sb.WriteString(modContent)
+	if !strings.HasSuffix(modContent, "\n") {
+		sb.WriteString("\n")
+	}
+	sb.WriteString("\n")
+
+	for _, entry := range entries {
+		baseName := strings.TrimSuffix(entry.TSVFileName, ".tsv")
+		sb.WriteString(fmt.Sprintf(`[POILayer]
+id = %s_pois
+name = %s POIs
+tsv = %s
+
+`, baseName, baseName, entry.TSVFileName))
+	}
+
+	return sb.String()
+}
+
+func CreateZip(config Config, entries []FileEntry, modContent string) error {
 	// Create the zip file
 	zipFile, err := os.Create(config.OutputPath)
 	if err != nil {
@@ -67,20 +89,22 @@ func CreateZip(config Config, poiList poi.List, modContent string) error {
 		return err
 	}
 
-	// Add TSV file to the zip
-	tsvWriter, err := zipWriter.Create(config.TSVFileName)
-	if err != nil {
-		return err
-	}
+	// Add TSV files to the zip - one for each entry
+	for _, entry := range entries {
+		tsvWriter, err := zipWriter.Create(entry.TSVFileName)
+		if err != nil {
+			return err
+		}
 
-	// Write TSV content
-	csvWriter := csv.NewWriter(&zipStringWriter{w: tsvWriter})
-	csvWriter.Comma = '\t'
-	err = poiList.ToTSV(csvWriter)
-	if err != nil {
-		return err
+		// Write TSV content
+		csvWriter := csv.NewWriter(&zipStringWriter{w: tsvWriter})
+		csvWriter.Comma = '\t'
+		err = entry.POIList.ToTSV(csvWriter)
+		if err != nil {
+			return err
+		}
+		csvWriter.Flush()
 	}
-	csvWriter.Flush()
 
 	return nil
 }

@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"github.com/supermanifolds/nimby_shapetopoi/internal/mod"
 )
 
 func TestGenerateOutputPath(t *testing.T) {
@@ -47,7 +49,7 @@ func TestGenerateOutputPath(t *testing.T) {
 	}
 }
 
-func TestProcessInputFiles(t *testing.T) {
+func TestProcessInputFilesIndividually(t *testing.T) {
 	// Create test files
 	tmpDir := t.TempDir()
 
@@ -73,34 +75,43 @@ func TestProcessInputFiles(t *testing.T) {
 	// Test processing
 	ctx := context.Background()
 	logger := slog.New(slog.NewTextHandler(os.Stderr, nil))
-	poiList, err := processInputFiles(ctx, logger, []string{kmlFile}, 0)
+	entries, err := processInputFilesIndividually(ctx, logger, []string{kmlFile}, 0)
 	if err != nil {
-		t.Fatalf("processInputFiles returned error: %v", err)
+		t.Fatalf("processInputFilesIndividually returned error: %v", err)
 	}
 
-	if poiList == nil {
-		t.Fatal("processInputFiles returned nil POI list")
+	if entries == nil {
+		t.Fatal("processInputFilesIndividually returned nil entries")
 	}
 
-	if len(*poiList) != 1 {
-		t.Errorf("Expected 1 POI, got %d", len(*poiList))
+	if len(entries) != 1 {
+		t.Errorf("Expected 1 entry, got %d", len(entries))
 	}
 
-	if len(*poiList) > 0 {
-		poi := (*poiList)[0]
-		if poi.Lon != 10.0 || poi.Lat != 53.0 {
-			t.Errorf("Expected coordinates (10.0, 53.0), got (%f, %f)", poi.Lon, poi.Lat)
+	if len(entries) > 0 {
+		entry := entries[0]
+		if entry.TSVFileName != "test.tsv" {
+			t.Errorf("Expected TSV filename 'test.tsv', got '%s'", entry.TSVFileName)
 		}
-		if poi.Text != "" {
-			t.Errorf("Expected empty text, got '%s'", poi.Text)
+		if len(entry.POIList) != 1 {
+			t.Errorf("Expected 1 POI in entry, got %d", len(entry.POIList))
+		}
+		if len(entry.POIList) > 0 {
+			poi := entry.POIList[0]
+			if poi.Lon != 10.0 || poi.Lat != 53.0 {
+				t.Errorf("Expected coordinates (10.0, 53.0), got (%f, %f)", poi.Lon, poi.Lat)
+			}
+			if poi.Text != "" {
+				t.Errorf("Expected empty text, got '%s'", poi.Text)
+			}
 		}
 	}
 }
 
-func TestProcessInputFiles_NonExistentFile(t *testing.T) {
+func TestProcessInputFilesIndividually_NonExistentFile(t *testing.T) {
 	ctx := context.Background()
 	logger := slog.New(slog.NewTextHandler(os.Stderr, nil))
-	_, err := processInputFiles(ctx, logger, []string{"nonexistent.kml"}, 0)
+	_, err := processInputFilesIndividually(ctx, logger, []string{"nonexistent.kml"}, 0)
 
 	// Should return error when no POIs are extracted
 	if err == nil {
@@ -112,7 +123,7 @@ func TestProcessInputFiles_NonExistentFile(t *testing.T) {
 	}
 }
 
-func TestProcessInputFiles_UnsupportedFormat(t *testing.T) {
+func TestProcessInputFilesIndividually_UnsupportedFormat(t *testing.T) {
 	tmpDir := t.TempDir()
 	txtFile := filepath.Join(tmpDir, "test.txt")
 	err := os.WriteFile(txtFile, []byte("some text"), 0644)
@@ -122,7 +133,7 @@ func TestProcessInputFiles_UnsupportedFormat(t *testing.T) {
 
 	ctx := context.Background()
 	logger := slog.New(slog.NewTextHandler(os.Stderr, nil))
-	_, err = processInputFiles(ctx, logger, []string{txtFile}, 0)
+	_, err = processInputFilesIndividually(ctx, logger, []string{txtFile}, 0)
 
 	// Should return error when no POIs are extracted
 	if err == nil {
@@ -134,10 +145,10 @@ func TestProcessInputFiles_UnsupportedFormat(t *testing.T) {
 	}
 }
 
-func TestProcessInputFiles_NoFiles(t *testing.T) {
+func TestProcessInputFilesIndividually_NoFiles(t *testing.T) {
 	ctx := context.Background()
 	logger := slog.New(slog.NewTextHandler(os.Stderr, nil))
-	_, err := processInputFiles(ctx, logger, []string{}, 0)
+	_, err := processInputFilesIndividually(ctx, logger, []string{}, 0)
 
 	if err == nil {
 		t.Error("Expected error for empty file list, but got none")
@@ -148,10 +159,13 @@ func TestProcessInputFiles_NoFiles(t *testing.T) {
 	}
 }
 
-func TestPrepareModContent_DefaultContent(t *testing.T) {
-	content, err := prepareModContent("", "test_mod.zip", "test.tsv")
+func TestPrepareModContentMultiple_DefaultContent(t *testing.T) {
+	entries := []mod.FileEntry{
+		{TSVFileName: "test.tsv", POIList: nil, SourceFile: "test.shp"},
+	}
+	content, err := prepareModContentMultiple("", "test_mod.zip", entries)
 	if err != nil {
-		t.Fatalf("prepareModContent returned error: %v", err)
+		t.Fatalf("prepareModContentMultiple returned error: %v", err)
 	}
 
 	// Check for expected content
@@ -161,6 +175,8 @@ func TestPrepareModContent_DefaultContent(t *testing.T) {
 		"name=test_mod",
 		"author=nimby_shapetopoi",
 		"tsv = test.tsv",
+		"id = test_pois",
+		"name = test POIs",
 	}
 
 	for _, expected := range expectedStrings {
@@ -170,7 +186,7 @@ func TestPrepareModContent_DefaultContent(t *testing.T) {
 	}
 }
 
-func TestPrepareModContent_CustomModFile(t *testing.T) {
+func TestPrepareModContentMultiple_CustomModFile(t *testing.T) {
 	tmpDir := t.TempDir()
 	modFile := filepath.Join(tmpDir, "custom.txt")
 
@@ -189,28 +205,35 @@ tsv = old_name.tsv`
 		t.Fatalf("Failed to create custom mod file: %v", err)
 	}
 
-	content, err := prepareModContent(modFile, "output.zip", "new_name.tsv")
+	entries := []mod.FileEntry{
+		{TSVFileName: "new_name.tsv", POIList: nil, SourceFile: "test.shp"},
+	}
+	content, err := prepareModContentMultiple(modFile, "output.zip", entries)
 	if err != nil {
-		t.Fatalf("prepareModContent returned error: %v", err)
+		t.Fatalf("prepareModContentMultiple returned error: %v", err)
 	}
 
-	// Should preserve custom content but update TSV reference
+	// Should preserve custom content but add new TSV references
 	if !strings.Contains(content, "name=custom_mod") {
 		t.Error("Should preserve custom mod name")
 	}
 	if !strings.Contains(content, "author=custom_author") {
 		t.Error("Should preserve custom author")
 	}
+	// Should have added new POI layer
 	if !strings.Contains(content, "tsv = new_name.tsv") {
-		t.Error("Should update TSV reference to new name")
+		t.Error("Should add new TSV reference")
 	}
-	if strings.Contains(content, "old_name.tsv") {
-		t.Error("Should not contain old TSV reference")
+	if !strings.Contains(content, "id = new_name_pois") {
+		t.Error("Should add new POI layer ID")
 	}
 }
 
-func TestPrepareModContent_NonExistentCustomFile(t *testing.T) {
-	_, err := prepareModContent("nonexistent.txt", "output.zip", "test.tsv")
+func TestPrepareModContentMultiple_NonExistentCustomFile(t *testing.T) {
+	entries := []mod.FileEntry{
+		{TSVFileName: "test.tsv", POIList: nil, SourceFile: "test.shp"},
+	}
+	_, err := prepareModContentMultiple("nonexistent.txt", "output.zip", entries)
 
 	if err == nil {
 		t.Error("Expected error for nonexistent custom mod file, but got none")
@@ -251,42 +274,51 @@ func TestMainWorkflow_Integration(t *testing.T) {
 	// Process input files
 	ctx := context.Background()
 	logger := slog.New(slog.NewTextHandler(os.Stderr, nil))
-	poiList, err := processInputFiles(ctx, logger, []string{inputFile}, 0)
+	entries, err := processInputFilesIndividually(ctx, logger, []string{inputFile}, 0)
 	if err != nil {
-		t.Fatalf("processInputFiles failed: %v", err)
+		t.Fatalf("processInputFilesIndividually failed: %v", err)
 	}
 
-	// Should have 3 POIs (1 point + 2 line points)
-	if len(*poiList) != 3 {
-		t.Errorf("Expected 3 POIs, got %d", len(*poiList))
+	// Should have 1 entry with 3 POIs (1 point + 2 line points)
+	if len(entries) != 1 {
+		t.Errorf("Expected 1 entry, got %d", len(entries))
 	}
 
-	// Prepare mod content
-	tsvFileName := "integration_test.tsv"
-	modContent, err := prepareModContent("", outputFile, tsvFileName)
-	if err != nil {
-		t.Fatalf("prepareModContent failed: %v", err)
-	}
-
-	// We can't easily test the full zip creation here without circular imports,
-	// so we'll just verify the files were processed correctly
-
-	if len(*poiList) > 0 {
-		firstPOI := (*poiList)[0]
-		if firstPOI.Text != "" {
-			t.Errorf("Expected empty text, got '%s'", firstPOI.Text)
+	if len(entries) > 0 {
+		entry := entries[0]
+		if entry.TSVFileName != "integration_test.tsv" {
+			t.Errorf("Expected TSV filename 'integration_test.tsv', got '%s'", entry.TSVFileName)
 		}
-		if firstPOI.Lon != 11.123 || firstPOI.Lat != 54.456 {
-			t.Errorf("Expected first POI coordinates (11.123, 54.456), got (%f, %f)",
-				firstPOI.Lon, firstPOI.Lat)
+		if len(entry.POIList) != 3 {
+			t.Errorf("Expected 3 POIs, got %d", len(entry.POIList))
 		}
-	}
 
-	// Verify mod content
-	if !strings.Contains(modContent, "integration_output") {
-		t.Error("Mod content should contain output filename base")
-	}
-	if !strings.Contains(modContent, tsvFileName) {
-		t.Error("Mod content should reference TSV filename")
+		// Prepare mod content
+		modContent, err := prepareModContentMultiple("", outputFile, entries)
+		if err != nil {
+			t.Fatalf("prepareModContentMultiple failed: %v", err)
+		}
+
+		// We can't easily test the full zip creation here without circular imports,
+		// so we'll just verify the files were processed correctly
+
+		if len(entry.POIList) > 0 {
+			firstPOI := entry.POIList[0]
+			if firstPOI.Text != "" {
+				t.Errorf("Expected empty text, got '%s'", firstPOI.Text)
+			}
+			if firstPOI.Lon != 11.123 || firstPOI.Lat != 54.456 {
+				t.Errorf("Expected first POI coordinates (11.123, 54.456), got (%f, %f)",
+					firstPOI.Lon, firstPOI.Lat)
+			}
+		}
+
+		// Verify mod content
+		if !strings.Contains(modContent, "integration_output") {
+			t.Error("Mod content should contain output filename base")
+		}
+		if !strings.Contains(modContent, entry.TSVFileName) {
+			t.Error("Mod content should reference TSV filename")
+		}
 	}
 }
