@@ -44,7 +44,7 @@ COPY --from=builder /app/nimby_shapetopoi .
 # Copy static files
 COPY --from=builder /app/static ./static
 
-# Expose port (Cloud Run will set PORT environment variable)
+# Expose port (ECS will set PORT environment variable)
 EXPOSE 8080
 
 # Run the application (will read PORT environment variable automatically)
