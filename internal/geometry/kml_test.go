@@ -52,8 +52,8 @@ func TestKMLReader_ParseFile_SimpleKML(t *testing.T) {
 	if pointPOI.Lon != 10.123 || pointPOI.Lat != 53.456 {
 		t.Errorf("Expected point coordinates (10.123, 53.456), got (%f, %f)", pointPOI.Lon, pointPOI.Lat)
 	}
-	if pointPOI.Text != "" {
-		t.Errorf("Expected empty text, got '%s'", pointPOI.Text)
+	if pointPOI.Text != "Test Point" {
+		t.Errorf("Expected text 'Test Point', got '%s'", pointPOI.Text)
 	}
 	if pointPOI.Color != "0000ff" {
 		t.Errorf("Expected point color '0000ff', got '%s'", pointPOI.Color)
@@ -64,8 +64,9 @@ func TestKMLReader_ParseFile_SimpleKML(t *testing.T) {
 	if linePointPOI.Color != "0000ff" {
 		t.Errorf("Expected line point color '0000ff', got '%s'", linePointPOI.Color)
 	}
+	// Line points should not have text on every point
 	if linePointPOI.Text != "" {
-		t.Errorf("Expected empty text, got '%s'", linePointPOI.Text)
+		t.Errorf("Expected empty text for line point, got '%s'", linePointPOI.Text)
 	}
 }
 
@@ -140,10 +141,15 @@ func TestKMLReader_ParseFile_MultiGeometry(t *testing.T) {
 		t.Errorf("Expected 3 POIs, got %d", len(*poiList))
 	}
 
-	// All should have the same text from placemark
-	for i, p := range *poiList {
-		if p.Text != "" {
-			t.Errorf("POI %d: Expected empty text, got '%s'", i, p.Text)
+	// First POI is a Point, should have the placemark name
+	if (*poiList)[0].Text != "Multi Test" {
+		t.Errorf("POI 0: Expected text 'Multi Test', got '%s'", (*poiList)[0].Text)
+	}
+
+	// Next POIs are from LineString, should not have text on each point
+	for i := 1; i < len(*poiList); i++ {
+		if (*poiList)[i].Text != "" {
+			t.Errorf("POI %d: Expected empty text for line point, got '%s'", i, (*poiList)[i].Text)
 		}
 	}
 }
@@ -216,10 +222,10 @@ func TestKMLReader_ParseFile_ExtendedData(t *testing.T) {
 		t.Errorf("Expected 1 POI, got %d", len(*poiList))
 	}
 
-	// Should use the Label from ExtendedData instead of name
+	// Point should have the placemark name
 	p := (*poiList)[0]
-	if p.Text != "" {
-		t.Errorf("Expected empty text, got '%s'", p.Text)
+	if p.Text != "Test Point" {
+		t.Errorf("Expected text 'Test Point', got '%s'", p.Text)
 	}
 }
 
