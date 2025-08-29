@@ -72,29 +72,35 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Prepare mod content
-	modContent, err := prepareModContentMultiple(modFilePath, outputPath, entries)
-	if err != nil {
-		logger.ErrorContext(ctx, "Fatal error", "error", err)
-		os.Exit(1)
-	}
+	// Extract base mod name from output path
+	baseModName := strings.TrimSuffix(filepath.Base(outputPath), ".zip")
+
+	// Split entries into groups respecting 10k POI limit
+	groups := mod.SplitEntriesIntoGroups(entries, baseModName)
 
 	// Create the mod zip
 	config := mod.Config{
 		OutputPath: outputPath,
 	}
 
-	err = mod.CreateZip(config, entries, modContent)
+	err = mod.CreateZip(config, groups)
 	if err != nil {
 		logger.ErrorContext(ctx, "Failed to create mod zip", "error", err)
 		os.Exit(1)
 	}
 
 	totalPOIs := 0
-	for _, entry := range entries {
-		totalPOIs += len(entry.POIList)
+	for _, group := range groups {
+		totalPOIs += group.POICount
 	}
-	logger.InfoContext(ctx, "Successfully created mod file", "path", outputPath, "files", len(entries), "total_pois", totalPOIs)
+
+	if len(groups) > 1 {
+		logger.InfoContext(ctx, "Successfully created mod file with multiple mods (POI limit exceeded)",
+			"path", outputPath, "mods", len(groups), "total_pois", totalPOIs)
+	} else {
+		logger.InfoContext(ctx, "Successfully created mod file",
+			"path", outputPath, "files", len(groups[0].Entries), "total_pois", totalPOIs)
+	}
 }
 
 func printUsage() {

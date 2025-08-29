@@ -119,7 +119,7 @@ func (h *UploadHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		len(*result.POIList),
 		result.DownloadPath,
 		previewPath,
-		result.Entries,
+		result.ModGroups,
 	)
 
 	if err := component.Render(r.Context(), w); err != nil {
@@ -141,7 +141,7 @@ type ProcessResult struct {
 	ModName      string
 	DownloadPath string
 	OutputPath   string
-	Entries      []mod.FileEntry
+	ModGroups    []mod.Group
 }
 
 func (h *UploadHandler) processUploadedFiles(ctx context.Context, files []*multipart.FileHeader, config ProcessConfig) (*ProcessResult, error) {
@@ -225,9 +225,10 @@ func (h *UploadHandler) processUploadedFiles(ctx context.Context, files []*multi
 		OutputPath: outputPath,
 	}
 
-	modContent := mod.GenerateDefaultContent(config.OutputName, entries)
+	// Split entries into groups respecting 10k POI limit
+	groups := mod.SplitEntriesIntoGroups(entries, config.OutputName)
 
-	if err := mod.CreateZip(modConfig, entries, modContent); err != nil {
+	if err := mod.CreateZip(modConfig, groups); err != nil {
 		return nil, fmt.Errorf("failed to create mod zip: %w", err)
 	}
 
@@ -238,7 +239,7 @@ func (h *UploadHandler) processUploadedFiles(ctx context.Context, files []*multi
 		ModName:      config.OutputName,
 		DownloadPath: downloadPath,
 		OutputPath:   outputPath,
-		Entries:      entries,
+		ModGroups:    groups,
 	}, nil
 }
 

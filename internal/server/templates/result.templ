@@ -3,22 +3,37 @@ package templates
 import "fmt"
 import "github.com/supermanifolds/nimby_shapetopoi/internal/mod"
 
-templ ConversionResult(modName string, poiCount int, downloadPath string, previewPath string, entries []mod.FileEntry) {
+templ ConversionResult(modName string, poiCount int, downloadPath string, previewPath string, groups []mod.Group) {
 	<div class="card success">
 		<h2>✅ Conversion Complete!</h2>
 		<p>
-			Successfully generated <strong>{ modName }</strong> with <strong>{ fmt.Sprintf("%d", poiCount) }</strong> POIs from { fmt.Sprintf("%d", len(entries)) } file(s).
+			Successfully generated <strong>{ modName }</strong> with <strong>{ fmt.Sprintf("%d", poiCount) }</strong> POIs.
 		</p>
+		if len(groups) > 1 {
+			<div class="card" style="background-color: #fff3cd; border-color: #ffc107; margin: 16px 0">
+				<p style="margin: 0">
+					<strong>⚠️ POI Limit Exceeded:</strong> Your data contains more than 10,000 POIs. 
+					The mod has been split into { fmt.Sprintf("%d", len(groups)) } separate mods to comply with NIMBY Rails' 10k POI limit per mod.
+				</p>
+			</div>
+		}
 		<div style="margin: 16px 0">
-			<h3>📋 POI Lists</h3>
-			<ul style="text-align: left; margin: 8px 0; padding-left: 20px">
-				for _, entry := range entries {
-					<li>
-						<strong>{ entry.Title }</strong>
-						- { fmt.Sprintf("%d", len(entry.POIList)) } POIs
-					</li>
-				}
-			</ul>
+			<h3>📋 Generated Mods</h3>
+			for _, group := range groups {
+				<div style="margin-bottom: 16px">
+					if len(groups) > 1 {
+						<h4>{ group.Name } ({ fmt.Sprintf("%d", group.POICount) } POIs)</h4>
+					}
+					<ul style="text-align: left; margin: 8px 0; padding-left: 20px">
+						for _, entry := range group.Entries {
+							<li>
+								<strong>{ entry.Title }</strong>
+								- { fmt.Sprintf("%d", len(entry.POIList)) } POIs
+							</li>
+						}
+					</ul>
+				</div>
+			}
 		</div>
 		if previewPath != "" {
 			<div style="margin: 24px 0">
@@ -39,7 +54,11 @@ templ ConversionResult(modName string, poiCount int, downloadPath string, previe
 			<ol>
 				<li>Download the mod file above</li>
 				<li>Unzip the downloaded file</li>
-				<li>Copy the unzipped folder to your NIMBY Rails mods directory:</li>
+				if len(groups) > 1 {
+					<li>Copy ALL the unzipped mod folders to your NIMBY Rails mods directory:</li>
+				} else {
+					<li>Copy the unzipped folder to your NIMBY Rails mods directory:</li>
+				}
 			</ol>
 			<div class="code-block">
 				<strong>Windows:</strong>
@@ -48,9 +67,16 @@ templ ConversionResult(modName string, poiCount int, downloadPath string, previe
 				<br/>
 				<br/>
 			</div>
-			<p class="note">
-				<strong>Note:</strong> Create the mods folder if it doesn't exist. Go to the Mods tab in the top right of NIMBY Rails and enable your mod to see the POIs in the game.
-			</p>
+			if len(groups) > 1 {
+				<p class="note">
+					<strong>Important:</strong> You must copy ALL { fmt.Sprintf("%d", len(groups)) } mod folders from the zip file. Each folder contains up to 10,000 POIs. 
+					Enable all the mods in the Mods tab in NIMBY Rails to see all POIs.
+				</p>
+			} else {
+				<p class="note">
+					<strong>Note:</strong> Create the mods folder if it doesn't exist. Go to the Mods tab in the top right of NIMBY Rails and enable your mod to see the POIs in the game.
+				</p>
+			}
 		</div>
 	</div>
 }
