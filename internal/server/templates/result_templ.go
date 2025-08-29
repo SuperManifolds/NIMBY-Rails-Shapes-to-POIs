@@ -63,7 +63,7 @@ func ConversionResult(modName string, poiCount int, downloadPath string, preview
 			return templ_7745c5c3_Err
 		}
 		if len(groups) > 1 {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"card\" style=\"background-color: #fff3cd; border-color: #ffc107; margin: 16px 0\"><p style=\"margin: 0\"><strong>⚠️ POI Limit Exceeded:</strong> Your data contains more than 10,000 POIs.  The mod has been split into ")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"warning\"><p style=\"margin: 0\"><strong>⚠️ POI Limit Exceeded:</strong> Your data contains more than 10,000 POIs.  The mod has been split into ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
