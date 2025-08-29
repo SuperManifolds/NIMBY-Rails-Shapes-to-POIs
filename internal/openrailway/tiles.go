@@ -10,6 +10,7 @@ import (
 	"io"
 	"math"
 	"net/http"
+	"sync"
 	"time"
 
 	"github.com/supermanifolds/nimby_shapetopoi/internal/poi"
@@ -19,12 +20,11 @@ import (
 )
 
 const (
-	tileSize           = 256
-	osmTileBaseURL     = "https://tile.openstreetmap.org"
-	railwayTileBaseURL = "https://tiles.openrailwaymap.org/standard"
-	maxZoomLevel       = 18
-	minZoomLevel       = 1
-	requestTimeout     = 30 * time.Second
+	tileSize       = 256
+	osmTileBaseURL = "https://tile.openstreetmap.org"
+	maxZoomLevel   = 18
+	minZoomLevel   = 1
+	requestTimeout = 30 * time.Second
 )
 
 // TileClient handles map tile requests
@@ -39,6 +39,67 @@ func NewTileClient() *TileClient {
 			Timeout: requestTimeout,
 		},
 	}
+}
+
+// TileResult represents the result of fetching a single tile
+type TileResult struct {
+	X, Y int
+	Tile image.Image
+	Err  error
+}
+
+// TileFetcher handles concurrent tile fetching
+type TileFetcher struct {
+	client         *TileClient
+	maxConcurrency int
+}
+
+// NewTileFetcher creates a new concurrent tile fetcher
+func NewTileFetcher(client *TileClient, maxConcurrency int) *TileFetcher {
+	if maxConcurrency <= 0 {
+		maxConcurrency = 4 // Default to 4 concurrent requests
+	}
+	return &TileFetcher{
+		client:         client,
+		maxConcurrency: maxConcurrency,
+	}
+}
+
+// FetchTilesConcurrently fetches multiple tiles concurrently using the provided fetcher function
+func (tf *TileFetcher) FetchTilesConcurrently(ctx context.Context, tiles []TileCoordinate, fetchFunc func(context.Context, int, int, int) (image.Image, error)) []TileResult {
+	results := make([]TileResult, len(tiles))
+	resultsMutex := &sync.Mutex{}
+
+	// Use a semaphore to limit concurrency
+	semaphore := make(chan struct{}, tf.maxConcurrency)
+	var wg sync.WaitGroup
+
+	for i, tile := range tiles {
+		wg.Add(1)
+		go func(index int, t TileCoordinate) {
+			defer wg.Done()
+
+			// Acquire semaphore
+			semaphore <- struct{}{}
+			defer func() { <-semaphore }()
+
+			// Fetch the tile
+			tileImg, err := fetchFunc(ctx, t.X, t.Y, t.Z)
+
+			// Store result safely
+			resultsMutex.Lock()
+			results[index] = TileResult{
+				X:    t.X,
+				Y:    t.Y,
+				Tile: tileImg,
+				Err:  err,
+			}
+			resultsMutex.Unlock()
+		}(i, tile)
+	}
+
+	wg.Wait()
+	return results
 }
 
 // Note: BoundingBox is defined in api.go
@@ -94,7 +155,8 @@ func CalculateBoundingBox(poiList *poi.List) *BoundingBox {
 }
 
 // CalculateOptimalZoom calculates the optimal zoom level for the given bounding box
-func CalculateOptimalZoom(bbox *BoundingBox, targetWidth, targetHeight int) int {
+// Limited to at most 4 tiles (2x2 grid) for performance
+func CalculateOptimalZoom(bbox *BoundingBox, _, _ int) int {
 	for z := maxZoomLevel; z >= minZoomLevel; z-- {
 		topLeft := LatLonToTile(bbox.MaxLat, bbox.MinLon, z)
 		bottomRight := LatLonToTile(bbox.MinLat, bbox.MaxLon, z)
@@ -102,15 +164,12 @@ func CalculateOptimalZoom(bbox *BoundingBox, targetWidth, targetHeight int) int 
 		tilesX := bottomRight.X - topLeft.X + 1
 		tilesY := bottomRight.Y - topLeft.Y + 1
 
-		pixelWidth := tilesX * tileSize
-		pixelHeight := tilesY * tileSize
-
-		if pixelWidth <= targetWidth && pixelHeight <= targetHeight {
-			// Use a higher zoom level to better fill the available space
-			return z + 2
+		// Limit to at most 4 tiles (2x2) for performance
+		if tilesX <= 2 && tilesY <= 2 {
+			return z
 		}
 	}
-	return minZoomLevel + 2
+	return minZoomLevel
 }
 
 // LatLonToTile converts latitude/longitude to tile coordinates
@@ -138,12 +197,6 @@ func LatLonToPixel(lat, lon float64, topLeftTile TileCoordinate) PixelCoordinate
 // GetOSMTile fetches a single tile from OpenStreetMap
 func (tc *TileClient) GetOSMTile(ctx context.Context, x, y, z int) (image.Image, error) {
 	url := fmt.Sprintf("%s/%d/%d/%d.png", osmTileBaseURL, z, x, y)
-	return tc.fetchTile(ctx, url)
-}
-
-// GetRailwayTile fetches a single tile from OpenRailwayMap
-func (tc *TileClient) GetRailwayTile(ctx context.Context, x, y, z int) (image.Image, error) {
-	url := fmt.Sprintf("%s/%d/%d/%d.png", railwayTileBaseURL, z, x, y)
 	return tc.fetchTile(ctx, url)
 }
 
@@ -177,10 +230,6 @@ func (tc *TileClient) fetchTile(ctx context.Context, url string) (image.Image, e
 // GetMapImage fetches and assembles map tiles for the given bounding box and overlays POIs
 func (tc *TileClient) GetMapImage(ctx context.Context, bbox *BoundingBox, poiList *poi.List, maxWidth, maxHeight int) (image.Image, error) {
 	baseZoom := CalculateOptimalZoom(bbox, maxWidth, maxHeight)
-	railwayZoom := baseZoom + 1
-	if railwayZoom > maxZoomLevel {
-		railwayZoom = maxZoomLevel
-	}
 
 	topLeft := LatLonToTile(bbox.MaxLat, bbox.MinLon, baseZoom)
 	bottomRight := LatLonToTile(bbox.MinLat, bbox.MaxLon, baseZoom)
@@ -191,104 +240,38 @@ func (tc *TileClient) GetMapImage(ctx context.Context, bbox *BoundingBox, poiLis
 	// Create the composite image
 	mapWidth := tilesX * tileSize
 	mapHeight := tilesY * tileSize
-
 	mapImg := image.NewRGBA(image.Rect(0, 0, mapWidth, mapHeight))
 
-	// Fetch and place OSM tiles at base zoom level
+	// Build list of tiles to fetch
+	tiles := make([]TileCoordinate, 0, tilesX*tilesY)
 	for tileY := 0; tileY < tilesY; tileY++ {
 		for tileX := 0; tileX < tilesX; tileX++ {
-			tileRect := image.Rect(tileX*tileSize, tileY*tileSize, (tileX+1)*tileSize, (tileY+1)*tileSize)
-
-			// First draw OSM base tile
-			osmTile, err := tc.GetOSMTile(ctx, topLeft.X+tileX, topLeft.Y+tileY, baseZoom)
-			if err == nil {
-				draw.Draw(mapImg, tileRect, osmTile, image.Point{0, 0}, draw.Src)
-			}
+			tiles = append(tiles, TileCoordinate{
+				X: topLeft.X + tileX,
+				Y: topLeft.Y + tileY,
+				Z: baseZoom,
+			})
 		}
 	}
 
-	// Overlay railway tiles at higher zoom with proper coverage
-	tc.overlayRailwayTilesWithFullCoverage(ctx, mapImg, bbox, baseZoom, railwayZoom)
+	// Fetch all OSM tiles concurrently
+	fetcher := NewTileFetcher(tc, 4) // 4 concurrent requests
+	results := fetcher.FetchTilesConcurrently(ctx, tiles, tc.GetOSMTile)
+
+	// Draw tiles to the map image
+	for i, result := range results {
+		if result.Err == nil && result.Tile != nil {
+			tileX := i % tilesX
+			tileY := i / tilesX
+			tileRect := image.Rect(tileX*tileSize, tileY*tileSize, (tileX+1)*tileSize, (tileY+1)*tileSize)
+			draw.Draw(mapImg, tileRect, result.Tile, image.Point{0, 0}, draw.Src)
+		}
+	}
 
 	// Overlay POIs on the map
 	overlayPOIs(mapImg, poiList, topLeft)
 
 	return mapImg, nil
-}
-
-// overlayRailwayTilesWithFullCoverage overlays railway tiles at higher zoom covering the full base image
-func (tc *TileClient) overlayRailwayTilesWithFullCoverage(ctx context.Context, baseImg *image.RGBA, bbox *BoundingBox, baseZoom, railwayZoom int) {
-	// Calculate base tiles to understand the area we need to cover
-	baseTopLeft := LatLonToTile(bbox.MaxLat, bbox.MinLon, baseZoom)
-	baseBottomRight := LatLonToTile(bbox.MinLat, bbox.MaxLon, baseZoom)
-
-	// Convert base tile bounds to railway zoom level to ensure full coverage
-	zoomDiff := railwayZoom - baseZoom
-	multiplier := int(math.Pow(2.0, float64(zoomDiff)))
-
-	railwayTopLeft := TileCoordinate{
-		X: baseTopLeft.X * multiplier,
-		Y: baseTopLeft.Y * multiplier,
-	}
-	railwayBottomRight := TileCoordinate{
-		X: (baseBottomRight.X+1)*multiplier - 1,
-		Y: (baseBottomRight.Y+1)*multiplier - 1,
-	}
-
-	// Scale factor for positioning railway tiles
-	scaleFactor := 1.0 / math.Pow(2.0, float64(railwayZoom-baseZoom))
-	scaledTileSize := int(float64(tileSize) * scaleFactor)
-
-	// Fetch and overlay railway tiles
-	for railwayTileY := railwayTopLeft.Y; railwayTileY <= railwayBottomRight.Y; railwayTileY++ {
-		for railwayTileX := railwayTopLeft.X; railwayTileX <= railwayBottomRight.X; railwayTileX++ {
-			railwayTile, err := tc.GetRailwayTile(ctx, railwayTileX, railwayTileY, railwayZoom)
-			if err != nil {
-				continue
-			}
-
-			// Calculate position on base image
-			// Convert railway tile coordinates to base map pixel coordinates
-			baseX := int((float64(railwayTileX - railwayTopLeft.X)) * float64(scaledTileSize))
-			baseY := int((float64(railwayTileY - railwayTopLeft.Y)) * float64(scaledTileSize))
-
-			// Scale and draw the railway tile
-			scaledImg := tc.scaleImageDown(railwayTile, scaledTileSize, scaledTileSize)
-			if scaledImg != nil {
-				destRect := image.Rect(baseX, baseY, baseX+scaledTileSize, baseY+scaledTileSize)
-				draw.Draw(baseImg, destRect, scaledImg, image.Point{0, 0}, draw.Over)
-			}
-		}
-	}
-}
-
-// scaleImageDown scales an image down using simple nearest-neighbor sampling
-func (tc *TileClient) scaleImageDown(src image.Image, width, height int) image.Image {
-	srcBounds := src.Bounds()
-	srcWidth := srcBounds.Dx()
-	srcHeight := srcBounds.Dy()
-
-	if srcWidth == 0 || srcHeight == 0 {
-		return nil
-	}
-
-	scaled := image.NewRGBA(image.Rect(0, 0, width, height))
-
-	scaleX := float64(srcWidth) / float64(width)
-	scaleY := float64(srcHeight) / float64(height)
-
-	for y := 0; y < height; y++ {
-		for x := 0; x < width; x++ {
-			srcX := int(float64(x) * scaleX)
-			srcY := int(float64(y) * scaleY)
-
-			if srcX < srcWidth && srcY < srcHeight {
-				scaled.Set(x, y, src.At(srcBounds.Min.X+srcX, srcBounds.Min.Y+srcY))
-			}
-		}
-	}
-
-	return scaled
 }
 
 // overlayPOIs draws POI markers and labels on the map image
