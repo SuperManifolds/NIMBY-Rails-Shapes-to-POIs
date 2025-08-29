@@ -251,10 +251,8 @@ func (k *KMLReader) processMultiGeometry(multiGeometry *kml.MultiGeometry, docum
 func (k *KMLReader) getColorForGeometry(placemark *kml.Placemark, document *kml.Document, geometryType string) string {
 	// Try to get color from placemark style
 	if style := document.GetStyleForPlacemark(placemark); style != nil {
-		color := kml.GetColorFromStyle(style, geometryType)
-		return color
+		return kml.GetColorFromStyle(style, geometryType)
 	}
-
 	// Return empty string if no color found
 	return ""
 }
