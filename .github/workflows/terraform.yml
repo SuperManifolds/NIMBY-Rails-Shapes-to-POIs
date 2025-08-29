@@ -19,7 +19,7 @@ jobs:
   terraform:
     name: Terraform
     runs-on: ubuntu-latest
-    environment: production
+    environment: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' && 'production' || '' }}
     defaults:
       run:
         working-directory: terraform
