@@ -37,6 +37,7 @@ type Placemark struct {
 	Name          string         `xml:"name"`
 	Description   string         `xml:"description"`
 	StyleURL      string         `xml:"styleUrl"`
+	Style         *Style         `xml:"Style"` // Support for inline styles
 	Point         *Point         `xml:"Point"`
 	LineString    *LineString    `xml:"LineString"`
 	LinearRing    *LinearRing    `xml:"LinearRing"`
@@ -100,10 +101,11 @@ type SimpleData struct {
 }
 
 type Style struct {
-	ID        string     `xml:"id,attr"`
-	IconStyle *IconStyle `xml:"IconStyle"`
-	LineStyle *LineStyle `xml:"LineStyle"`
-	PolyStyle *PolyStyle `xml:"PolyStyle"`
+	ID         string      `xml:"id,attr"`
+	IconStyle  *IconStyle  `xml:"IconStyle"`
+	LineStyle  *LineStyle  `xml:"LineStyle"`
+	PolyStyle  *PolyStyle  `xml:"PolyStyle"`
+	LabelStyle *LabelStyle `xml:"LabelStyle"`
 }
 
 type IconStyle struct {
@@ -125,6 +127,11 @@ type PolyStyle struct {
 	Color   string `xml:"color"`
 	Fill    int    `xml:"fill"`
 	Outline int    `xml:"outline"`
+}
+
+type LabelStyle struct {
+	Color string  `xml:"color"`
+	Scale float64 `xml:"scale"`
 }
 
 type StyleMap struct {
@@ -270,6 +277,12 @@ func (d *Document) GetStyleByID(styleID string) *Style {
 
 // GetStyleForPlacemark returns the appropriate style for a placemark
 func (d *Document) GetStyleForPlacemark(placemark *Placemark) *Style {
+	// First check for inline style
+	if placemark.Style != nil {
+		return placemark.Style
+	}
+
+	// Then check for styleUrl reference
 	if placemark.StyleURL == "" {
 		return nil
 	}
@@ -314,6 +327,11 @@ func GetColorFromStyle(style *Style, geometryType string) string {
 
 	switch geometryType {
 	case "Point":
+		// Check LabelStyle first for text color (commonly used for Point labels)
+		if style.LabelStyle != nil && style.LabelStyle.Color != "" {
+			return ConvertKMLColorToNimby(style.LabelStyle.Color)
+		}
+		// Fallback to IconStyle for icon color
 		if style.IconStyle != nil && style.IconStyle.Color != "" {
 			return ConvertKMLColorToNimby(style.IconStyle.Color)
 		}

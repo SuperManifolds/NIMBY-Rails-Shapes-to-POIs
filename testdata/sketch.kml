@@ -1,0 +1,2251 @@
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/kml/2.2 https://developers.google.com/kml/schema/kml22gx.xsd">
+	<Document>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>249.026 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1601155581463016,50.73908317172862 -1.160351323819188,50.738607795304375 -1.1606000583224378,50.73809906225799 -1.1606645334523225,50.73795843353375 -1.1607082844333159,50.73782071898523 -1.160714041141341,50.73759775171476 -1.1606806522347937,50.737350737714905 -1.1605967962688128,50.73690291538412</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>201.715 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1606814571318778,50.73734679578146 -1.16072370670067,50.7375577089542 -1.1607449445387834,50.73768996687423 -1.1607601500594713,50.73783338149448 -1.1607593005459467,50.73799789641879 -1.1607159753561949,50.73815603888161 -1.1606176004107414,50.738359598054615 -1.1603829676406106,50.73884156343203 -1.1602499517543103,50.73911131474475</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>200.944 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1605969133682803,50.73690864945519 -1.1605045803176863,50.736433128205135 -1.1603923320009961,50.7358628762658 -1.160248800656064,50.73511499995547</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>453.466 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.160294284365968,50.735109408592166 -1.1604078527927695,50.735696372337145 -1.1605671248515343,50.736518070452036 -1.1606928169806956,50.73717648911682 -1.1607583591106705,50.73755860831281 -1.160787567841509,50.73771573963339 -1.1608066823065586,50.73794809592704 -1.1607814868718636,50.73810105571772 -1.1606881389897787,50.73830782375882 -1.160574371211445,50.73854564154152 -1.1605064557826053,50.73868745452063 -1.1602889750785998,50.739121095299794</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>47.705 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1606326555922941,50.73684527377475 -1.1606469523298415,50.736993275646824 -1.1606551218941543,50.73714580110425 -1.1606653338495452,50.73727376699466</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>0.431 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1606663550450842,50.73727505957763 -1.1606663550450842,50.737278937326295</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>0 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1606663550450842,50.73728087620054 -1.1606663550450842,50.73728087620054</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>36.149 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1605989561395038,50.736913781249655 -1.1606527723360525,50.73708654767728 -1.1607022142656798,50.737232229212026</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>409.187 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1576044833777255,50.732207689940765 -1.1579643300649234,50.73232515797983 -1.1585251019806149,50.732501385270695 -1.1589664714610879,50.73264805082056 -1.1591958781538707,50.732741128056006 -1.1594841070755724,50.73291859480585 -1.1596704616739368,50.73308503637358 -1.1598665357703324,50.733323311504165 -1.1599900624510617,50.73356779045645 -1.160061870490724,50.73386750143521 -1.160181475689525,50.734519802596225 -1.1602949165166894,50.73511116830528</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>633.346 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1576034613370514,50.73220699977634 -1.157374695166187,50.732105250715534 -1.1572036357771622,50.73200741487173 -1.1569494595642784,50.73180977286307 -1.1567516077408282,50.73164932095983 -1.156576426438815,50.73142886175745 -1.156339683247415,50.731027413209034 -1.156047027425228,50.73062170990866 -1.1551812576416502,50.72993395800842 -1.1545437350994217,50.72944156516954 -1.1542675669291893,50.72923805481318 -1.153956362498554,50.728986274751435 -1.153820504885335,50.72884832363664 -1.1536536550954744,50.72860396017069 -1.1534066519751904,50.72818667554267 -1.1531956360644842,50.72776731627877 -1.153043040328666,50.72740519888151</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>1.033 km</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1602434195476383,50.73511589280898 -1.160111566483398,50.73440353322184 -1.1600055500688347,50.7338422052438 -1.159948106452626,50.733600543628626 -1.159875491721595,50.73343484608813 -1.1597493713992781,50.73324132997044 -1.1595945873673434,50.733072002711566 -1.159420694195664,50.7329159791955 -1.1591760972069283,50.73276963108401 -1.158864618229085,50.7326474723929 -1.1583276514022507,50.73248419047661 -1.157742911726054,50.732308812969535 -1.157442898232058,50.732197538624604 -1.1571696375337044,50.73206328335658 -1.156858158555861,50.73183105711962 -1.1566345816208445,50.73160850589559 -1.1564377574814713,50.73135087734292 -1.1562447551700468,50.731003741794154 -1.1560727729123421,50.730756995798146 -1.1558797706009174,50.730558630427595 -1.1556050886660225,50.73034001176953 -1.1551235383444491,50.72995053403676 -1.154277003453746,50.72931308989112 -1.1540476937768065,50.72912560466821 -1.153858513293331,50.72895868170926 -1.1536941746915241,50.728771195067964 -1.1535727524925374,50.72857206616251 -1.153303313622133,50.72810152986787 -1.153014765611984,50.72750835151456</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>0.528 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1530164630641364,50.72750546600321 -1.1530102246509324,50.72750283335404</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>875.268 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1596231558308003,50.721083229691914 -1.1594660110248587,50.72137439719697 -1.159282357684002,50.7216599903104 -1.1589351100725935,50.7221267565304 -1.158610596402342,50.72256021827647 -1.158423376977197,50.72280065235981 -1.1582236762570421,50.72300609271181 -1.1580264187223452,50.723195307619875 -1.1578327378199904,50.72337126461596 -1.1575274129092463,50.72360466099977 -1.157338234650428,50.72374614654714 -1.1568448604077277,50.72412103073401 -1.1564817074070028,50.724399866265145 -1.1562608527885683,50.72457198546945 -1.1560197604959346,50.72472850756259 -1.1558696364211871,50.724818330568894 -1.1556883772522726,50.724915251274695 -1.1554094493078753,50.72504225051682 -1.1548798404824097,50.7252563859777 -1.1545223940580323,50.72539716462617 -1.1542505053046608,50.7255080093349 -1.1540551451921846,50.725603129053695 -1.153850128753558,50.72572511338342 -1.1536767860293413,50.725856568135384 -1.153529506197719,50.725979793000846 -1.1533244897590926,50.726192010403764 -1.1532136225004364,50.72634017211527 -1.1530842773653374,50.72654180496994 -1.1530077261629315,50.72674455094335 -1.1529811507643455,50.726890130738894 -1.152974991472198,50.72709900208446 -1.152994349247519,50.72723267925696 -1.1530427436858213,50.72740534504027</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>886.208 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1530172139693402,50.72750497287572 -1.1529359770971734,50.72727892232953 -1.152912283009458,50.72709358149453 -1.1529190527488054,50.7269018118819 -1.152971518228746,50.72669504264917 -1.1530459853615656,50.726506485454905 -1.153177995278837,50.726293286349545 -1.1533303144141498,50.72611329840993 -1.1535215595507096,50.725926881600685 -1.1537872718200888,50.725721179433094 -1.1540127417500148,50.72558765506977 -1.1542869161935783,50.725459090390046 -1.1546964854240862,50.72528981302372 -1.1551080667112301,50.72512235749613 -1.1553650129915454,50.725025167755746 -1.1556592751216985,50.72487600810928 -1.1558490528723044,50.72478016772391 -1.1561518443395638,50.72459658559316 -1.156351114061473,50.724456823926744 -1.1565952663361294,50.724271890648566 -1.1573531761598974,50.72369335487886 -1.1577415394569517,50.72338340744855 -1.1580249728916077,50.72313509360541 -1.1581688304577742,50.723001175886424 -1.1583501741244973,50.72280898632229 -1.1585785328159262,50.72251814928819 -1.1589279700140434,50.72206565869948 -1.159156110573788,50.721762267942296 -1.159306558652847,50.72154456067395 -1.1594557283501563,50.72129343926531 -1.1595739375551315,50.72108848625959</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>47.074 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1580361042581948,50.723127005580665 -1.1579445323491306,50.72321610951269 -1.1578368505671757,50.72334117679415 -1.1576845120138657,50.72348673183407</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>322.768 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1580898025002784,50.72313997902731 -1.1580075573597304,50.723211906291056 -1.1578837657048844,50.723297252677156 -1.15776506137832,50.72337884152989 -1.157672641581209,50.7234309080261 -1.1575140865164406,50.723514643713116 -1.1574133972252183,50.723575401005775 -1.157201425213496,50.72372462172976 -1.15673423889966,50.72405795119897 -1.156471917024091,50.72423144709475 -1.1560801927464284,50.72452827362358 -1.155727621693502,50.72477660136087 -1.1555183755450964,50.72489561046439 -1.1552911473058116,50.725018758696734 -1.155050841182252,50.72513673233007 -1.1548939065709478,50.72520917213316</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>44.114 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1559041731312192,50.72480143806828 -1.1557149721709368,50.72488564003427 -1.1555220561203452,50.72495988611092 -1.155379561310249,50.725018172668115</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>12.711 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1553758367301357,50.72502098480297 -1.1552357689522783,50.725093131499534</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>21.024 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1552392488970697,50.72509092854861 -1.1551435504153038,50.72513994418216 -1.1550043526236444,50.725207684804815</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>37.757 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1547078994551145,50.725285078430346 -1.1545642674123824,50.725352858633926 -1.154424987855794,50.7254311088283 -1.1542857082992053,50.72549392931231</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>1.238 km</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.155097409352701,50.7108625216527 -1.155119456861285,50.71104279669825 -1.1552023600745263,50.711394617002725 -1.1553259876732194,50.71172156805994 -1.155445340385196,50.711942427780286 -1.155696958909595,50.71229608328167 -1.1560011219724535,50.71265058863568 -1.1562251060924387,50.71288451377899 -1.1565698089264418,50.713208691575204 -1.1572529411394625,50.71373983617036 -1.157892895767991,50.714222409404925 -1.1581917949642957,50.71445829262498 -1.1585117722785598,50.714716152851054 -1.1587895707650349,50.71497124889311 -1.159129674248526,50.715344693334686 -1.1593696572342247,50.71565504049241 -1.1596008895251197,50.716032800595144 -1.1598045114523787,50.71642510276911 -1.159951410128473,50.71676770791973 -1.1600212233606761,50.71697214428494 -1.1600997632469048,50.71729629381079 -1.1601447690651552,50.71755225468243 -1.1601796756812568,50.717816022704085 -1.1601971289893076,50.7180701810139 -1.1602014923163197,50.7184219485745 -1.1601620521829878,50.71886648627307 -1.160068967873384,50.719483448561476 -1.159984610217805,50.72002765780806 -1.1599398542839536,50.72023996310813 -1.159871495494088,50.720483979324996 -1.1597870813499342,50.7207208066157 -1.159680907059292,50.72096113711234 -1.1596225209373174,50.721090606338294</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>103.928 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1546171414291757,50.71060508254814 -1.1547250769393667,50.71086961707485 -1.1548769861759314,50.71116326130846 -1.1550708703331258,50.71149360887259</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>0.597 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1550708703331258,50.71149867165241 -1.1550768667503588,50.71150246873691</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>1.169 km</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1550809452646997,50.711494435763484 -1.1552393379242902,50.711754552793394 -1.1554553304404076,50.71206088736557 -1.155630903304386,50.712278439684155 -1.1558967272052862,50.712602084043226 -1.1562136388360038,50.71292202198609 -1.1564797250165118,50.713183271467756 -1.156850451829804,50.71349373997285 -1.157358706331898,50.713874250397026 -1.1578968581576445,50.71428693980303 -1.1582130082981361,50.71452138796528 -1.1585979885116047,50.71485102166193 -1.1589260966480834,50.71517926803938 -1.1592002897551894,50.71549878894848 -1.1593086299057809,50.71564756629249 -1.159750400610245,50.71641326838008 -1.159883597492415,50.71671943979018 -1.1599801147435154,50.71700877785426 -1.1600766319946156,50.717384166387404 -1.1601189217344854,50.71770978003727 -1.1601498767995004,50.71815520839854 -1.1601358063154028,50.718584597331215 -1.160088131587378,50.7189783506127 -1.1599687044903733,50.719790690274436 -1.1598982731254728,50.72019200801327 -1.1598300157695145,50.72045752042368 -1.159731358835116,50.72073458643385 -1.15957102588177,50.72108715185209</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>71.582 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1554592086559776,50.711957129179666 -1.1555553594033643,50.71212615155898 -1.1557333100403184,50.71240058444667 -1.1558509870744336,50.712550522266184</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>53.496 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1554444273360902,50.7120407700684 -1.155559250643144,50.71216695770423 -1.1556968488210184,50.71232198776329 -1.1558312451252881,50.71245466835572</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>2.149 km</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1550989885085847,50.71086447352914 -1.1550806170572403,50.71061805568414 -1.1550889677169422,50.71040970997197 -1.155140741807094,50.71010829448568 -1.155205876952769,50.70985764223698 -1.1552843731539668,50.709638251675244 -1.1553879213342704,50.709412725906844 -1.155508170833978,50.70920331721581 -1.1556735138960756,50.708969582168095 -1.1559457454023576,50.70868998698478 -1.1562430288877454,50.70843721187424 -1.1564451148525314,50.70829079206132 -1.157188323566001,50.707802158633655 -1.1578229737033456,50.70739919087134 -1.1591103114029908,50.706581610464696 -1.1620847495835314,50.70468747678714 -1.162899239528216,50.704168131482305 -1.1632165645968884,50.70396504580677 -1.163403619374211,50.70385927166902 -1.1636658300888507,50.70371436071301 -1.1640482903031981,50.70353137032578 -1.1642983424573117,50.70342876846672 -1.164869527580922,50.703216159776105 -1.165746346849622,50.70287450299537 -1.1666222308444354,50.70252649708988 -1.1672869433567068,50.70223349315464 -1.1679416350773362,50.701935198458955 -1.1685696046869194,50.70163901745116 -1.1689637558248493,50.70142957403786 -1.1694621231958588,50.701105886922846 -1.1708508931642263,50.70019877569973 -1.1714862181902017,50.69978355890308 -1.1717103394729311,50.699641331548776 -1.171879947350503,50.69953693034398 -1.1721236093718035,50.69939697184245 -1.1724975111323324,50.69918514196459 -1.1728522543692257,50.699002816196355 -1.1734662348860356,50.698697929614355 -1.1740730010959406,50.69841725063651 -1.1746836372320661,50.69814649596495 -1.175551981788367,50.69778940123936 -1.176147950426348,50.69755184095402</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>201.797 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.0931803292894997,50.69242514358183 -1.0930804366059923,50.69256651432815 -1.0929539767194243,50.69277453050867 -1.0928371696999821,50.69299067130697 -1.0926882025634241,50.693209262314724 -1.0925436769787753,50.69337890432334 -1.092350267740495,50.69354652618165 -1.0921601740891564,50.69367779589339 -1.0918998154991637,50.69383868493651 -1.0917042808846387,50.693942353734684</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>123.859 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.0927717723573716,50.69308461543832 -1.0926899453719452,50.693184919982514 -1.092580488495336,50.69330272705915 -1.0924104583957488,50.6934440951606 -1.0921864862470678,50.69357897339583 -1.0919314410976872,50.693735823720715 -1.091631763047165,50.693921619993404</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>1.616 km</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.0931834671006893,50.69242320271218 -1.0933556525546504,50.692217813359946 -1.0937769573888105,50.69183140044629 -1.0942790062103174,50.691386128141005 -1.0944846029693875,50.691205103062 -1.0947538717112202,50.69099274582891 -1.0950835885379542,50.6907873502135 -1.0954412213893514,50.69059587891468 -1.0958057416589075,50.69043341780585 -1.096342667193642,50.690238463732584 -1.096895858758496,50.69008064317512 -1.097348303515181,50.689997090900306 -1.0977091602644395,50.68994138930117 -1.0982055672646889,50.68988452718375 -1.098555433453057,50.68986131813645 -1.0989016361211275,50.68985435541998 -1.0992661563906836,50.68985435541998 -1.0996215178594968,50.689878724923005 -1.0999787110884582,50.689915859379425 -1.1005135850518264,50.69000289314644 -1.1010081602919277,50.69010849390031 -1.101409315764454,50.69021525486036 -1.1024770853902304,50.690566868043646 -1.1038876139749985,50.69105424829584 -1.1069485395531196,50.692098090879284 -1.107232511091073,50.6922138640293 -1.107484948657735,50.69234728460657 -1.1077024930790875,50.6925062533096 -1.107974587914254,50.6926926623525 -1.1082718368832818,50.692877178188326 -1.108563110998661,50.6930399300154 -1.1087792812036743,50.69313568838467 -1.1093364363064249,50.693329664719414 -1.109702396092414,50.69346308212303 -1.1099817205004954,50.693535941112344 -1.1103013751707063,50.69359271427234 -1.1106553852493977,50.69362488569914 -1.1109376970843035,50.69364002518648 -1.1113081380105292,50.69362772435338 -1.1116233115405034,50.69358703695943 -1.111978815332607,50.69351985537119 -1.112733140605768,50.693349535420566</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>1.602 km</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1127393643514072,50.693346804512885 -1.1147959453309138,50.692900020671004 -1.115415416232935,50.69276361236689 -1.11628142719168,50.69260051496087 -1.1176649850239322,50.69235537355053 -1.1180082686472184,50.69229309952044 -1.118707318934638,50.69217843601072 -1.1197714981668252,50.6919576486564 -1.1202209500525133,50.69185484616693 -1.120572035576329,50.691754020429556 -1.1208560247555932,50.69164429805738 -1.1211244101337987,50.691514805558256 -1.1213728976061124,50.6913650501028 -1.1216194394092298,50.69120057326589 -1.1219314347883957,50.69094625500469 -1.12216924944804,50.69070713929503 -1.1224445035531845,50.690338097050414 -1.1227542298750475,50.68982253879176 -1.1233992530491503,50.688729204809135 -1.1237515678311627,50.688136222877034 -1.1239413832017044,50.68781001050664 -1.1241076352848687,50.68756673200812 -1.1243367228010395,50.68729857129247 -1.1245919917476301,50.68704976101026 -1.124914896056138,50.68681062543996 -1.1251859611324149,50.68663645656963 -1.1255525011582883,50.68644708174676 -1.1259299501135032,50.6862867345838 -1.1264099430045282,50.68612223994205 -1.1277287016547601,50.68567575157874 -1.1283558341847433,50.6854573439588 -1.1290412640331269,50.685113142544765 -1.12934453226882,50.68488505587939</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>208.986 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1430502387572916,50.675027540388385 -1.1427890554693445,50.675324374960155 -1.142415628123767,50.675708752422736 -1.1421166272225567,50.67598200047979 -1.1417280900999904,50.6762925077046 -1.1413368763883578,50.676552730327046</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>362.232 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1413390349279275,50.67655409818818 -1.1408922172369764,50.67681262322196 -1.140218752891195,50.67720656339236 -1.1397262605029468,50.67750218049031 -1.1395104065459654,50.677630756659255 -1.1391175523442596,50.677883804473566 -1.1387235757019774,50.67819074280209 -1.1384710265723093,50.678404121205915 -1.1382012091260827,50.6786817852404 -1.137933550219426,50.678967654377345</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>933.63 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1379374565304876,50.6789647324309 -1.137834860453896,50.67908422885466 -1.1377336007865932,50.679239038275824 -1.137653235971274,50.679453937349564 -1.137595373304244,50.679624022648625 -1.137487684451716,50.679858270853885 -1.1373494569693665,50.68011594252917 -1.1372192659685492,50.680294173097394 -1.137024783115476,50.68048869825927 -1.1368335148550157,50.68065674290699 -1.1365409869272527,50.680877746164015 -1.136240422517958,50.681068195140455 -1.135992898886774,50.681184297345794 -1.135695549070092,50.68128817802287 -1.1353306928085416,50.68137067133793 -1.1348854717316716,50.68145010920799 -1.1343116669502906,50.681532602238406 -1.1340705725043323,50.681578431637035 -1.133713752724314,50.681676200871294 -1.1333858642778103,50.68178109888569 -1.1331511990170777,50.68187988612175 -1.1329599307566172,50.681989875789384 -1.1326442576254152,50.682221496281926 -1.132231828373538,50.68255667128673 -1.131283689386886,50.68331648711461 -1.1305036601496405,50.683931431851136 -1.1302693647759,50.684099092689934 -1.1299174550338091,50.68434762376202 -1.1296686526046877,50.684574851018795 -1.1293503648124783,50.68487876575469</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<name>Brading Junction</name>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+					<LabelStyleSimpleExtensionGroup xmlns="" fontFamily="Sans" haloColor="ffffffff" haloRadius="3" haloOpacity="1"/>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.1385397702586044,50.67831479276384</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Bembridge</name>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+					<LabelStyleSimpleExtensionGroup xmlns="" fontFamily="Sans" haloColor="ffffffff" haloRadius="3" haloOpacity="1"/>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.0917787427205097,50.69386372214464</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>St John's Road</name>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+					<LabelStyleSimpleExtensionGroup xmlns="" fontFamily="Sans" haloColor="ffffffff" haloRadius="3" haloOpacity="1"/>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.156704883544958,50.72412499315277</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Esplanade</name>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+					<LabelStyleSimpleExtensionGroup xmlns="" fontFamily="Sans" haloColor="ffffffff" haloRadius="3" haloOpacity="1"/>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.1597017615484901,50.7331071832088</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Pier Head Station</name>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+					<LabelStyleSimpleExtensionGroup xmlns="" fontFamily="Sans" haloColor="ffffffff" haloRadius="3" haloOpacity="1"/>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.1601513554404281,50.73917136503209</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name/>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.1390750954980386,50.67784451395465</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>platform end</name>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+					<LabelStyleSimpleExtensionGroup xmlns="" fontFamily="Sans" haloColor="ffffffff" haloRadius="3" haloOpacity="1"/>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.139079576511419,50.6778473534834</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>platform end</name>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+					<LabelStyleSimpleExtensionGroup xmlns="" fontFamily="Sans" haloColor="ffffffff" haloRadius="3" haloOpacity="1"/>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.1381497662350224,50.678660871390804</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>platform end</name>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+					<LabelStyleSimpleExtensionGroup xmlns="" fontFamily="Sans" haloColor="ffffffff" haloRadius="3" haloOpacity="1"/>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.1392095258994455,50.67790414402202</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>platform end</name>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+					<LabelStyleSimpleExtensionGroup xmlns="" fontFamily="Sans" haloColor="ffffffff" haloRadius="3" haloOpacity="1"/>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.1382864371431192,50.67870488330132</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>3.255 km</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1397433007694937,50.677490502644844 -1.1393311060568294,50.67777649661221 -1.1389789756659836,50.67803747638962 -1.138646210111857,50.67830812348893 -1.1383078848614427,50.67863022199879 -1.1380725281655022,50.678896391768006 -1.137864956635055,50.679206058198986 -1.1376868046916002,50.679530221872454 -1.1375265682740945,50.679886384020676 -1.1373786827768497,50.68021353892732 -1.1372372834856241,50.68055137740458 -1.1371773435919854,50.68071543357715 -1.1371320402668474,50.68090463221185 -1.1371340995088992,50.68110948780458 -1.1371382179930027,50.68134826739859 -1.137173225107882,50.681589655370686 -1.1372247061591754,50.681851918732946 -1.1373256090197101,50.68223291563302 -1.137449163542814,50.682576071152084 -1.1375788957920727,50.682863119468635 -1.1376835264260592,50.683056992367995 -1.1378495733001586,50.683325767476475 -1.13801302569185,50.6835616636273 -1.13827247393263,50.683881395541505 -1.138819981249661,50.684525758033146 -1.1396292558882382,50.68547389154563 -1.1419410599614792,50.688244111826236 -1.1428103133641567,50.68928303818441 -1.1432329374044805,50.68974007098788 -1.1437413604511233,50.69021686282548 -1.1444293211246808,50.690832936335084 -1.1452831643371673,50.69159805941217 -1.146089100998284,50.692319868997544 -1.146985412209827,50.693124680161304 -1.1473862036113023,50.693520930907255 -1.1477761768442112,50.69394458369345 -1.148192487845204,50.69444404982616 -1.1484499785821707,50.694753990725474 -1.1487524811833991,50.695183404032946 -1.1490349384315337,50.69563359118246 -1.1492408588769485,50.69600989815089 -1.149495981552683,50.69653972400994 -1.1498392421512484,50.69726302688571 -1.1502154897175556,50.69805803821376 -1.150545326891184,50.69873904715109 -1.1509853930342964,50.699659705543354 -1.1514081677540848,50.70052651780131 -1.1517963186821674,50.70133906760569 -1.1522962783947535,50.702393387567554 -1.152757321515903,50.70337094591224 -1.1530315883175393,50.703950424098025 -1.1530315883175393,50.70395388644528</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>748.596 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1530377023563942,50.703954695922874 -1.1531702561434807,50.704273890233736 -1.1533474880366792,50.70472509262456 -1.1535007384133447,50.70524372036107 -1.1535792240329572,50.705555852193584 -1.1536672467399631,50.706013068408936 -1.1537350987336823,50.7064390111683 -1.1538750973313814,50.70723202561183 -1.1540133872393923,50.70805482281193 -1.1540876410085885,50.70849717891636 -1.154156540725901,50.70882641867047 -1.1542329916435432,50.70912039858888 -1.1543274295757062,50.7096100821926 -1.154381015070891,50.70985107791384 -1.1544826000578694,50.710224901504034 -1.1545221199530362,50.710351599490394 -1.1546179905013527,50.710603797134496</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<name>platform end</name>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+					<LabelStyleSimpleExtensionGroup xmlns="" fontFamily="Sans" haloColor="ffffffff" haloRadius="3" haloOpacity="1"/>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.0924104394612155,50.693469573039664</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>platform end</name>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+					<LabelStyleSimpleExtensionGroup xmlns="" fontFamily="Sans" haloColor="ffffffff" haloRadius="3" haloOpacity="1"/>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.0916625654546752,50.69393952224689</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Platform end</name>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+					<LabelStyleSimpleExtensionGroup xmlns="" fontFamily="Sans" haloColor="ffffffff" haloRadius="3" haloOpacity="1"/>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.157384559795628,50.723625585464816</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Platform end</name>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+					<LabelStyleSimpleExtensionGroup xmlns="" fontFamily="Sans" haloColor="ffffffff" haloRadius="3" haloOpacity="1"/>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.157479503387233,50.72369025174092</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Platform end</name>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+					<LabelStyleSimpleExtensionGroup xmlns="" fontFamily="Sans" haloColor="ffffffff" haloRadius="3" haloOpacity="1"/>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.1564706751535292,50.72444937447099</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>platform end</name>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+					<LabelStyleSimpleExtensionGroup xmlns="" fontFamily="Sans" haloColor="ffffffff" haloRadius="3" haloOpacity="1"/>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.1563421017067672,50.72438496902819</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>183.708 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1390142966504209,50.67782148873076 -1.13863144005261,50.67812345034679 -1.138350993469942,50.67837403969932 -1.138126910414447,50.67860238032452 -1.1379098144504323,50.678873347326885 -1.1377812505516798,50.6791081706061 -1.1377304973161808,50.679240556599495</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>0.134 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1377307228874816,50.679239183990745 -1.1377326280328381,50.6792391692596</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>106.961 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1381575908887207,50.67873055515142 -1.1380263063085563,50.67889434276839 -1.1378847474549674,50.67908559139224 -1.1377882384092868,50.679247587651645 -1.1377419792579175,50.679330655550814 -1.1376821897761251,50.67949109731035 -1.137641985862694,50.67962965413014</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>142.49 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1379043822855996,50.678876304740044 -1.1380135098021122,50.67869018895442 -1.1381321399751791,50.67849845115393 -1.1382193199937083,50.67838958308482 -1.1383266386919377,50.67828338765179 -1.1384856915082537,50.678140019920164 -1.1389420863265842,50.67779069094942</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>117.776 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1380224532521692,50.67867191735789 -1.138126225601885,50.67853494808867 -1.1382711143822666,50.67838718606876 -1.1385281406012695,50.678161307314355 -1.1387885933996447,50.6779524220735 -1.138975811460149,50.677805818573376</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>711.08 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1761525132288453,50.697548454954216 -1.1766910023285762,50.6973751085211 -1.1772925573943294,50.69720731631887 -1.1779306820380488,50.69705615943576 -1.1788654554290112,50.696854370183075 -1.1795707172136092,50.69672202888867 -1.1800729172255742,50.696645638417294 -1.1807065761469375,50.69655977234149 -1.1814801854848431,50.69650907889627 -1.1821954052377983,50.69649750822296 -1.1832532600062644,50.69650625036547 -1.1842003190817938,50.69654606097646 -1.184534258999028,50.69654952222183 -1.1849046288312568,50.6965623697445 -1.1853573730314955,50.69659270778439 -1.1859538594971881,50.6966569806919</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>231.741 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.185051680883635,50.69657136842079 -1.1844679283580744,50.69653411326948 -1.1839588333110331,50.69650036255959 -1.1835798106564028,50.69648584445099 -1.183023115960131,50.69647095487028 -1.1826346388485,50.696466106096636 -1.1823867040513443,50.69646453294615 -1.1821515491126193,50.696482925929615 -1.1819645066312081,50.69649658508743 -1.1817718215537076,50.6965033087595</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<name>Ashey</name>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+					<LabelStyleSimpleExtensionGroup xmlns="" fontFamily="Sans" haloColor="ffffffff" haloRadius="3" haloOpacity="1"/>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.1830845795930465,50.696515843926875</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>platform end</name>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+					<LabelStyleSimpleExtensionGroup xmlns="" fontFamily="Sans" haloColor="ffffffff" haloRadius="3" haloOpacity="1"/>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.1836495533455438,50.696531541887396</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>platform end</name>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+					<LabelStyleSimpleExtensionGroup xmlns="" fontFamily="Sans" haloColor="ffffffff" haloRadius="3" haloOpacity="1"/>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.1825709092717236,50.696518069539934</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>platform end</name>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+					<LabelStyleSimpleExtensionGroup xmlns="" fontFamily="Sans" haloColor="ffffffff" haloRadius="3" haloOpacity="1"/>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.183655312725297,50.6964730474364</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>platform end</name>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+					<LabelStyleSimpleExtensionGroup xmlns="" fontFamily="Sans" haloColor="ffffffff" haloRadius="3" haloOpacity="1"/>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.1825544511394912,50.69645015053385</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>837.864 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1859535494098,50.6966564249976 -1.1864322355204189,50.69672289840372 -1.1870342753595429,50.696824357631414 -1.1878112197390858,50.69698179392944 -1.1882549249416212,50.697080920216365 -1.1889177210947854,50.697253516074795 -1.1896560023653935,50.69746576146238 -1.1903998069372779,50.697728151410445 -1.191281694041072,50.69807800239107 -1.1919923588052979,50.69839519835779 -1.1927913963899461,50.69878236111563 -1.1931301588682308,50.69894795384943 -1.1936714423933152,50.699195175716085 -1.1942182492196758,50.69942956882949 -1.1947337573388037,50.69963713986226 -1.1952290133532513,50.69982022141514 -1.1957040172630191,50.699977647656596 -1.1963502435123552,50.70018754848982</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>1.904 km</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.1963503197319285,50.70018950217758 -1.1969767130719522,50.70038152021215 -1.1976187105165321,50.70056224234992 -1.1984635613203372,50.70079237968915 -1.1994412293504202,50.70105475283529 -1.1999618939517698,50.701191241050736 -1.2011567225291824,50.70147926165507 -1.2018165532361118,50.70163597800547 -1.202891007292665,50.70186611007529 -1.2047412082614197,50.70229672226412 -1.2065082479304776,50.702723313028116 -1.2076651808253973,50.70303814870442 -1.2088555510872225,50.703379806553386 -1.2098466819893379,50.70369692667964 -1.2109838950879301,50.704082205336476 -1.2126524548415691,50.704676512206106 -1.2134358219134984,50.704971287134555 -1.21415061253369,50.70524469118345 -1.2150428102317798,50.70559778543222 -1.2159451449255863,50.70597202983376 -1.2169893546500676,50.706422316660905 -1.2176846831494124,50.706753976676055 -1.21834425678857,50.70707555538107 -1.2193174138647098,50.70756498974677 -1.2202149035902816,50.70802234890837</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<name>platform end</name>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+					<LabelStyleSimpleExtensionGroup xmlns="" fontFamily="Sans" haloColor="ffffffff" haloRadius="3" haloOpacity="1"/>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.214290317498492,50.70531257786223</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>platform end</name>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+					<LabelStyleSimpleExtensionGroup xmlns="" fontFamily="Sans" haloColor="ffffffff" haloRadius="3" haloOpacity="1"/>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.2155462437937559,50.70584079905697</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name/>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.2162356774222498,50.70621024502651</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name/>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.2162525516718985,50.706216351547</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Haven Street station</name>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+					<LabelStyleSimpleExtensionGroup xmlns="" fontFamily="Sans" haloColor="ffffffff" haloRadius="3" haloOpacity="1"/>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.2147917110763178,50.70553002734795</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name/>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.216434030082697,50.70618202901326</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name/>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.216445771203248,50.70618797750956</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name/>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.216448119427358,50.706189464633496</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name/>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.213747005300136,50.70509067689704</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name/>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.2137462987339904,50.70508819869488</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>206.638 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.2137844903530264,50.705106339103594 -1.214140149805298,50.70526809077106 -1.2143120120909594,50.70535879239651 -1.2145650315670722,50.705461587359906 -1.2152572546620977,50.70575334242551 -1.2156678145667335,50.705907533488556 -1.2159876693761589,50.70601032724889 -1.2162526237332205,50.70610556244338</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>81.162 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.2138552342898363,50.70512871395604 -1.2141940166541565,50.705225161096564 -1.214469039606485,50.70531224844973 -1.2148842673645366,50.705456505072505</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>198.053 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.2184284278244848,50.70590408574205 -1.2180600704324933,50.705968886017274 -1.2177826654829689,50.70603224619978 -1.2174529628790256,50.70611144630752 -1.2171755579295007,50.706141686313345 -1.2168936053578527,50.70614456631287 -1.2166548551963767,50.70612296631202 -1.216329700214557,50.70605816624976 -1.2161159619747595,50.70599336609794 -1.215856747513728,50.70592280583077 -1.2157498783938292,50.70589112567629</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>79.726 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.2184034159028068,50.70590840576321 -1.2188354400045254,50.70582920531248 -1.219481202346042,50.7056895241916</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>252.896 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.2149354631244136,50.705069256542544 -1.215199225207568,50.705285260957595 -1.2153811300925024,50.705462383835396 -1.2155130111340795,50.70560782569822 -1.2156426183645954,50.70573598696572 -1.2158381661158995,50.70586270787456 -1.2161201186875474,50.70599518845853 -1.2164475474804286,50.706111828662785 -1.2167886191396804,50.70627742845437 -1.2175139648683557,50.70659854638339</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>82.97 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.2148200487545031,50.70521516320579 -1.2151326462887082,50.705371601788414 -1.215362175946691,50.7055114269825 -1.2155086377284514,50.70562910132759 -1.2156441695264986,50.70574262218065</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>99.525 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.2178214656551922,50.705744034047854 -1.2182499210167603,50.70579940997234 -1.2185909365086203,50.705813253943234 -1.2188751160851707,50.70579525678025 -1.2190696697952703,50.705774490814434 -1.219213945580288,50.70574541844678</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>91.699 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.2194762055226762,50.70569184595789 -1.2201494925194258,50.70556032772873 -1.2207222236660116,50.70545234406481</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>81.884 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.2176836856374746,50.70600610276696 -1.2173894029081798,50.70601231507251 -1.2165212688567595,50.70602473968117</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>24.907 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.217686137993552,50.70600765584345 -1.2179142071087556,50.705996784307104 -1.218034372556551,50.70597504122685</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>116.647 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.218161895072579,50.70594863890156 -1.217997587215389,50.705968828916355 -1.2177474468954885,50.70597659430436 -1.217256975679997,50.705982806613804 -1.2167689568205828,50.70598746584534 -1.2165090070763724,50.70599057199948</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>155.69 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.2186866992731549,50.70585700718672 -1.2183801547634727,50.70589738728651 -1.2180417296247836,50.705939320430275 -1.2177572563197983,50.70594708582314 -1.2172888563090039,50.70595485121473 -1.21678121860097,50.70595640429292 -1.2164893882277525,50.705962616605035</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>0.863 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.2164886853592833,50.70596298592204 -1.2165009471396706,50.70596298592204</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>133.196 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.2183745471828484,50.70589775660406 -1.2180410267563142,50.70590707508359 -1.2174303900930272,50.70591794664074 -1.2164837806471285,50.70592726511629</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>170.871 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.2188895419591148,50.70578593470492 -1.2185609262447352,50.7058340802775 -1.2182740005836727,50.70585427034163 -1.2178767188991246,50.70585892958596 -1.2174058665322525,50.70586669499215 -1.2164739712228188,50.70587911963938</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>142.339 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.218479998494179,50.705807677872826 -1.2179208613085188,50.705813890204695 -1.2173347482060064,50.7058263148659 -1.2164592570863537,50.70583563335967</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>2.578 km</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.2202018886143207,50.70801521957881 -1.2215436802716728,50.70871291884427 -1.2220356258856233,50.70896214302013 -1.2226527940194887,50.709218918057985 -1.2234488514675177,50.70948701990554 -1.2253538107754929,50.71012314946924 -1.2274442449494536,50.710823946490734 -1.2295849537422803,50.71154137413714 -1.2312784392496978,50.71210964455881 -1.2327840909772432,50.71260616756027 -1.2338753157936426,50.712970532804775 -1.2343493724761767,50.71313855520171 -1.2346832991959487,50.71326504357506 -1.2352229486270097,50.71349914055966 -1.2359146539751098,50.71382951737928 -1.236311191954839,50.71405794799006 -1.2368866192487329,50.71440719925104 -1.2373815463512523,50.71475267226248 -1.237903306850897,50.7151472257564 -1.23848171563336,50.7156890234678 -1.2388931610559364,50.716176069723446 -1.2393284583870672,50.71672351877518 -1.2398174225124483,50.71740121408857 -1.2401096083922492,50.71772778799692 -1.2405627946547975,50.718195936219985 -1.241123314505844,50.718647090768144 -1.2414266116695947,50.718845398586126 -1.241954320886796,50.71914204834161 -1.2422666868808343,50.719309849392005 -1.2427423350990296,50.719524094502674 -1.2433717999051983,50.71977729200705 -1.2441003270535518,50.71999294121346 -1.2449001733110139,50.72021467416215 -1.2456678878444372,50.72036018811852 -1.2466333827351015,50.72045607201417 -1.2475941448076742,50.72048303932448 -1.249364734229328,50.72049652297383</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<name>Wootton Station</name>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+					<LabelStyleSimpleExtensionGroup xmlns="" fontFamily="Sans" haloColor="ffffffff" haloRadius="3" haloOpacity="1"/>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.2425165008476469,50.71946850211998</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Platform end</name>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+					<LabelStyleSimpleExtensionGroup xmlns="" fontFamily="Sans" haloColor="ffffffff" haloRadius="3" haloOpacity="1"/>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.2421623244397237,50.719294275713395</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Platform end</name>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+					<LabelStyleSimpleExtensionGroup xmlns="" fontFamily="Sans" haloColor="ffffffff" haloRadius="3" haloOpacity="1"/>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.2428961575726867,50.7196282090903</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>679.773 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.249363854968638,50.72049568819105 -1.2509948045848587,50.720511017178325 -1.252575728998784,50.72052105699058 -1.2542208832434911,50.72052841490108 -1.2557181802189534,50.72053945176475 -1.2571321864182896,50.72054803599022 -1.2574014286946016,50.72055539389652 -1.257767520710594,50.720575014974315 -1.2580445109660805,50.720589730777306 -1.258325375211154,50.72059463604393 -1.2590168823524732,50.72059708867707</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>1.202 km</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.2879214614475902,50.70294265320311 -1.2872728276930572,50.70364658733277 -1.2868083329327786,50.70417715756554 -1.2863322258034922,50.704710873643506 -1.2860933427839205,50.70498403306536 -1.2856316337401952,50.70550628249106 -1.2852652551330623,50.70591751124019 -1.2850081241050504,50.70620852354105 -1.2848140316516483,50.70640077977424 -1.2845983733700899,50.70657937775454 -1.28422345974215,50.70684517231254 -1.2839779410831451,50.706996453917725 -1.2835698492580427,50.70720341476749 -1.2829542428260243,50.707520635603345 -1.2825926004769497,50.707729695236395 -1.282267454144754,50.70795136046226 -1.2820095499311537,50.70816037541417 -1.2817723258214397,50.70838519020552 -1.2815516908103068,50.70865202505402 -1.2813310855746873,50.70894504600216 -1.2810872258255406,50.709291716763914 -1.2810474119889446,50.70934319190087 -1.2807322191158979,50.709832728133705 -1.2802942669133504,50.71051029667396 -1.279784981586901,50.711287650067874 -1.2792541304322962,50.71210280680759</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>617.144 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.2792527958189575,50.71209651384427 -1.278835459375873,50.71272939095414 -1.278606662896251,50.71305892154416 -1.2784640609143276,50.71322899698154 -1.278242120769123,50.713552548550524 -1.2780911498563972,50.71378867442229 -1.277873080760237,50.71420291312967 -1.2777582396385903,50.71441942697356 -1.277586623130961,50.71468741253494 -1.2773479084398975,50.715005234888395 -1.2771493681848327,50.71523164040789 -1.276936460487398,50.71545305158088 -1.2765403231352013,50.715810902114185 -1.276274511100828,50.71603231055079 -1.2760833340133502,50.71616177545934 -1.2756717124649761,50.71640850914656 -1.2749483560746309,50.71683914317197</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>1.258 km</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.2749592062831365,50.71683797453227 -1.2742534153250913,50.71724784440346 -1.2731810755081736,50.717876069959544 -1.2719071980435461,50.71861111610798 -1.2713011877177922,50.7189684167532 -1.2709145761102005,50.71917144536161 -1.2704350578372188,50.719389652698396 -1.2699856054348149,50.719577581874546 -1.2694356579154888,50.71977491553898 -1.268803293192994,50.71997035094532 -1.2682408430781296,50.720122320316165 -1.267212875780424,50.72034431804968 -1.2664246676192101,50.72047239318681 -1.2656409549418055,50.720567263433054 -1.2650788155793382,50.72059985702015 -1.2641272715063898,50.72060365182338 -1.2628550495883837,50.7205903700108 -1.2621327751897047,50.720578036895716 -1.2618375717529002,50.720581831700684 -1.261482428531973,50.72059416481477 -1.2611887235897716,50.72060649792559 -1.2607841300469431,50.720604600524155 -1.2596058651997775,50.720600340449806 -1.259022950799184,50.72059749434723</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>421.87 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.297756154588013,50.702303157944726 -1.2966264416629318,50.70242257703333 -1.2960623841487116,50.70248633455773 -1.2956852805414711,50.702553128061794 -1.2953369390737657,50.70263813783848 -1.2950301429187225,50.70275249598535 -1.2947314503061673,50.70288527797982 -1.2944598078772225,50.70304416404986 -1.2942476970897927,50.70321189832296 -1.2940942990122712,50.70337280729507 -1.2939480469457694,50.70356008412796 -1.29381701942122,50.70380195158441 -1.293764288832072,50.70405191371165 -1.2937569285503494,50.70425759630393 -1.2937974090742532,50.70446103993942</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>458.353 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.2888715681877463,50.697308616821005 -1.2886946876045173,50.69769141588492 -1.2886094481417192,50.697871601260545 -1.2885083735227312,50.698166366615965 -1.288466259098153,50.69846646518772 -1.2884662590981526,50.69871054394335 -1.2885062678015022,50.698949286415285 -1.2885652279959119,50.699162686478786 -1.288662091172442,50.69937208434723 -1.2887779058400326,50.69958548248687 -1.2891150727229446,50.70016536521521 -1.2893867107614745,50.70064950265743 -1.2896204458178842,50.70105361355476 -1.2897573176977637,50.701261669292364</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>185.075 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.2897385659835936,50.701228773223534 -1.2898162521239258,50.70132015129721 -1.2899938204446846,50.70147127618213 -1.290204682825586,50.70159779896707 -1.2904876823367952,50.701718463897606 -1.2907817798680523,50.70179344000877 -1.291085125749349,50.701862558504985 -1.2914088180007324,50.70199025173011 -1.2918076622715209,50.7021958720517</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>321.992 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.2879256530718055,50.702941270375135 -1.288275668334437,50.70255543496717 -1.288654482321209,50.70223834603706 -1.28882505937958,50.702123295541156 -1.2890200045891467,50.70202929065812 -1.289305619108518,50.70192275773795 -1.2897353846841542,50.701818930994335 -1.2900449775273068,50.70178266145618 -1.2904901557535675,50.70178266145618 -1.2908543924841447,50.7018374617771 -1.2912158381286638,50.70194706222691 -1.2915535595416892,50.70210615919822</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>337.247 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.2915459515834524,50.70210101189741 -1.2920583059685082,50.702375487538745 -1.2923596909008934,50.702551888301855 -1.2925363648267745,50.70268221381255 -1.292651722507791,50.70278686888469 -1.292784661828871,50.70293701157999 -1.292982120922503,50.70317725584752 -1.2931009435276801,50.70332551508511 -1.2931830449402955,50.70343280151437 -1.293318148530675,50.70364144987937 -1.2934765887377855,50.70391020949339 -1.2936283204623658,50.70418204179413 -1.2937250127652207,50.70438740184724 -1.293832056379137,50.70468490043288</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>425.122 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.291816877413074,50.70219538263356 -1.2923135899548164,50.70247607968133 -1.2926163002972881,50.70268686621756 -1.2927550200799365,50.7028168015911 -1.2929908331035151,50.70311762005559 -1.2931414706811648,50.70330290820087 -1.293268575561542,50.703480855505944 -1.2933806285196496,50.70365350619417 -1.2935528891668375,50.7039649112873 -1.293669042192767,50.7041913555596 -1.2937621849639835,50.70438417168788 -1.29379832987407,50.704463410971044 -1.2938469865123576,50.70461748698847 -1.2939626855821416,50.70494716349759 -1.2940252441170825,50.705210410374605 -1.2940377557392202,50.705429634864316 -1.294022463674114,50.70563036963904</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>104.439 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.2931506873202083,50.7031637638442 -1.293347553427825,50.703399477579296 -1.293426587284254,50.703517789021674 -1.293481192538004,50.70365430185342 -1.293518554085113,50.70380719574621 -1.2935626241159528,50.703958055705414 -1.2935960471973258,50.704050829799456</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>54.812 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.291990022015237,50.70229247852882 -1.292166814876126,50.70240445013758 -1.2923730732138303,50.702551879019495 -1.2925046856919238,50.70266136175809</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>56.875 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.2919350197319015,50.702307408101575 -1.2921913694401386,50.7024386636314 -1.2924084317710214,50.70255809963703 -1.2925479017395725,50.7026402117159</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff33ccff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>207.553 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.2919631025124416,50.70232781407819 -1.2921470228452736,50.702447211807794 -1.2923228965308982,50.702590634280625 -1.2924365384464334,50.70269735325226 -1.29251700351531,50.70277962059896 -1.29264804664502,50.70293032232004 -1.2928849773967601,50.70322481942006 -1.2929997685749244,50.703361385995805 -1.2931583996580898,50.70355212678757 -1.2933317679724372,50.70372486745322 -1.293424373001521,50.70383917467319 -1.293481703528292,50.70391784429415</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff3300ff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>3.642 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.2925662042562638,50.7027351779127 -1.2925221030038954,50.702752278702604</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff0000ff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>2.004 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.2926355062831278,50.70268045530821 -1.2926589070317314,50.70267019484538</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff0000ff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>4.637 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.293383313764611,50.70349609297929 -1.29332211192293,50.70351148342334</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<Style>
+				<LineStyle>
+					<color>ff0000ff</color>
+					<width>4</width>
+				</LineStyle>
+			</Style>
+			<ExtendedData>
+				<Data name="measure">
+					<value>3.496 m</value>
+				</Data>
+				<Data name="type">
+					<value>LineString</value>
+				</Data>
+			</ExtendedData>
+			<LineString>
+				<coordinates>-1.2932393094958714,50.70355309466311 -1.2931934081489438,50.703565064999225</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<name>Newport</name>
+			<Style>
+				<IconStyle>
+					<scale>0.03125</scale>
+					<Icon>
+						<href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNiYAAAAAkAAxkR2eQAAAAASUVORK5CYII=</href>
+						<gx:w>1</gx:w>
+						<gx:h>1</gx:h>
+					</Icon>
+					<hotSpot x="0" y="1" xunits="pixels" yunits="pixels"/>
+				</IconStyle>
+				<LabelStyle>
+					<color>ff000000</color>
+					<LabelStyleSimpleExtensionGroup xmlns="" fontFamily="Sans" haloColor="ffffffff" haloRadius="3" haloOpacity="1"/>
+				</LabelStyle>
+			</Style>
+			<Point>
+				<coordinates>-1.2928488159141016,50.702976529343374</coordinates>
+			</Point>
+		</Placemark>
+	</Document>
+</kml>
