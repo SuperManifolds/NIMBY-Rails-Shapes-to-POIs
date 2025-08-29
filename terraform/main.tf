@@ -199,7 +199,7 @@ resource "aws_ecr_repository" "app" {
 # CloudWatch Log Group
 resource "aws_cloudwatch_log_group" "app" {
   name              = "/ecs/${var.app_name}"
-  retention_in_days = 7
+  retention_in_days = 30
 
   tags = {
     Name = "${var.app_name}-logs"
@@ -282,8 +282,8 @@ resource "aws_ecs_task_definition" "app" {
   family                   = var.app_name
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  cpu                     = "256"
-  memory                  = "512"
+  cpu                     = "512"
+  memory                  = "1024"
   execution_role_arn      = aws_iam_role.ecs_task_execution_role.arn
   task_role_arn           = aws_iam_role.ecs_task_role.arn
 
