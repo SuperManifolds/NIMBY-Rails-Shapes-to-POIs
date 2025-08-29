@@ -259,10 +259,10 @@ func (tc *TileClient) GetMapImage(ctx context.Context, bbox *BoundingBox, poiLis
 	results := fetcher.FetchTilesConcurrently(ctx, tiles, tc.GetOSMTile)
 
 	// Draw tiles to the map image
-	for i, result := range results {
+	for _, result := range results {
 		if result.Err == nil && result.Tile != nil {
-			tileX := i % tilesX
-			tileY := i / tilesX
+			tileX := result.X - topLeft.X
+			tileY := result.Y - topLeft.Y
 			tileRect := image.Rect(tileX*tileSize, tileY*tileSize, (tileX+1)*tileSize, (tileY+1)*tileSize)
 			draw.Draw(mapImg, tileRect, result.Tile, image.Point{0, 0}, draw.Src)
 		}
