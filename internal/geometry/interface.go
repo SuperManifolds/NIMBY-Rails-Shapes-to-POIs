@@ -12,6 +12,7 @@ import (
 const (
 	defaultColor      = "0000ff"
 	defaultFontSize   = 12
+	placemarkFontSize = 16 // Larger font for placemark names
 	defaultMaxLod     = 10
 	defaultDemand     = ""
 	defaultPopulation = 0

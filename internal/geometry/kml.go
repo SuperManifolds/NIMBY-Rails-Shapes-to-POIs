@@ -79,7 +79,7 @@ func (k *KMLReader) resolveColor(overrideColor string, placemark *kml.Placemark,
 func (k *KMLReader) processPlacemark(placemark *kml.Placemark, document *kml.Document, poiList *poi.List, maxLod int32, color string) {
 	if placemark.Point != nil {
 		actualColor := k.resolveColor(color, placemark, document, "Point")
-		k.processPoint(placemark.Point, poiList, maxLod, actualColor)
+		k.processPoint(placemark.Point, placemark.Name, poiList, maxLod, actualColor)
 	}
 	if placemark.LineString != nil {
 		actualColor := k.resolveColor(color, placemark, document, "LineString")
@@ -98,7 +98,7 @@ func (k *KMLReader) processPlacemark(placemark *kml.Placemark, document *kml.Doc
 	}
 }
 
-func (k *KMLReader) processPoint(point *kml.Point, poiList *poi.List, maxLod int32, color string) {
+func (k *KMLReader) processPoint(point *kml.Point, placemarkName string, poiList *poi.List, maxLod int32, color string) {
 	coords, err := kml.ParseCoordinates(point.Coordinates)
 	if err != nil {
 		return
@@ -109,12 +109,17 @@ func (k *KMLReader) processPoint(point *kml.Point, poiList *poi.List, maxLod int
 	}
 
 	for _, coord := range coords {
+		fontSize := int32(defaultFontSize)
+		if placemarkName != "" {
+			fontSize = int32(placemarkFontSize) // Use larger font for placemark names
+		}
+
 		p := poi.POI{
 			Lon:         coord.Lon,
 			Lat:         coord.Lat,
 			Color:       color,
-			Text:        "",
-			FontSize:    defaultFontSize,
+			Text:        placemarkName, // Use placemark name for individual points
+			FontSize:    fontSize,
 			MaxLod:      maxLod,
 			Transparent: false,
 			Demand:      defaultDemand,
@@ -222,7 +227,7 @@ func (k *KMLReader) processPolygon(polygon *kml.Polygon, poiList *poi.List, maxL
 func (k *KMLReader) processMultiGeometry(multiGeometry *kml.MultiGeometry, document *kml.Document, placemark *kml.Placemark, poiList *poi.List, maxLod int32, color string) {
 	for _, point := range multiGeometry.Points {
 		actualColor := k.resolveColor(color, placemark, document, "Point")
-		k.processPoint(&point, poiList, maxLod, actualColor)
+		k.processPoint(&point, placemark.Name, poiList, maxLod, actualColor)
 	}
 	for _, lineString := range multiGeometry.LineStrings {
 		actualColor := k.resolveColor(color, placemark, document, "LineString")
