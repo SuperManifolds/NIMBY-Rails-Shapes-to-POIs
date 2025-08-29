@@ -19,6 +19,9 @@
     --success-bg: #d1fae5;
     --success-border: #a7f3d0;
     --success-text: #059669;
+    --warning-bg: #fff3cd;
+    --warning-border: #ffc107;
+    --warning-text: #856404;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -43,6 +46,9 @@
         --success-bg: #052e16;
         --success-border: #059669;
         --success-text: #86efac;
+        --warning-bg: #451a03;
+        --warning-border: #d97706;
+        --warning-text: #fbbf24;
     }
 }
 
@@ -242,6 +248,15 @@ body {
     border-radius: 8px;
     border: 1px solid var(--success-border);
     margin: 10px 0;
+}
+
+.warning {
+    color: var(--warning-text);
+    background: var(--warning-bg);
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--warning-border);
+    margin: 16px 0;
 }
 
 .map-preview {
