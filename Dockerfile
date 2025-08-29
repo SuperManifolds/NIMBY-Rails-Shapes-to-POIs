@@ -2,7 +2,7 @@
 FROM golang:1.23-alpine AS builder
 
 # Install build dependencies
-RUN apk add --no-cache git ca-certificates tzdata
+RUN apk add --no-cache git ca-certificates tzdata curl
 
 # Set working directory
 WORKDIR /app
@@ -29,12 +29,14 @@ RUN CGO_ENABLED=0 GOOS=linux go build \
     -trimpath \
     -o nimby_shapetopoi ./cmd/nimby_shapetopoi
 
-# Runtime stage - using distroless static for minimal size and fast cold starts
-FROM gcr.io/distroless/static-debian12:nonroot
+# Runtime stage - using base debian for curl support
+FROM debian:12-slim
 
-# Copy ca-certificates and timezone data from builder
-COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
-COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
+# Install curl for health checks
+RUN apt-get update && apt-get install -y curl ca-certificates && rm -rf /var/lib/apt/lists/*
+
+# Create non-root user
+RUN groupadd -r appuser && useradd -r -g appuser appuser
 
 WORKDIR /app
 
@@ -44,7 +46,13 @@ COPY --from=builder /app/nimby_shapetopoi .
 # Copy static files
 COPY --from=builder /app/static ./static
 
-# Expose port (Cloud Run will set PORT environment variable)
+# Change ownership to non-root user
+RUN chown -R appuser:appuser /app
+
+# Switch to non-root user
+USER appuser
+
+# Expose port (ECS will set PORT environment variable)
 EXPOSE 8080
 
 # Run the application (will read PORT environment variable automatically)

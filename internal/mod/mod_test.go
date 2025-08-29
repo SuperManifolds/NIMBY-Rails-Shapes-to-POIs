@@ -155,23 +155,9 @@ func TestCreateZip(t *testing.T) {
 		},
 	}
 
-	modContent := `[ModMeta]
-schema=1
-name=test_mod
-author=test_author
-
-[POILayer]
-id = test1_pois
-name = Test1 POIs
-tsv = test1.tsv
-
-[POILayer]
-id = test2_pois
-name = Test2 POIs
-tsv = test2.tsv`
-
-	// Create the zip
-	err := CreateZip(config, entries, modContent)
+	// Create groups and zip
+	groups := SplitEntriesIntoGroups(entries, "test")
+	err := CreateZip(config, groups)
 	if err != nil {
 		t.Fatalf("CreateZip returned error: %v", err)
 	}
@@ -210,8 +196,9 @@ tsv = test2.tsv`
 				t.Errorf("Failed to read mod.txt: %v", err)
 				continue
 			}
-			if string(content) != modContent {
-				t.Errorf("mod.txt content doesn't match expected:\nExpected:\n%s\nGot:\n%s", modContent, string(content))
+			expectedModContent := GenerateDefaultContent("test", entries)
+			if string(content) != expectedModContent {
+				t.Errorf("mod.txt content doesn't match expected:\nExpected:\n%s\nGot:\n%s", expectedModContent, string(content))
 			}
 
 		case "test1.tsv":
@@ -289,9 +276,8 @@ func TestCreateZip_EmptyEntries(t *testing.T) {
 			SourceFile:  "empty.shp",
 		},
 	}
-	modContent := "test content"
-
-	err := CreateZip(config, entries, modContent)
+	groups := SplitEntriesIntoGroups(entries, "test_empty")
+	err := CreateZip(config, groups)
 	if err != nil {
 		t.Fatalf("CreateZip returned error for empty list: %v", err)
 	}
@@ -314,9 +300,8 @@ func TestCreateZip_InvalidPath(t *testing.T) {
 			SourceFile:  "test.shp",
 		},
 	}
-	modContent := "test"
-
-	err := CreateZip(config, entries, modContent)
+	groups := SplitEntriesIntoGroups(entries, "test_invalid")
+	err := CreateZip(config, groups)
 	if err == nil {
 		t.Error("Expected error for invalid output path, but got none")
 	}

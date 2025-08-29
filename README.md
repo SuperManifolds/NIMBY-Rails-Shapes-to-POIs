@@ -1,28 +1,74 @@
 # NIMBY ShapeToPOI
 
-A Go command-line tool that converts geographic data files (Shapefiles, KML, KMZ) into NIMBY Rails mod files containing Points of Interest (POI).
+A Go web application that converts geographic data files (Shapefiles, KML, KMZ) into NIMBY Rails mod files containing Points of Interest (POI). Available as both a web interface and command-line tool.
 
 ## Features
 
+- **Web Interface**: Easy-to-use web application for file conversion
 - **Multiple Format Support**: Reads Shapefiles (.shp), KML (.kml), and KMZ (.kmz) files
+- **Point Interpolation**: Add intermediate points along lines at configurable distances
+- **Label Intervals**: Add name labels at regular intervals along lines
+- **Map Preview**: Visual preview of converted POIs on OpenStreetMap
+- **Color Customization**: Override colors from files or use original colors
+- **POI Splitting**: Automatically splits large datasets into multiple mods (10k POI limit per mod)
 - **Nested Geometry Support**: Handles complex nested MultiGeometry structures
 - **Multiple File Processing**: Combine data from multiple input files
-- **Custom Mod Files**: Use your own mod.txt template or auto-generate one
 - **Ready-to-Use Output**: Creates zip files ready for NIMBY Rails import
 
-## Installation
+## Usage
 
-### From Source
+### Web Interface
+
+Visit the deployed application at [your-domain.com] to use the web interface for easy file conversion.
+
+### Local Development
 
 ```bash
 git clone https://github.com/supermanifolds/nimby_shapetopoi
 cd nimby_shapetopoi
 make build
+./bin/nimby_shapetopoi --server
 ```
 
-The binary will be available at `bin/nimby_shapetopoi`.
+Then open http://localhost:8080 in your browser.
 
-## Usage
+## Deployment
+
+### AWS ECS Deployment
+
+The application is automatically deployed to AWS ECS using Terraform and GitHub Actions.
+
+#### Prerequisites
+
+1. AWS Account with appropriate permissions
+2. GitHub repository secrets configured:
+   - `AWS_ACCESS_KEY_ID`
+   - `AWS_SECRET_ACCESS_KEY`
+
+#### Infrastructure Setup
+
+```bash
+cd terraform
+terraform init
+terraform plan
+terraform apply
+```
+
+The Terraform configuration creates:
+- VPC with public/private subnets
+- Application Load Balancer
+- ECS Cluster with Fargate tasks
+- ECR repository for container images
+- CloudWatch logging
+- Security groups and IAM roles
+
+#### Automatic Deployment
+
+- Push to `main` branch triggers automatic deployment
+- Infrastructure changes in `terraform/` directory trigger Terraform workflow
+- Application is built as Docker container and deployed to ECS
+
+## Command Line Usage
 
 ### Basic Usage
 
@@ -90,19 +136,6 @@ version=1.0.0
 id = depot_mod_pois
 name = depot_mod POIs
 tsv = depot_mod.tsv
-```
-
-## Project Structure
-
-```
-├── cmd/nimby_shapetopoi/    # Main application
-├── internal/
-│   ├── geometry/            # File format readers
-│   ├── mod/                 # Mod file handling
-│   └── poi/                 # POI data structures
-├── pkg/kml/                 # KML parsing library
-├── bin/                     # Built binaries
-└── Makefile                 # Build commands
 ```
 
 ## Development

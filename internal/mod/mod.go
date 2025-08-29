@@ -6,10 +6,13 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/supermanifolds/nimby_shapetopoi/internal/poi"
 )
+
+const MaxPOIsPerMod = 10000
 
 type Config struct {
 	OutputPath  string
@@ -21,6 +24,112 @@ type FileEntry struct {
 	POIList     poi.List
 	SourceFile  string
 	Title       string
+}
+
+// Group represents a group of entries that will become a single mod
+type Group struct {
+	Name     string
+	Entries  []FileEntry
+	POICount int
+}
+
+// SplitEntriesIntoGroups splits entries into groups of max 10k POIs each
+func SplitEntriesIntoGroups(entries []FileEntry, baseModName string) []Group {
+	var groups []Group
+	var currentGroup Group
+	currentGroup.Name = baseModName
+	currentGroup.POICount = 0
+	partNumber := 1
+
+	for _, entry := range entries {
+		entryPOICount := len(entry.POIList)
+
+		switch {
+		case entryPOICount > MaxPOIsPerMod:
+			// If a single entry has more than MaxPOIsPerMod, we need to split it
+			// First, finish the current group if it has entries
+			if len(currentGroup.Entries) > 0 {
+				groups = append(groups, currentGroup)
+				partNumber++
+				currentGroup = Group{
+					Name:     fmt.Sprintf("%s_part%d", baseModName, partNumber),
+					POICount: 0,
+				}
+			}
+
+			// Split the large entry into multiple groups
+			splitGroups := splitLargeEntry(entry, baseModName, &partNumber)
+			groups = append(groups, splitGroups...)
+
+			// Start a new group for remaining entries
+			partNumber++
+			currentGroup = Group{
+				Name:     fmt.Sprintf("%s_part%d", baseModName, partNumber),
+				POICount: 0,
+			}
+		case currentGroup.POICount+entryPOICount > MaxPOIsPerMod:
+			// This entry would exceed the limit, start a new group
+			if len(currentGroup.Entries) > 0 {
+				groups = append(groups, currentGroup)
+			}
+			partNumber++
+			currentGroup = Group{
+				Name:     fmt.Sprintf("%s_part%d", baseModName, partNumber),
+				Entries:  []FileEntry{entry},
+				POICount: entryPOICount,
+			}
+		default:
+			// Add to current group
+			currentGroup.Entries = append(currentGroup.Entries, entry)
+			currentGroup.POICount += entryPOICount
+		}
+	}
+
+	// Add the last group if it has entries
+	if len(currentGroup.Entries) > 0 {
+		groups = append(groups, currentGroup)
+	}
+
+	// If we only have one group and it's not named with _part1, use the base name
+	if len(groups) == 1 && groups[0].POICount <= MaxPOIsPerMod {
+		groups[0].Name = baseModName
+	}
+
+	return groups
+}
+
+// splitLargeEntry splits a single entry that exceeds the POI limit into multiple mod groups
+func splitLargeEntry(entry FileEntry, baseModName string, partNumber *int) []Group {
+	var groups []Group
+	poiList := entry.POIList
+	totalPOIs := len(poiList)
+
+	for i := 0; i < totalPOIs; i += MaxPOIsPerMod {
+		end := i + MaxPOIsPerMod
+		if end > totalPOIs {
+			end = totalPOIs
+		}
+
+		// Create a sub-entry with a portion of the POIs
+		subPOIList := poiList[i:end]
+		chunkIndex := (i / MaxPOIsPerMod) + 1
+		subEntry := FileEntry{
+			TSVFileName: fmt.Sprintf("%s_chunk%d.tsv", strings.TrimSuffix(entry.TSVFileName, ".tsv"), chunkIndex),
+			POIList:     subPOIList,
+			SourceFile:  entry.SourceFile,
+			Title:       fmt.Sprintf("%s (Part %d)", entry.Title, chunkIndex),
+		}
+
+		group := Group{
+			Name:     fmt.Sprintf("%s_part%d", baseModName, *partNumber),
+			Entries:  []FileEntry{subEntry},
+			POICount: len(subPOIList),
+		}
+		groups = append(groups, group)
+		*partNumber++
+	}
+
+	return groups
 }
 
 func GenerateDefaultContent(modName string, entries []FileEntry) string {
@@ -87,7 +196,7 @@ tsv = %s
 	return sb.String()
 }
 
-func CreateZip(config Config, entries []FileEntry, modContent string) error {
+func CreateZip(config Config, groups []Group) error {
 	// Create the zip file
 	zipFile, err := os.Create(config.OutputPath)
 	if err != nil {
@@ -98,31 +207,70 @@ func CreateZip(config Config, entries []FileEntry, modContent string) error {
 	zipWriter := zip.NewWriter(zipFile)
 	defer zipWriter.Close()
 
-	// Add mod.txt to the zip
-	modWriter, err := zipWriter.Create("mod.txt")
-	if err != nil {
-		return err
-	}
-	_, err = io.WriteString(modWriter, modContent)
-	if err != nil {
-		return err
-	}
+	// If single group, create files at root level (backward compatible)
+	if len(groups) == 1 {
+		group := groups[0]
 
-	// Add TSV files to the zip - one for each entry
-	for _, entry := range entries {
-		tsvWriter, err := zipWriter.Create(entry.TSVFileName)
+		// Add mod.txt to the zip root
+		modContent := GenerateDefaultContent(group.Name, group.Entries)
+		modWriter, err := zipWriter.Create("mod.txt")
+		if err != nil {
+			return err
+		}
+		_, err = io.WriteString(modWriter, modContent)
 		if err != nil {
 			return err
 		}
 
-		// Write TSV content
-		csvWriter := csv.NewWriter(&zipStringWriter{w: tsvWriter})
-		csvWriter.Comma = '\t'
-		err = entry.POIList.ToTSV(csvWriter)
-		if err != nil {
-			return err
+		// Add TSV files to the zip root
+		for _, entry := range group.Entries {
+			tsvWriter, err := zipWriter.Create(entry.TSVFileName)
+			if err != nil {
+				return err
+			}
+
+			// Write TSV content
+			csvWriter := csv.NewWriter(&zipStringWriter{w: tsvWriter})
+			csvWriter.Comma = '\t'
+			err = entry.POIList.ToTSV(csvWriter)
+			if err != nil {
+				return err
+			}
+			csvWriter.Flush()
 		}
-		csvWriter.Flush()
+	} else {
+		// Multiple groups - create a folder for each mod
+		for _, group := range groups {
+			modFolder := group.Name + "/"
+
+			// Add mod.txt to the mod folder
+			modContent := GenerateDefaultContent(group.Name, group.Entries)
+			modWriter, err := zipWriter.Create(filepath.Join(modFolder, "mod.txt"))
+			if err != nil {
+				return err
+			}
+			_, err = io.WriteString(modWriter, modContent)
+			if err != nil {
+				return err
+			}
+
+			// Add TSV files to the mod folder
+			for _, entry := range group.Entries {
+				tsvWriter, err := zipWriter.Create(filepath.Join(modFolder, entry.TSVFileName))
+				if err != nil {
+					return err
+				}
+
+				// Write TSV content
+				csvWriter := csv.NewWriter(&zipStringWriter{w: tsvWriter})
+				csvWriter.Comma = '\t'
+				err = entry.POIList.ToTSV(csvWriter)
+				if err != nil {
+					return err
+				}
+				csvWriter.Flush()
+			}
+		}
 	}
 
 	return nil
