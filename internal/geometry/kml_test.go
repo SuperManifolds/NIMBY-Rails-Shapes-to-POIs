@@ -229,6 +229,62 @@ func TestKMLReader_ParseFile_ExtendedData(t *testing.T) {
 	}
 }
 
+func TestKMLReader_ParseFile_InlineStyle(t *testing.T) {
+	reader := &KMLReader{}
+	poiList, err := reader.ParseFile("../../testdata/sketch.kml")
+
+	if err != nil {
+		t.Fatalf("ParseFile returned error: %v", err)
+	}
+
+	if len(*poiList) == 0 {
+		t.Fatal("Expected POIs from sketch.kml, got 0")
+	}
+
+	// Check that inline LineStyle colors were extracted correctly
+	// ff33ccff (KML: aabbggrr) -> ffcc33 (NIMBY: rrggbb)
+	expectedColor := "ffcc33"
+
+	expectedColorCount := 0
+	defaultColorCount := 0
+	colorCounts := make(map[string]int)
+
+	for _, p := range *poiList {
+		colorCounts[p.Color]++
+		switch p.Color {
+		case expectedColor:
+			expectedColorCount++
+		case "0000ff": // default color
+			defaultColorCount++
+		}
+	}
+
+	t.Logf("Total POIs: %d", len(*poiList))
+	t.Logf("POIs with expected LineString color (%s): %d", expectedColor, expectedColorCount)
+	t.Logf("POIs with default color (0000ff): %d", defaultColorCount)
+
+	// Show all colors found
+	t.Logf("All colors found:")
+	for color, count := range colorCounts {
+		t.Logf("  %s: %d", color, count)
+	}
+
+	// Verify inline styles are working
+	if expectedColorCount == 0 {
+		t.Errorf("Expected some POIs with LineString color %s from inline styles, got 0", expectedColor)
+	}
+
+	// Should have no default color POIs when inline styles are present
+	if defaultColorCount > 0 {
+		t.Errorf("Expected no POIs with default color when inline styles are available, got %d", defaultColorCount)
+	}
+
+	// Should have multiple different colors from different inline styles
+	if len(colorCounts) < 2 {
+		t.Errorf("Expected multiple colors from different inline styles, got %d unique colors", len(colorCounts))
+	}
+}
+
 func TestKMLReader_ParseFile_Polygon(t *testing.T) {
 	kmlContent := `<?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2">

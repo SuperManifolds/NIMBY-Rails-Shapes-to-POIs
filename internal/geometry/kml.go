@@ -15,7 +15,7 @@ func (k *KMLReader) ParseFile(filePath string) (*poi.List, error) {
 }
 
 func (k *KMLReader) ParseFileWithConfig(filePath string, maxLod int32) (*poi.List, error) {
-	return k.ParseFileWithFullConfig(filePath, maxLod, defaultColor)
+	return k.ParseFileWithFullConfig(filePath, maxLod, "")
 }
 
 func (k *KMLReader) ParseFileWithFullConfig(filePath string, maxLod int32, color string) (*poi.List, error) {
@@ -251,7 +251,8 @@ func (k *KMLReader) processMultiGeometry(multiGeometry *kml.MultiGeometry, docum
 func (k *KMLReader) getColorForGeometry(placemark *kml.Placemark, document *kml.Document, geometryType string) string {
 	// Try to get color from placemark style
 	if style := document.GetStyleForPlacemark(placemark); style != nil {
-		return kml.GetColorFromStyle(style, geometryType)
+		color := kml.GetColorFromStyle(style, geometryType)
+		return color
 	}
 
 	// Return empty string if no color found
