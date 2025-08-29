@@ -2,9 +2,10 @@ terraform {
   required_version = ">= 1.0"
   
   backend "s3" {
-    bucket = "nimby-shapetopoi-terraform-state-1756463076"
-    key    = "terraform.tfstate"
-    region = "us-west-2"
+    bucket         = "nimby-shapetopoi-terraform-state-1756463076"
+    key            = "terraform.tfstate"
+    region         = "us-west-2"
+    dynamodb_table = "nimby-shapetopoi-terraform-locks"
   }
   
   required_providers {
