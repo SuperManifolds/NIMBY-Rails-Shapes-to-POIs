@@ -13,7 +13,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/supermanifolds/nimby_shapetopoi/internal/poi"
+	"github.com/SuperManifolds/NIMBY-Rails-Shapes-to-POIs/internal/poi"
 	"golang.org/x/image/font"
 	"golang.org/x/image/font/basicfont"
 	"golang.org/x/image/math/fixed"

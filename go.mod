@@ -1,4 +1,4 @@
-module github.com/supermanifolds/nimby_shapetopoi
+module github.com/SuperManifolds/NIMBY-Rails-Shapes-to-POIs
 
 go 1.23.4
 

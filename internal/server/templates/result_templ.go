@@ -9,7 +9,7 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import "fmt"
-import "github.com/supermanifolds/nimby_shapetopoi/internal/mod"
+import "github.com/SuperManifolds/NIMBY-Rails-Shapes-to-POIs/internal/mod"
 
 func ConversionResult(modName string, poiCount int, downloadPath string, previewPath string, groups []mod.Group) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {

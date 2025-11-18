@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/supermanifolds/nimby_shapetopoi/internal/poi"
+	"github.com/SuperManifolds/NIMBY-Rails-Shapes-to-POIs/internal/poi"
 )
 
 const (

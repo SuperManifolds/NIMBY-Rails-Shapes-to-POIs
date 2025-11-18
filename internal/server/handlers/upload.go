@@ -14,11 +14,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/supermanifolds/nimby_shapetopoi/internal/geometry"
-	"github.com/supermanifolds/nimby_shapetopoi/internal/mod"
-	"github.com/supermanifolds/nimby_shapetopoi/internal/openrailway"
-	"github.com/supermanifolds/nimby_shapetopoi/internal/poi"
-	"github.com/supermanifolds/nimby_shapetopoi/internal/server/templates"
+	"github.com/SuperManifolds/NIMBY-Rails-Shapes-to-POIs/internal/geometry"
+	"github.com/SuperManifolds/NIMBY-Rails-Shapes-to-POIs/internal/mod"
+	"github.com/SuperManifolds/NIMBY-Rails-Shapes-to-POIs/internal/openrailway"
+	"github.com/SuperManifolds/NIMBY-Rails-Shapes-to-POIs/internal/poi"
+	"github.com/SuperManifolds/NIMBY-Rails-Shapes-to-POIs/internal/server/templates"
 )
 
 const maxUploadSize = 50 << 20 // 50MB

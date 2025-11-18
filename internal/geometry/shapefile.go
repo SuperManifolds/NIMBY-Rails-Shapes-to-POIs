@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/jonas-p/go-shp"
-	"github.com/supermanifolds/nimby_shapetopoi/internal/poi"
+	"github.com/SuperManifolds/NIMBY-Rails-Shapes-to-POIs/internal/poi"
 )
 
 type ShapefileReader struct {

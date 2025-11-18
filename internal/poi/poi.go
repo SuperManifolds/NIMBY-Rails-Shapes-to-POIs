@@ -5,7 +5,7 @@ import (
 	"math"
 	"strconv"
 
-	"github.com/supermanifolds/nimby_shapetopoi/internal/gis"
+	"github.com/SuperManifolds/NIMBY-Rails-Shapes-to-POIs/internal/gis"
 )
 
 type POI struct {

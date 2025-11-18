@@ -7,8 +7,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/supermanifolds/nimby_shapetopoi/internal/server/handlers"
-	"github.com/supermanifolds/nimby_shapetopoi/internal/server/middleware"
+	"github.com/SuperManifolds/NIMBY-Rails-Shapes-to-POIs/internal/server/handlers"
+	"github.com/SuperManifolds/NIMBY-Rails-Shapes-to-POIs/internal/server/middleware"
 )
 
 type Server struct {

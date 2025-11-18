@@ -1,8 +1,8 @@
 package geometry
 
 import (
-	"github.com/supermanifolds/nimby_shapetopoi/internal/poi"
-	"github.com/supermanifolds/nimby_shapetopoi/pkg/kml"
+	"github.com/SuperManifolds/NIMBY-Rails-Shapes-to-POIs/internal/poi"
+	"github.com/SuperManifolds/NIMBY-Rails-Shapes-to-POIs/pkg/kml"
 )
 
 type KMLReader struct {

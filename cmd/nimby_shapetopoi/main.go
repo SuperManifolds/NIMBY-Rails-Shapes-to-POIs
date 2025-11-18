@@ -12,9 +12,9 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/supermanifolds/nimby_shapetopoi/internal/geometry"
-	"github.com/supermanifolds/nimby_shapetopoi/internal/mod"
-	"github.com/supermanifolds/nimby_shapetopoi/internal/server"
+	"github.com/SuperManifolds/NIMBY-Rails-Shapes-to-POIs/internal/geometry"
+	"github.com/SuperManifolds/NIMBY-Rails-Shapes-to-POIs/internal/mod"
+	"github.com/SuperManifolds/NIMBY-Rails-Shapes-to-POIs/internal/server"
 )
 
 func main() {
