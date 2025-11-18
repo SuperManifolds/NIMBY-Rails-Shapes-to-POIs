@@ -91,6 +91,9 @@ func (h *UploadHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		poiColor = geometry.HexToNimbyColor(poiColor)
 	}
 
+	// Parse use-background-in-pois checkbox (checked by default)
+	useBackgroundInPOIs := r.FormValue("use-background-in-pois") == "on"
+
 	// Process uploaded files
 	config := ProcessConfig{
 		OutputName:          outputName,
@@ -98,6 +101,7 @@ func (h *UploadHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		LabelInterval:       labelInterval,
 		MaxLod:              maxLod,
 		POIColor:            poiColor,
+		UseBackgroundInPOIs: useBackgroundInPOIs,
 	}
 	result, err := h.processUploadedFiles(r.Context(), files, config)
 	if err != nil {
@@ -134,6 +138,7 @@ type ProcessConfig struct {
 	LabelInterval       float64
 	MaxLod              int32
 	POIColor            string
+	UseBackgroundInPOIs bool
 }
 
 type ProcessResult struct {
@@ -166,8 +171,8 @@ func (h *UploadHandler) processUploadedFiles(ctx context.Context, files []*multi
 	for _, inputFile := range inputFiles {
 		h.logger.InfoContext(ctx, "Processing uploaded file", "path", inputFile)
 
-		// Create reader with interpolation distance and label interval
-		reader, err := geometry.GetReaderWithConfig(inputFile, config.InterpolateDistance, config.LabelInterval)
+		// Create reader with interpolation distance, label interval, and background setting
+		reader, err := geometry.GetReaderWithConfig(inputFile, config.InterpolateDistance, config.LabelInterval, config.UseBackgroundInPOIs)
 		if err != nil {
 			h.logger.ErrorContext(ctx, "Error getting reader for file", "path", inputFile, "error", err)
 			continue

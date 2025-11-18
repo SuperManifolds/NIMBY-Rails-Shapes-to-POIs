@@ -8,6 +8,7 @@ import (
 type KMLReader struct {
 	InterpolateDistance float64
 	LabelInterval       float64
+	UseBackgroundInPOIs bool
 }
 
 func (k *KMLReader) ParseFile(filePath string) (*poi.List, error) {
@@ -114,14 +115,27 @@ func (k *KMLReader) processPoint(point *kml.Point, placemarkName string, poiList
 			fontSize = int32(placemarkFontSize) // Use larger font for placemark names
 		}
 
+		// Determine text and transparency based on background mode
+		text := ""
+		transparent := false
+		if k.UseBackgroundInPOIs {
+			// Background mode enabled: normal appearance
+			text = ""
+			transparent = false
+		} else {
+			// Background mode disabled: transparent with dash marker
+			text = "-"
+			transparent = true
+		}
+
 		p := poi.POI{
 			Lon:         coord.Lon,
 			Lat:         coord.Lat,
 			Color:       color,
-			Text:        placemarkName, // Use placemark name for individual points
+			Text:        text,
 			FontSize:    fontSize,
 			MaxLod:      maxLod,
-			Transparent: false,
+			Transparent: transparent,
 			Demand:      defaultDemand,
 			Population:  defaultPopulation,
 		}
@@ -142,14 +156,27 @@ func (k *KMLReader) processLineString(lineString *kml.LineString, placemarkName 
 	// Create temporary list for this line string
 	tempList := make(poi.List, 0, len(coords))
 	for _, coord := range coords {
+		// Determine text and transparency based on background mode
+		text := ""
+		transparent := false
+		if k.UseBackgroundInPOIs {
+			// Background mode enabled: normal appearance
+			text = ""
+			transparent = false
+		} else {
+			// Background mode disabled: transparent with dash marker
+			text = "-"
+			transparent = true
+		}
+
 		p := poi.POI{
 			Lon:         coord.Lon,
 			Lat:         coord.Lat,
 			Color:       color,
-			Text:        "",
+			Text:        text,
 			FontSize:    defaultFontSize,
 			MaxLod:      maxLod,
-			Transparent: false,
+			Transparent: transparent,
 			Demand:      defaultDemand,
 			Population:  defaultPopulation,
 		}
@@ -192,14 +219,27 @@ func (k *KMLReader) processLinearRing(linearRing *kml.LinearRing, poiList *poi.L
 	// Create temporary list for this linear ring
 	tempList := make(poi.List, 0, len(coords))
 	for _, coord := range coords {
+		// Determine text and transparency based on background mode
+		text := ""
+		transparent := false
+		if k.UseBackgroundInPOIs {
+			// Background mode enabled: normal appearance
+			text = ""
+			transparent = false
+		} else {
+			// Background mode disabled: transparent with dash marker
+			text = "-"
+			transparent = true
+		}
+
 		p := poi.POI{
 			Lon:         coord.Lon,
 			Lat:         coord.Lat,
 			Color:       color,
-			Text:        "",
+			Text:        text,
 			FontSize:    defaultFontSize,
 			MaxLod:      maxLod,
-			Transparent: false,
+			Transparent: transparent,
 			Demand:      defaultDemand,
 			Population:  defaultPopulation,
 		}
