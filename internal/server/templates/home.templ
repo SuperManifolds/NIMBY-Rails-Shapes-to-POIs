@@ -62,6 +62,13 @@ templ Home() {
 						</div>
 						<small>Override all POI colors with this color. Leave empty to use original colors from the source files.</small>
 					</div>
+					<div class="form-group">
+						<label>
+							<input type="checkbox" id="use-background-in-pois" name="use-background-in-pois" checked/>
+							Use background in POIs
+						</label>
+						<small>When enabled, POIs have normal appearance. When disabled, POIs become transparent with "-" markers (background mode).</small>
+					</div>
 					<button type="submit" class="btn" id="submit-button">
 						<span id="upload-spinner" class="spinner hidden"></span>
 						<span id="button-text">Convert to NIMBY Rails Mod</span>
@@ -76,14 +83,14 @@ templ Home() {
 			<h3>About</h3>
 			<p>This tool converts geographic data files into NIMBY Rails mod files containing Points of Interest (POI).</p>
 			<p><strong>Supported formats:</strong> Shapefiles (.shp), KML (.kml), KMZ (.kmz)</p>
-			<p><strong>Links:</strong> 
-				<a href="https://github.com/supermanifolds/nimby_shapetopoi" target="_blank" rel="noopener noreferrer" style="color: #3b82f6; text-decoration: none;">GitHub Repository</a> • 
-				<a href="https://github.com/supermanifolds/nimby_shapetopoi/issues" target="_blank" rel="noopener noreferrer" style="color: #3b82f6; text-decoration: none;">Report Issues</a> • 
-				<a href="https://github.com/supermanifolds/nimby_shapetopoi/releases" target="_blank" rel="noopener noreferrer" style="color: #3b82f6; text-decoration: none;">Changelog</a>
+			<p><strong>Links:</strong>
+				<a href="https://github.com/SuperManifolds/NIMBY-Rails-Shapes-to-POIs" target="_blank" rel="noopener noreferrer" style="color: #3b82f6; text-decoration: none;">GitHub Repository</a> •
+				<a href="https://github.com/SuperManifolds/NIMBY-Rails-Shapes-to-POIs/issues" target="_blank" rel="noopener noreferrer" style="color: #3b82f6; text-decoration: none;">Report Issues</a> •
+				<a href="https://github.com/SuperManifolds/NIMBY-Rails-Shapes-to-POIs/releases" target="_blank" rel="noopener noreferrer" style="color: #3b82f6; text-decoration: none;">Changelog</a>
 			</p>
 			<hr style="margin: 20px 0; border: none; border-top: 1px solid #e5e7eb;"/>
 			<p style="text-align: center; color: #6b7280; font-size: 14px;">
-				Created by <a href="https://github.com/supermanifolds" target="_blank" rel="noopener noreferrer" style="color: #3b82f6; text-decoration: none;">Alex Sørlie (SuperManifolds)</a>
+				Created by <a href="https://github.com/SuperManifolds" target="_blank" rel="noopener noreferrer" style="color: #3b82f6; text-decoration: none;">Alex Sørlie (SuperManifolds)</a>
 			</p>
 		</footer>
 	}

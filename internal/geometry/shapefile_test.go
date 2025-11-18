@@ -8,7 +8,7 @@ import (
 )
 
 func TestShapefileReader_ParseFile_NonExistentFile(t *testing.T) {
-	reader := &ShapefileReader{}
+	reader := &ShapefileReader{UseBackgroundInPOIs: true} // Default to normal behavior
 	_, err := reader.ParseFile("nonexistent.shp")
 
 	if err == nil {
@@ -24,7 +24,7 @@ func TestShapefileReader_GetTitle_ActualTestFile(t *testing.T) {
 		return
 	}
 
-	reader := &ShapefileReader{}
+	reader := &ShapefileReader{UseBackgroundInPOIs: true} // Default to normal behavior
 	title, err := reader.GetTitle(testFile)
 
 	if err != nil {
@@ -63,7 +63,7 @@ func TestShapefileReader_ParseFile_ActualTestFile(t *testing.T) {
 		return
 	}
 
-	reader := &ShapefileReader{}
+	reader := &ShapefileReader{UseBackgroundInPOIs: true} // Default to normal behavior
 	poiList, err := reader.ParseFile(testFile)
 
 	if err != nil {

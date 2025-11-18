@@ -1,6 +1,6 @@
-module github.com/supermanifolds/nimby_shapetopoi
+module github.com/SuperManifolds/NIMBY-Rails-Shapes-to-POIs
 
-go 1.23.4
+go 1.24
 
 require (
 	github.com/jonas-p/go-shp v0.1.1

@@ -30,7 +30,7 @@ func TestKMLReader_ParseFile_SimpleKML(t *testing.T) {
 	tmpFile := createTempFile(t, "test.kml", kmlContent)
 	defer os.Remove(tmpFile)
 
-	reader := &KMLReader{}
+	reader := &KMLReader{UseBackgroundInPOIs: true} // Default to normal behavior
 	poiList, err := reader.ParseFile(tmpFile)
 
 	if err != nil {
@@ -95,7 +95,7 @@ func TestKMLReader_ParseFile_WithFolders(t *testing.T) {
 	tmpFile := createTempFile(t, "test.kml", kmlContent)
 	defer os.Remove(tmpFile)
 
-	reader := &KMLReader{}
+	reader := &KMLReader{UseBackgroundInPOIs: true} // Default to normal behavior
 	poiList, err := reader.ParseFile(tmpFile)
 
 	if err != nil {
@@ -129,7 +129,7 @@ func TestKMLReader_ParseFile_MultiGeometry(t *testing.T) {
 	tmpFile := createTempFile(t, "test.kml", kmlContent)
 	defer os.Remove(tmpFile)
 
-	reader := &KMLReader{}
+	reader := &KMLReader{UseBackgroundInPOIs: true} // Default to normal behavior
 	poiList, err := reader.ParseFile(tmpFile)
 
 	if err != nil {
@@ -177,7 +177,7 @@ func TestKMLReader_ParseFile_NestedMultiGeometry(t *testing.T) {
 	tmpFile := createTempFile(t, "test.kml", kmlContent)
 	defer os.Remove(tmpFile)
 
-	reader := &KMLReader{}
+	reader := &KMLReader{UseBackgroundInPOIs: true} // Default to normal behavior
 	poiList, err := reader.ParseFile(tmpFile)
 
 	if err != nil {
@@ -211,7 +211,7 @@ func TestKMLReader_ParseFile_ExtendedData(t *testing.T) {
 	tmpFile := createTempFile(t, "test.kml", kmlContent)
 	defer os.Remove(tmpFile)
 
-	reader := &KMLReader{}
+	reader := &KMLReader{UseBackgroundInPOIs: true} // Default to normal behavior
 	poiList, err := reader.ParseFile(tmpFile)
 
 	if err != nil {
@@ -230,7 +230,7 @@ func TestKMLReader_ParseFile_ExtendedData(t *testing.T) {
 }
 
 func TestKMLReader_ParseFile_InlineStyle(t *testing.T) {
-	reader := &KMLReader{}
+	reader := &KMLReader{UseBackgroundInPOIs: true} // Default to normal behavior
 	poiList, err := reader.ParseFile("../../testdata/sketch.kml")
 
 	if err != nil {
@@ -305,7 +305,7 @@ func TestKMLReader_ParseFile_Polygon(t *testing.T) {
 	tmpFile := createTempFile(t, "test.kml", kmlContent)
 	defer os.Remove(tmpFile)
 
-	reader := &KMLReader{}
+	reader := &KMLReader{UseBackgroundInPOIs: true} // Default to normal behavior
 	poiList, err := reader.ParseFile(tmpFile)
 
 	if err != nil {
@@ -324,7 +324,7 @@ func TestKMLReader_ParseFile_Polygon(t *testing.T) {
 }
 
 func TestKMLReader_ParseFile_NonExistentFile(t *testing.T) {
-	reader := &KMLReader{}
+	reader := &KMLReader{UseBackgroundInPOIs: true} // Default to normal behavior
 	_, err := reader.ParseFile("nonexistent.kml")
 
 	if err == nil {
@@ -344,7 +344,7 @@ func TestKMLReader_ParseFile_InvalidKML(t *testing.T) {
 	tmpFile := createTempFile(t, "invalid.kml", invalidContent)
 	defer os.Remove(tmpFile)
 
-	reader := &KMLReader{}
+	reader := &KMLReader{UseBackgroundInPOIs: true} // Default to normal behavior
 	_, err := reader.ParseFile(tmpFile)
 
 	if err == nil {
@@ -363,7 +363,7 @@ func TestKMLReader_ParseFile_EmptyDocument(t *testing.T) {
 	tmpFile := createTempFile(t, "empty.kml", kmlContent)
 	defer os.Remove(tmpFile)
 
-	reader := &KMLReader{}
+	reader := &KMLReader{UseBackgroundInPOIs: true} // Default to normal behavior
 	poiList, err := reader.ParseFile(tmpFile)
 
 	if err != nil {
@@ -393,7 +393,7 @@ func TestKMLReader_GetTitle(t *testing.T) {
 	tmpFile := createTempFile(t, "test_title.kml", kmlContent)
 	defer os.Remove(tmpFile)
 
-	reader := &KMLReader{}
+	reader := &KMLReader{UseBackgroundInPOIs: true} // Default to normal behavior
 	title, err := reader.GetTitle(tmpFile)
 
 	if err != nil {
@@ -424,7 +424,7 @@ func TestKMLReader_GetTitle_NoDocumentName(t *testing.T) {
 	tmpFile := createTempFile(t, "test_no_title.kml", kmlContent)
 	defer os.Remove(tmpFile)
 
-	reader := &KMLReader{}
+	reader := &KMLReader{UseBackgroundInPOIs: true} // Default to normal behavior
 	title, err := reader.GetTitle(tmpFile)
 
 	if err != nil {
@@ -456,7 +456,7 @@ func TestKMLReader_GetTitle_EmptyDocumentName(t *testing.T) {
 	tmpFile := createTempFile(t, "test_empty_title.kml", kmlContent)
 	defer os.Remove(tmpFile)
 
-	reader := &KMLReader{}
+	reader := &KMLReader{UseBackgroundInPOIs: true} // Default to normal behavior
 	title, err := reader.GetTitle(tmpFile)
 
 	if err != nil {
@@ -494,7 +494,7 @@ func TestKMLReader_GetTitle_PlacemarkPriority(t *testing.T) {
 	tmpFile := createTempFile(t, "test_placemark_priority.kml", kmlContent)
 	defer os.Remove(tmpFile)
 
-	reader := &KMLReader{}
+	reader := &KMLReader{UseBackgroundInPOIs: true} // Default to normal behavior
 	title, err := reader.GetTitle(tmpFile)
 
 	if err != nil {
@@ -525,7 +525,7 @@ func TestKMLReader_GetTitle_DocumentFallback(t *testing.T) {
 	tmpFile := createTempFile(t, "test_document_fallback.kml", kmlContent)
 	defer os.Remove(tmpFile)
 
-	reader := &KMLReader{}
+	reader := &KMLReader{UseBackgroundInPOIs: true} // Default to normal behavior
 	title, err := reader.GetTitle(tmpFile)
 
 	if err != nil {
@@ -547,7 +547,7 @@ func TestKMLReader_GetTitle_ActualTestFile(t *testing.T) {
 		return
 	}
 
-	reader := &KMLReader{}
+	reader := &KMLReader{UseBackgroundInPOIs: true} // Default to normal behavior
 	title, err := reader.GetTitle(testFile)
 
 	if err != nil {
@@ -571,7 +571,7 @@ func TestKMLReader_ParseFile_ActualTestFile(t *testing.T) {
 		return
 	}
 
-	reader := &KMLReader{}
+	reader := &KMLReader{UseBackgroundInPOIs: true}                 // Default to normal behavior
 	poiList, err := reader.ParseFileWithFullConfig(testFile, 0, "") // Empty color to use file colors
 
 	if err != nil {

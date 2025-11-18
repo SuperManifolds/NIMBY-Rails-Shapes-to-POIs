@@ -24,8 +24,8 @@ Visit the deployed application at [your-domain.com] to use the web interface for
 ### Local Development
 
 ```bash
-git clone https://github.com/supermanifolds/nimby_shapetopoi
-cd nimby_shapetopoi
+git clone https://github.com/SuperManifolds/NIMBY-Rails-Shapes-to-POIs
+cd NIMBY-Rails-Shapes-to-POIs
 make build
 ./bin/nimby_shapetopoi --server
 ```

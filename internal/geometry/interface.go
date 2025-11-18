@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/supermanifolds/nimby_shapetopoi/internal/poi"
+	"github.com/SuperManifolds/NIMBY-Rails-Shapes-to-POIs/internal/poi"
 )
 
 const (
@@ -53,21 +53,23 @@ func HexToNimbyColor(hexColor string) string {
 }
 
 func GetReader(filePath string) (Reader, error) {
-	return GetReaderWithConfig(filePath, 0, 0)
+	return GetReaderWithConfig(filePath, 0, 0, true)
 }
 
-func GetReaderWithConfig(filePath string, interpolateDistance float64, labelInterval float64) (Reader, error) {
+func GetReaderWithConfig(filePath string, interpolateDistance float64, labelInterval float64, useBackgroundInPOIs bool) (Reader, error) {
 	ext := strings.ToLower(filepath.Ext(filePath))
 	switch ext {
 	case ".shp":
 		return &ShapefileReader{
 			InterpolateDistance: interpolateDistance,
 			LabelInterval:       labelInterval,
+			UseBackgroundInPOIs: useBackgroundInPOIs,
 		}, nil
 	case ".kml", ".kmz":
 		return &KMLReader{
 			InterpolateDistance: interpolateDistance,
 			LabelInterval:       labelInterval,
+			UseBackgroundInPOIs: useBackgroundInPOIs,
 		}, nil
 	default:
 		return nil, fmt.Errorf("unsupported file format: %s", ext)

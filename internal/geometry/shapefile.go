@@ -5,13 +5,14 @@ import (
 	"log"
 	"strings"
 
+	"github.com/SuperManifolds/NIMBY-Rails-Shapes-to-POIs/internal/poi"
 	"github.com/jonas-p/go-shp"
-	"github.com/supermanifolds/nimby_shapetopoi/internal/poi"
 )
 
 type ShapefileReader struct {
 	InterpolateDistance float64
 	LabelInterval       float64
+	UseBackgroundInPOIs bool
 }
 
 func (sr *ShapefileReader) ParseFile(filePath string) (*poi.List, error) {
@@ -133,14 +134,27 @@ func (sr *ShapefileReader) ParseFileWithFullConfig(filePath string, maxLod int32
 
 		switch s := shape.(type) {
 		case *shp.Point:
+			// Determine text and transparency based on background mode
+			var text string
+			var transparent bool
+			if sr.UseBackgroundInPOIs {
+				// Background mode enabled: normal appearance
+				text = ""
+				transparent = false
+			} else {
+				// Background mode disabled: transparent with dash marker
+				text = "-"
+				transparent = true
+			}
+
 			p := poi.POI{
 				Lon:         s.X,
 				Lat:         s.Y,
 				Color:       shapeColor,
-				Text:        "",
+				Text:        text,
 				FontSize:    defaultFontSize,
 				MaxLod:      maxLod,
-				Transparent: false,
+				Transparent: transparent,
 				Demand:      defaultDemand,
 				Population:  defaultPopulation,
 			}
@@ -150,14 +164,27 @@ func (sr *ShapefileReader) ParseFileWithFullConfig(filePath string, maxLod int32
 			// Create temporary list for this polyline
 			tempList := make(poi.List, 0, len(s.Points))
 			for _, point := range s.Points {
+				// Determine text and transparency based on background mode
+				var text string
+				var transparent bool
+				if sr.UseBackgroundInPOIs {
+					// Background mode enabled: normal appearance
+					text = ""
+					transparent = false
+				} else {
+					// Background mode disabled: transparent with dash marker
+					text = "-"
+					transparent = true
+				}
+
 				p := poi.POI{
 					Lon:         point.X,
 					Lat:         point.Y,
 					Color:       shapeColor,
-					Text:        "",
+					Text:        text,
 					FontSize:    12,
 					MaxLod:      maxLod,
-					Transparent: false,
+					Transparent: transparent,
 					Demand:      defaultDemand,
 					Population:  0,
 				}

@@ -3,7 +3,7 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/supermanifolds/nimby_shapetopoi/internal/server/templates"
+	"github.com/SuperManifolds/NIMBY-Rails-Shapes-to-POIs/internal/server/templates"
 )
 
 type HomeHandler struct{}

@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/supermanifolds/nimby_shapetopoi/internal/mod"
+	"github.com/SuperManifolds/NIMBY-Rails-Shapes-to-POIs/internal/mod"
 )
 
 func TestGenerateOutputPath(t *testing.T) {
