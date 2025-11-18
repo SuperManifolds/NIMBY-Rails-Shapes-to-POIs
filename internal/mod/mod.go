@@ -134,6 +134,8 @@ func splitLargeEntry(entry FileEntry, baseModName string, partNumber *int) []Gro
 
 func GenerateDefaultContent(modName string, entries []FileEntry) string {
 	var sb strings.Builder
+	// Replace underscores with spaces for display name (e.g., "mymod_part1" -> "mymod part 1")
+	displayModName := strings.ReplaceAll(modName, "_part", " part ")
 	sb.WriteString(fmt.Sprintf(`[ModMeta]
 schema=1
 name=%s
@@ -141,7 +143,7 @@ author=nimby_shapetopoi
 desc=Generated POI layer from geographic files
 version=1.0.0
 
-`, modName))
+`, displayModName))
 
 	for _, entry := range entries {
 		baseName := strings.TrimSuffix(entry.TSVFileName, ".tsv")

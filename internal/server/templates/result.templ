@@ -1,6 +1,7 @@
 package templates
 
 import "fmt"
+import "strings"
 import "github.com/SuperManifolds/NIMBY-Rails-Shapes-to-POIs/internal/mod"
 
 templ ConversionResult(modName string, poiCount int, downloadPath string, previewPath string, groups []mod.Group) {
@@ -22,7 +23,7 @@ templ ConversionResult(modName string, poiCount int, downloadPath string, previe
 			for _, group := range groups {
 				<div style="margin-bottom: 16px">
 					if len(groups) > 1 {
-						<h4>{ group.Name } ({ fmt.Sprintf("%d", group.POICount) } POIs)</h4>
+						<h4>{ strings.ReplaceAll(group.Name, "_part", " part ") } ({ fmt.Sprintf("%d", group.POICount) } POIs)</h4>
 					}
 					<ul style="text-align: left; margin: 8px 0; padding-left: 20px">
 						for _, entry := range group.Entries {

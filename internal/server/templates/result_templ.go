@@ -9,6 +9,7 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import "fmt"
+import "strings"
 import "github.com/SuperManifolds/NIMBY-Rails-Shapes-to-POIs/internal/mod"
 
 func ConversionResult(modName string, poiCount int, downloadPath string, previewPath string, groups []mod.Group) templ.Component {
@@ -39,7 +40,7 @@ func ConversionResult(modName string, poiCount int, downloadPath string, preview
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(modName)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/server/templates/result.templ`, Line: 10, Col: 43}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/server/templates/result.templ`, Line: 11, Col: 43}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -52,7 +53,7 @@ func ConversionResult(modName string, poiCount int, downloadPath string, preview
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", poiCount))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/server/templates/result.templ`, Line: 10, Col: 97}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/server/templates/result.templ`, Line: 11, Col: 97}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
@@ -70,7 +71,7 @@ func ConversionResult(modName string, poiCount int, downloadPath string, preview
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", len(groups)))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/server/templates/result.templ`, Line: 16, Col: 65}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/server/templates/result.templ`, Line: 17, Col: 65}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -96,9 +97,9 @@ func ConversionResult(modName string, poiCount int, downloadPath string, preview
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var5 string
-				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(group.Name)
+				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(strings.ReplaceAll(group.Name, "_part", " part "))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/server/templates/result.templ`, Line: 25, Col: 22}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/server/templates/result.templ`, Line: 26, Col: 61}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 				if templ_7745c5c3_Err != nil {
@@ -111,7 +112,7 @@ func ConversionResult(modName string, poiCount int, downloadPath string, preview
 				var templ_7745c5c3_Var6 string
 				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", group.POICount))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/server/templates/result.templ`, Line: 25, Col: 61}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/server/templates/result.templ`, Line: 26, Col: 100}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 				if templ_7745c5c3_Err != nil {
@@ -134,7 +135,7 @@ func ConversionResult(modName string, poiCount int, downloadPath string, preview
 				var templ_7745c5c3_Var7 string
 				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(entry.Title)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/server/templates/result.templ`, Line: 30, Col: 29}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/server/templates/result.templ`, Line: 31, Col: 29}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 				if templ_7745c5c3_Err != nil {
@@ -147,7 +148,7 @@ func ConversionResult(modName string, poiCount int, downloadPath string, preview
 				var templ_7745c5c3_Var8 string
 				templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", len(entry.POIList)))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/server/templates/result.templ`, Line: 31, Col: 49}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/server/templates/result.templ`, Line: 32, Col: 49}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 				if templ_7745c5c3_Err != nil {
@@ -175,7 +176,7 @@ func ConversionResult(modName string, poiCount int, downloadPath string, preview
 			var templ_7745c5c3_Var9 string
 			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(previewPath)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/server/templates/result.templ`, Line: 41, Col: 26}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/server/templates/result.templ`, Line: 42, Col: 26}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 			if templ_7745c5c3_Err != nil {
@@ -202,7 +203,7 @@ func ConversionResult(modName string, poiCount int, downloadPath string, preview
 		var templ_7745c5c3_Var11 string
 		templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(modName)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/server/templates/result.templ`, Line: 46, Col: 27}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/server/templates/result.templ`, Line: 47, Col: 27}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 		if templ_7745c5c3_Err != nil {
@@ -235,7 +236,7 @@ func ConversionResult(modName string, poiCount int, downloadPath string, preview
 			var templ_7745c5c3_Var12 string
 			templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", len(groups)))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/server/templates/result.templ`, Line: 72, Col: 83}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/server/templates/result.templ`, Line: 73, Col: 83}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 			if templ_7745c5c3_Err != nil {
@@ -287,7 +288,7 @@ func Error(message string) templ.Component {
 		var templ_7745c5c3_Var14 string
 		templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(message)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/server/templates/result.templ`, Line: 87, Col: 14}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/server/templates/result.templ`, Line: 88, Col: 14}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 		if templ_7745c5c3_Err != nil {
