@@ -137,8 +137,8 @@ func processInputFilesIndividually(ctx context.Context, logger *slog.Logger, inp
 	for _, inputFile := range inputFiles {
 		logger.InfoContext(ctx, "Processing file", "path", inputFile)
 
-		// Create reader with interpolation distance (no labels in CLI mode)
-		reader, err := geometry.GetReaderWithConfig(inputFile, interpolateDistance, 0)
+		// Create reader with interpolation distance (no labels in CLI mode, background enabled by default)
+		reader, err := geometry.GetReaderWithConfig(inputFile, interpolateDistance, 0, true)
 		if err != nil {
 			logger.ErrorContext(ctx, "Error getting reader for file", "path", inputFile, "error", err)
 			continue

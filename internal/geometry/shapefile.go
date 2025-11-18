@@ -5,8 +5,8 @@ import (
 	"log"
 	"strings"
 
-	"github.com/jonas-p/go-shp"
 	"github.com/SuperManifolds/NIMBY-Rails-Shapes-to-POIs/internal/poi"
+	"github.com/jonas-p/go-shp"
 )
 
 type ShapefileReader struct {
@@ -135,8 +135,8 @@ func (sr *ShapefileReader) ParseFileWithFullConfig(filePath string, maxLod int32
 		switch s := shape.(type) {
 		case *shp.Point:
 			// Determine text and transparency based on background mode
-			text := ""
-			transparent := false
+			var text string
+			var transparent bool
 			if sr.UseBackgroundInPOIs {
 				// Background mode enabled: normal appearance
 				text = ""
@@ -165,8 +165,8 @@ func (sr *ShapefileReader) ParseFileWithFullConfig(filePath string, maxLod int32
 			tempList := make(poi.List, 0, len(s.Points))
 			for _, point := range s.Points {
 				// Determine text and transparency based on background mode
-				text := ""
-				transparent := false
+				var text string
+				var transparent bool
 				if sr.UseBackgroundInPOIs {
 					// Background mode enabled: normal appearance
 					text = ""

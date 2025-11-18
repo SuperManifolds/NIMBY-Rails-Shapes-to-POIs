@@ -116,8 +116,8 @@ func (k *KMLReader) processPoint(point *kml.Point, placemarkName string, poiList
 		}
 
 		// Determine text and transparency based on background mode
-		text := ""
-		transparent := false
+		var text string
+		var transparent bool
 		if k.UseBackgroundInPOIs {
 			// Background mode enabled: normal appearance
 			text = ""
@@ -157,8 +157,8 @@ func (k *KMLReader) processLineString(lineString *kml.LineString, placemarkName 
 	tempList := make(poi.List, 0, len(coords))
 	for _, coord := range coords {
 		// Determine text and transparency based on background mode
-		text := ""
-		transparent := false
+		var text string
+		var transparent bool
 		if k.UseBackgroundInPOIs {
 			// Background mode enabled: normal appearance
 			text = ""
@@ -220,8 +220,8 @@ func (k *KMLReader) processLinearRing(linearRing *kml.LinearRing, poiList *poi.L
 	tempList := make(poi.List, 0, len(coords))
 	for _, coord := range coords {
 		// Determine text and transparency based on background mode
-		text := ""
-		transparent := false
+		var text string
+		var transparent bool
 		if k.UseBackgroundInPOIs {
 			// Background mode enabled: normal appearance
 			text = ""
