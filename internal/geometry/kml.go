@@ -119,8 +119,8 @@ func (k *KMLReader) processPoint(point *kml.Point, placemarkName string, poiList
 		var text string
 		var transparent bool
 		if k.UseBackgroundInPOIs {
-			// Background mode enabled: normal appearance
-			text = ""
+			// Background mode enabled: normal appearance (preserve placemark names)
+			text = placemarkName
 			transparent = false
 		} else {
 			// Background mode disabled: transparent with dash marker
