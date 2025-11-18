@@ -571,7 +571,7 @@ func TestKMLReader_ParseFile_ActualTestFile(t *testing.T) {
 		return
 	}
 
-	reader := &KMLReader{UseBackgroundInPOIs: true} // Default to normal behavior
+	reader := &KMLReader{UseBackgroundInPOIs: true}                 // Default to normal behavior
 	poiList, err := reader.ParseFileWithFullConfig(testFile, 0, "") // Empty color to use file colors
 
 	if err != nil {
