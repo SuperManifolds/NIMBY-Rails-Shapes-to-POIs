@@ -10,6 +10,7 @@ import (
 	"io"
 	"math"
 	"net/http"
+	"strconv"
 	"sync"
 	"time"
 
@@ -194,22 +195,27 @@ func LatLonToPixel(lat, lon float64, topLeftTile TileCoordinate) PixelCoordinate
 	return PixelCoordinate{X: pixelX, Y: pixelY}
 }
 
-// GetOSMTile fetches a single tile from OpenStreetMap
+// GetOSMTile fetches a single tile from OpenStreetMap.
+// The x, y, z parameters are tile coordinates calculated internally from lat/lon,
+// not from user input, so this is not an SSRF vulnerability.
 func (tc *TileClient) GetOSMTile(ctx context.Context, x, y, z int) (image.Image, error) {
-	url := fmt.Sprintf("%s/%d/%d/%d.png", osmTileBaseURL, z, x, y)
-	return tc.fetchTile(ctx, url)
-}
+	// Validate tile coordinates are within valid ranges
+	maxTiles := 1 << z // 2^z tiles per axis at zoom level z
+	if z < minZoomLevel || z > maxZoomLevel || x < 0 || x >= maxTiles || y < 0 || y >= maxTiles {
+		return nil, fmt.Errorf("invalid tile coordinates: z=%d, x=%d, y=%d", z, x, y)
+	}
 
-// fetchTile is a helper to fetch tiles from any URL
-func (tc *TileClient) fetchTile(ctx context.Context, url string) (image.Image, error) {
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
+	// Build URL from constant base + validated integer parameters
+	tileURL := osmTileBaseURL + "/" + strconv.Itoa(z) + "/" + strconv.Itoa(x) + "/" + strconv.Itoa(y) + ".png"
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, tileURL, nil)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create request: %w", err)
 	}
 
 	req.Header.Set("User-Agent", "NIMBY-Rails-Shapes-to-POIs/1.0")
 
-	resp, err := tc.httpClient.Do(req)
+	resp, err := tc.httpClient.Do(req) //nolint:gosec // URL built from constant base + validated integers, not user input
 	if err != nil {
 		return nil, fmt.Errorf("failed to fetch tile: %w", err)
 	}

@@ -28,12 +28,23 @@ func (h *PreviewHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Security: only allow previewing PNG files from temp directory
-	if !strings.HasSuffix(filename, ".png") || strings.Contains(filename, "..") {
+	if !strings.HasSuffix(filename, ".png") || strings.Contains(filename, "..") || strings.Contains(filename, "/") || strings.Contains(filename, "\\") {
 		http.Error(w, "Invalid file", http.StatusBadRequest)
 		return
 	}
 
-	tempPath := filepath.Join(os.TempDir(), filename)
+	// Sanitize: use only the base name to prevent path traversal
+	safeFilename := filepath.Base(filename)
+	tempPath := filepath.Join(os.TempDir(), safeFilename)
+
+	// Verify the resolved path is within temp directory
+	tempDir := os.TempDir()
+	if !strings.HasPrefix(tempPath, tempDir) {
+		http.Error(w, "Invalid file path", http.StatusBadRequest)
+		return
+	}
+
+	//#nosec G703 -- path is sanitized above with filepath.Base and prefix check
 	if _, err := os.Stat(tempPath); os.IsNotExist(err) {
 		http.Error(w, "File not found", http.StatusNotFound)
 		return
@@ -42,6 +53,7 @@ func (h *PreviewHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "image/png")
 	w.Header().Set("Cache-Control", "public, max-age=3600") // Cache for 1 hour
 
+	//#nosec G703 -- path is sanitized above with filepath.Base and prefix check
 	file, err := os.Open(tempPath)
 	if err != nil {
 		h.logger.ErrorContext(r.Context(), "Failed to open preview file", "error", err)

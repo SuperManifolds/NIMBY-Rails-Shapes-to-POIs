@@ -26,14 +26,33 @@ func (h *StaticHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Security: prevent directory traversal
-	if strings.Contains(path, "..") {
+	if strings.Contains(path, "..") || strings.HasPrefix(path, "/") || strings.HasPrefix(path, "\\") {
 		http.Error(w, "Invalid path", http.StatusBadRequest)
 		return
 	}
 
-	fullPath := filepath.Join(h.root, path)
+	// Clean and join the path securely
+	cleanPath := filepath.Clean(path)
+	fullPath := filepath.Join(h.root, cleanPath)
+
+	// Verify the resolved path is within the root directory
+	absRoot, err := filepath.Abs(h.root)
+	if err != nil {
+		http.Error(w, "Server configuration error", http.StatusInternalServerError)
+		return
+	}
+	absFullPath, err := filepath.Abs(fullPath)
+	if err != nil {
+		http.Error(w, "Invalid path", http.StatusBadRequest)
+		return
+	}
+	if !strings.HasPrefix(absFullPath, absRoot) {
+		http.Error(w, "Invalid path", http.StatusBadRequest)
+		return
+	}
 
 	// Check if file exists
+	//#nosec G703 -- path is sanitized above with filepath.Clean and prefix check
 	if _, err := os.Stat(fullPath); os.IsNotExist(err) {
 		http.NotFound(w, r)
 		return
