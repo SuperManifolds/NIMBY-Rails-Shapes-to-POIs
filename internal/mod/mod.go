@@ -7,12 +7,90 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
+	"unicode"
+
+	"golang.org/x/text/runes"
+	"golang.org/x/text/transform"
+	"golang.org/x/text/unicode/norm"
 
 	"github.com/SuperManifolds/NIMBY-Rails-Shapes-to-POIs/internal/poi"
 )
 
 const MaxPOIsPerMod = 10000
+
+// removeAccents converts accented characters to their ASCII equivalents.
+// For example: é -> e, ñ -> n, ü -> u
+func removeAccents(s string) string {
+	t := transform.Chain(norm.NFD, runes.Remove(runes.In(unicode.Mn)), norm.NFC)
+	result, _, _ := transform.String(t, s)
+	return result
+}
+
+// SanitizeFilename removes or replaces special characters from filenames
+// to ensure compatibility with NIMBY Rails and various file systems.
+// It converts accented characters to their ASCII equivalents and removes
+// any remaining non-ASCII characters.
+func SanitizeFilename(filename string) string {
+	// Separate extension from base name
+	ext := filepath.Ext(filename)
+	base := strings.TrimSuffix(filename, ext)
+
+	// Normalize unicode and remove diacritics (accents)
+	result := removeAccents(base)
+
+	// Replace any remaining non-ASCII or problematic characters with underscores
+	// Allow only alphanumeric, spaces, hyphens, underscores, and parentheses
+	reg := regexp.MustCompile(`[^a-zA-Z0-9 _\-\(\).]`)
+	result = reg.ReplaceAllString(result, "_")
+
+	// Clean up multiple consecutive underscores
+	reg = regexp.MustCompile(`_+`)
+	result = reg.ReplaceAllString(result, "_")
+
+	// Trim leading/trailing underscores and spaces
+	result = strings.Trim(result, "_ ")
+
+	return result + ext
+}
+
+// SanitizeID sanitizes a string to be used as an identifier in mod.txt.
+// It's stricter than SanitizeText, allowing only alphanumeric characters,
+// underscores, and hyphens.
+func SanitizeID(id string) string {
+	result := removeAccents(id)
+
+	// Replace any non-alphanumeric characters (except underscore and hyphen) with underscores
+	reg := regexp.MustCompile(`[^a-zA-Z0-9_\-]`)
+	result = reg.ReplaceAllString(result, "_")
+
+	// Clean up multiple consecutive underscores
+	reg = regexp.MustCompile(`_+`)
+	result = reg.ReplaceAllString(result, "_")
+
+	// Trim leading/trailing underscores
+	result = strings.Trim(result, "_")
+
+	return result
+}
+
+// SanitizeText sanitizes a string for use in mod.txt text fields.
+// It converts accented characters to ASCII equivalents and removes
+// control characters, but allows more characters than SanitizeID.
+func SanitizeText(text string) string {
+	result := removeAccents(text)
+
+	// Remove control characters and other problematic characters
+	// Allow alphanumeric, spaces, common punctuation
+	reg := regexp.MustCompile(`[^\x20-\x7E]`)
+	result = reg.ReplaceAllString(result, "")
+
+	// Trim spaces
+	result = strings.TrimSpace(result)
+
+	return result
+}
 
 type Config struct {
 	OutputPath  string
@@ -136,32 +214,37 @@ func GenerateDefaultContent(modName string, entries []FileEntry) string {
 	var sb strings.Builder
 	// Replace underscores with spaces for display name (e.g., "mymod_part1" -> "mymod part 1")
 	displayModName := strings.ReplaceAll(modName, "_part", " part ")
-	sb.WriteString(fmt.Sprintf(`[ModMeta]
+	// Sanitize the mod name for safe use in mod.txt
+	displayModName = SanitizeText(displayModName)
+
+	fmt.Fprintf(&sb, `[ModMeta]
 schema=1
 name=%s
 author=nimby_shapetopoi
 desc=Generated POI layer from geographic files
 version=1.0.0
 
-`, displayModName))
+`, displayModName)
 
 	for _, entry := range entries {
 		baseName := strings.TrimSuffix(entry.TSVFileName, ".tsv")
+		// Sanitize the ID (strict: alphanumeric, underscore, hyphen only)
+		sanitizedID := SanitizeID(baseName)
 
 		// Use extracted title if available, otherwise use filename
 		var layerName string
 		if entry.Title != "" {
-			layerName = entry.Title
+			layerName = SanitizeText(entry.Title)
 		} else {
-			layerName = baseName
+			layerName = SanitizeText(baseName)
 		}
 
-		sb.WriteString(fmt.Sprintf(`[POILayer]
+		fmt.Fprintf(&sb, `[POILayer]
 id = %s_pois
 name = %s
 tsv = %s
 
-`, baseName, layerName, entry.TSVFileName))
+`, sanitizedID, layerName, entry.TSVFileName)
 	}
 
 	return sb.String()
@@ -178,21 +261,23 @@ func UpdateTSVReferences(modContent string, entries []FileEntry) string {
 
 	for _, entry := range entries {
 		baseName := strings.TrimSuffix(entry.TSVFileName, ".tsv")
+		// Sanitize the ID (strict: alphanumeric, underscore, hyphen only)
+		sanitizedID := SanitizeID(baseName)
 
 		// Use extracted title if available, otherwise use filename
 		var layerName string
 		if entry.Title != "" {
-			layerName = entry.Title
+			layerName = SanitizeText(entry.Title)
 		} else {
-			layerName = baseName
+			layerName = SanitizeText(baseName)
 		}
 
-		sb.WriteString(fmt.Sprintf(`[POILayer]
+		fmt.Fprintf(&sb, `[POILayer]
 id = %s_pois
 name = %s
 tsv = %s
 
-`, baseName, layerName, entry.TSVFileName))
+`, sanitizedID, layerName, entry.TSVFileName)
 	}
 
 	return sb.String()

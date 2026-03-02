@@ -155,7 +155,8 @@ func processInputFilesIndividually(ctx context.Context, logger *slog.Logger, inp
 			base := filepath.Base(inputFile)
 			ext := filepath.Ext(base)
 			nameWithoutExt := strings.TrimSuffix(base, ext)
-			tsvFileName := nameWithoutExt + ".tsv"
+			// Sanitize filename to remove special characters for NIMBY Rails compatibility
+			tsvFileName := mod.SanitizeFilename(nameWithoutExt + ".tsv")
 
 			entry := mod.FileEntry{
 				TSVFileName: tsvFileName,
