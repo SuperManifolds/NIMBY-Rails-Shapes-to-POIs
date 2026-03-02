@@ -194,9 +194,11 @@ func (h *UploadHandler) processUploadedFiles(ctx context.Context, files []*multi
 			base := filepath.Base(inputFile)
 			ext := filepath.Ext(base)
 			nameWithoutExt := strings.TrimSuffix(base, ext)
-			tsvFileName := nameWithoutExt + ".tsv"
+			// Sanitize filename to remove special characters for NIMBY Rails compatibility
+			tsvFileName := mod.SanitizeFilename(nameWithoutExt + ".tsv")
 
 			// Extract title from file if available, fallback to clean filename
+			// Note: title can contain special characters as it's just for display
 			var title string
 			if extractedTitle, err := reader.GetTitle(inputFile); err == nil && extractedTitle != "" {
 				title = extractedTitle

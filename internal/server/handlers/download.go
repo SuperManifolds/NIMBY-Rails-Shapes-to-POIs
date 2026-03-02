@@ -29,20 +29,32 @@ func (h *DownloadHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Security: only allow downloading zip files from temp directory
-	if !strings.HasSuffix(filename, ".zip") || strings.Contains(filename, "..") {
+	if !strings.HasSuffix(filename, ".zip") || strings.Contains(filename, "..") || strings.Contains(filename, "/") || strings.Contains(filename, "\\") {
 		http.Error(w, "Invalid file", http.StatusBadRequest)
 		return
 	}
 
-	tempPath := filepath.Join(os.TempDir(), filename)
+	// Sanitize: use only the base name to prevent path traversal
+	safeFilename := filepath.Base(filename)
+	tempPath := filepath.Join(os.TempDir(), safeFilename)
+
+	// Verify the resolved path is within temp directory
+	tempDir := os.TempDir()
+	if !strings.HasPrefix(tempPath, tempDir) {
+		http.Error(w, "Invalid file path", http.StatusBadRequest)
+		return
+	}
+
+	//#nosec G703 -- path is sanitized above with filepath.Base and prefix check
 	if _, err := os.Stat(tempPath); os.IsNotExist(err) {
 		http.Error(w, "File not found", http.StatusNotFound)
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/zip")
-	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=%s", filename))
+	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=%s", safeFilename))
 
+	//#nosec G703 -- path is sanitized above with filepath.Base and prefix check
 	file, err := os.Open(tempPath)
 	if err != nil {
 		h.logger.ErrorContext(r.Context(), "Failed to open file for download", "error", err)

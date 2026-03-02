@@ -104,21 +104,22 @@ func main() {
 }
 
 func printUsage() {
-	fmt.Fprintf(os.Stderr, "Usage: %s [options] <input-files...>\n", os.Args[0])
-	fmt.Fprintf(os.Stderr, "       %s --server [--port <port>]\n", os.Args[0])
-	fmt.Fprintf(os.Stderr, "\nOptions:\n")
-	fmt.Fprintf(os.Stderr, "  -o, --output <path>          Output mod zip file path\n")
-	fmt.Fprintf(os.Stderr, "  -m, --mod <path>             Custom mod.txt file to use\n")
-	fmt.Fprintf(os.Stderr, "  --interpolate-distance <m>   Add extra points along lines if segments exceed this distance (meters)\n")
-	fmt.Fprintf(os.Stderr, "  --server                     Run as web server\n")
-	fmt.Fprintf(os.Stderr, "  --port <port>                Web server port (default: 8080)\n")
-	fmt.Fprintf(os.Stderr, "\nSupported formats: .shp, .kml, .kmz\n")
-	fmt.Fprintf(os.Stderr, "\nExamples:\n")
-	fmt.Fprintf(os.Stderr, "  %s file.shp\n", os.Args[0])
-	fmt.Fprintf(os.Stderr, "  %s -o mymod.zip file1.kml file2.kmz\n", os.Args[0])
-	fmt.Fprintf(os.Stderr, "  %s --interpolate-distance 500 --output dense.zip railway.kml\n", os.Args[0])
-	fmt.Fprintf(os.Stderr, "  %s --mod custom_mod.txt --output combined.zip *.shp *.kml\n", os.Args[0])
-	fmt.Fprintf(os.Stderr, "  %s --server --port 3000\n", os.Args[0])
+	prog := filepath.Base(os.Args[0])
+	_, _ = os.Stderr.WriteString("Usage: " + prog + " [options] <input-files...>\n")
+	_, _ = os.Stderr.WriteString("       " + prog + " --server [--port <port>]\n")
+	_, _ = os.Stderr.WriteString("\nOptions:\n")
+	_, _ = os.Stderr.WriteString("  -o, --output <path>          Output mod zip file path\n")
+	_, _ = os.Stderr.WriteString("  -m, --mod <path>             Custom mod.txt file to use\n")
+	_, _ = os.Stderr.WriteString("  --interpolate-distance <m>   Add extra points along lines if segments exceed this distance (meters)\n")
+	_, _ = os.Stderr.WriteString("  --server                     Run as web server\n")
+	_, _ = os.Stderr.WriteString("  --port <port>                Web server port (default: 8080)\n")
+	_, _ = os.Stderr.WriteString("\nSupported formats: .shp, .kml, .kmz\n")
+	_, _ = os.Stderr.WriteString("\nExamples:\n")
+	_, _ = os.Stderr.WriteString("  " + prog + " file.shp\n")
+	_, _ = os.Stderr.WriteString("  " + prog + " -o mymod.zip file1.kml file2.kmz\n")
+	_, _ = os.Stderr.WriteString("  " + prog + " --interpolate-distance 500 --output dense.zip railway.kml\n")
+	_, _ = os.Stderr.WriteString("  " + prog + " --mod custom_mod.txt --output combined.zip *.shp *.kml\n")
+	_, _ = os.Stderr.WriteString("  " + prog + " --server --port 3000\n")
 }
 
 func generateOutputPath(inputFiles []string) string {
@@ -155,7 +156,8 @@ func processInputFilesIndividually(ctx context.Context, logger *slog.Logger, inp
 			base := filepath.Base(inputFile)
 			ext := filepath.Ext(base)
 			nameWithoutExt := strings.TrimSuffix(base, ext)
-			tsvFileName := nameWithoutExt + ".tsv"
+			// Sanitize filename to remove special characters for NIMBY Rails compatibility
+			tsvFileName := mod.SanitizeFilename(nameWithoutExt + ".tsv")
 
 			entry := mod.FileEntry{
 				TSVFileName: tsvFileName,
