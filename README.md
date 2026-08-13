@@ -1,5 +1,15 @@
 # NIMBY ShapeToPOI
 
+> [!IMPORTANT]
+> **This project is retired and archived.** NIMBY Rails now supports real map
+> overlays natively, so converting shapes into points of interest is obsolete.
+> Use **[Turnout](https://github.com/SuperManifolds/turnout)** instead — it
+> renders KML and shapefile data as actual overlays inside the game.
+>
+> The hosted service at `nimbypoi.sorlie.io` now serves a redirect notice, and
+> the AWS infrastructure has been decommissioned. This repository remains
+> read-only for reference.
+
 A Go web application that converts geographic data files (Shapefiles, KML, KMZ) into NIMBY Rails mod files containing Points of Interest (POI). Available as both a web interface and command-line tool.
 
 ## Features
